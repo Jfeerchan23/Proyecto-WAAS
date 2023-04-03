@@ -1,0 +1,52 @@
+.menu {
+  background-color: var(--azul-cielo);
+  width: 15%;
+}
+.titulo {
+  height: 10%;
+  display: flex;
+  justify-content: center; /* Centra horizontalmente */
+  align-items: center; /* Centra verticalmente */
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+.sidenav {
+  height: 90%;
+}
+
+.opcion {
+  padding: 6px 6px 6px 26px;
+  text-decoration: none;
+  font-size: 1.5rem;
+  color: var(--azul-marino);
+  display: block;
+}
+
+.opcion:hover {
+  color: white;
+  text-shadow: 1px 1px 0px #000;
+}
+
+.flex-container {
+  display: flex;
+}
+
+.calendario {
+  padding: 2rem;
+  width: 85%;
+}
+p,
+div {
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.active{
+  padding: 6px 6px 6px 26px;
+  text-decoration: none;
+  font-size: 1.5rem;
+  color: white;
+  display: block;
+  text-shadow: 1px 1px 0px #000;
+}

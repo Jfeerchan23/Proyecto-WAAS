@@ -1,0 +1,13 @@
+<div class="flex-container">
+  <div class="menu">
+    <div class="titulo"><p>Menú</p></div>
+    <div class="sidenav">
+      <a href="#" [ngClass]="(dataDashboard$ | async)?.menuActivo == 'agenda' ? 'active' : 'opcion'" >Agenda</a>
+      <a href="#" class="opcion">Reservar Cita</a>
+      <a href="#"class="opcion">Cancelar cita</a>
+    </div>
+  </div>
+  <div class="calendario">
+    <full-calendar [options]="calendarOptions"></full-calendar>
+  </div>
+</div>
