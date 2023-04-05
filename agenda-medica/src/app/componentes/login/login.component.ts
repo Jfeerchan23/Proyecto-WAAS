@@ -23,7 +23,7 @@ export class LoginComponent {
   }
 
   ingresar() {
-    this.router.navigate(['dashboard']);
+    this.router.navigate(['dashboard/paciente']);
     /* this._snackBar.open('Usuario o contraseña inválidos', '', {
       duration: 1500,
       horizontalPosition: 'center',

@@ -1,0 +1,28 @@
+.parent_div {
+     
+        height: 100%;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .child_div {
+        display: flex;
+        width: 80%;
+        margin: 0 auto;
+        padding: 60px 40px;
+        background-color: #fff;
+        border-radius: 3px;
+        border: 1px solid #d9e3eb;
+        box-shadow: 0 5px 10px rgba(0,0,0,.1);
+        display: flex; /* Establece el contenedor como un elemento flexible */
+        justify-content: center; /* Centra horizontalmente el contenido del contenedor */
+        align-items: center; /* Centra verticalmente el contenido del contenedor */
+        
+      }
+   
+      .titulo{
+        text-align: center;
+      }
+  
+      

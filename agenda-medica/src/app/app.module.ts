@@ -13,11 +13,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { DashboardModule } from './componentes/dashboard/dashboard.module';
-import { FullCalendarModule } from '@fullcalendar/angular';
-import { CrearCitaComponent } from './componentes/formularios/crear-cita/crear-cita.component';
+import { FullCalendarModule } from '@fullcalendar/angular'
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, ModalComponent, CrearCitaComponent],
+  declarations: [AppComponent, LoginComponent, ModalComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

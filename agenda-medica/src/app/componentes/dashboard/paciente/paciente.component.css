@@ -29,9 +29,10 @@
 
 .flex-container {
   display: flex;
+  height: 533px;
 }
 
-.calendario {
+.contenedor-elementos {
   padding: 2rem;
   width: 85%;
 }
