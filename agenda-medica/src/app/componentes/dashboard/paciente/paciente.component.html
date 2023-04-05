@@ -1,18 +1,3 @@
-<div class="flex-container">
-  <div class="menu">
-    <div class="titulo"><p>Menú</p></div>
-    <div class="sidenav">
-      <a href="#" 
-       [ngClass]="(dataDashboard$ | async)?.menuActivo == 'agenda' ? 'active' : 'opcion'"
-       routerLink="/dashboard/paciente/agenda" 
-       >Agenda</a>
-      <a href="#"
-       [ngClass]="(dataDashboard$ | async)?.menuActivo == 'nueva-cita' ? 'active' : 'opcion'" 
-       routerLink="/dashboard/paciente/nueva-cita" 
-       >Reservar Cita</a>
-    </div>
-  </div>
-  <div class="contenedor-elementos">
+
    <router-outlet></router-outlet>
-  </div>
-</div>
+ 
