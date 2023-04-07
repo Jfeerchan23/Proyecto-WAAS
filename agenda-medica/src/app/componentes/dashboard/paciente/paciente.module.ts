@@ -18,11 +18,14 @@ import {MatCardModule} from '@angular/material/card';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatStepperModule} from '@angular/material/stepper';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { HistorialClinicoComponent } from './historial-clinico/historial-clinico.component';
+import {ScrollingModule} from '@angular/cdk/scrolling';
 
 @NgModule({
   declarations: [
     AgendaPacienteComponent,
-    FormularioCitaComponent
+    FormularioCitaComponent,
+    HistorialClinicoComponent
   ],
   imports: [
     CommonModule,
@@ -42,7 +45,8 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
     MatCardModule,
     MatTooltipModule,
     MatStepperModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    ScrollingModule
   ]
 })
 export class PacienteModule { }

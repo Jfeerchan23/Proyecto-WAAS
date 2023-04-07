@@ -25,7 +25,7 @@ export class AgendaPacienteComponent implements OnInit{
 
   calendarOptions: CalendarOptions = {
     plugins: [dayGridPlugin, interactionPlugin, timeGridPlugin],
-    height: 469,
+    height: 500,
     locale: esLocale,
     themeSystem: 'bootstrap5',
     headerToolbar: {

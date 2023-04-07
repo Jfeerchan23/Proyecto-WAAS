@@ -1,86 +1,180 @@
-<div class=" container" >
-    <form class="row g-3">
+<div class="contenedor">
+  <div class="container">
+    <form class="row g-3" [formGroup]="form">
       <div class="col-12 titulo">
-       <h2>Agendar cita</h2> 
-      </div> 
+        <h2>Agendar cita</h2>
+      </div>
       <mat-stepper #stepper>
         <mat-step>
           <ng-template matStepLabel>Datos personales</ng-template>
           <div class="row">
-            <div class="form-group col-12 ">
+            <div class="form-group col-12">
               <label>Nombre completo</label>
-              <input type="text" class="form-control" id="exampleInputEmail1" autocomplete="off" required>
+              <input
+                type="text"
+                class="form-control"
+                autocomplete="off"
+                required
+                formControlName="nombre"
+              />
             </div>
             <div class="form-group col-6">
               <label>CURP</label>
-              <input type="text" class="form-control"  autocomplete="off" required >
+              <input
+                type="text"
+                class="form-control"
+                autocomplete="off"
+                required
+                formControlName="curp"
+              />
             </div>
             <div class="form-group col-6">
               <label>Correo electrónico</label>
-              <input type="email" class="form-control"  autocomplete="off" required>
-            </div>
-            <div class="form-group col-6">
-              <label>Dirección</label>
-              <input type="text" class="form-control"  autocomplete="off" required>
+              <input
+                type="email"
+                class="form-control"
+                autocomplete="off"
+                required
+                formControlName="correo"
+              />
             </div>
             <div class="form-group col-6">
               <label>Número telefónico</label>
-              <input type="tel" class="form-control"  autocomplete="off" required>
+              <input
+                type="tel"
+                class="form-control"
+                autocomplete="off"
+                required
+                formControlName="telefono"
+              />
+            </div>
+            <div class="form-group col-6">
+              <label>Dirección</label>
+              <input
+                type="text"
+                class="form-control"
+                autocomplete="off"
+                required
+                formControlName="direccion"
+              />
             </div>
             <div class="form-group mt-3">
-              <button class="btn btn-secondary " matStepperNext>Siguiente</button>
+              <button class="btn btn-secondary" matStepperNext>Siguiente</button>
             </div>
           </div>
-        
         </mat-step>
         <mat-step>
           <ng-template matStepLabel>Datos del médico</ng-template>
           <div class="row">
-            <div class="form-group col-12 ">
+            <div class="form-group col-12">
               <label>Especialidad</label>
-              <select class="form-select" aria-label="Default select example">
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-              </select>
+              <input
+                type="text"
+                placeholder="Elige una especialidad"
+                aria-label="Number"
+                matInput
+                formControlName="especialidad"
+                [matAutocomplete]="auto"
+                class="form-control"
+                required
+              />
+              <mat-autocomplete #auto="matAutocomplete">
+                <mat-option
+                  *ngFor="let option of filteredOptions | async"
+                  [value]="option"
+                >
+                  {{ option }}
+                </mat-option>
+              </mat-autocomplete>
             </div>
             <div class="form-group col-12">
               <label>Médico</label>
-              <input type="text" class="form-control"  autocomplete="off" >
+              <input
+                type="text"
+                placeholder="Elige un médico"
+                aria-label="Number"
+                matInput
+                formControlName="medico"
+                [matAutocomplete]="auto"
+                class="form-control"
+                required
+              />
+              <mat-autocomplete #auto="matAutocomplete">
+                <mat-option
+                  *ngFor="let option of filteredOptions | async"
+                  [value]="option"
+                >
+                  {{ option }}
+                </mat-option>
+              </mat-autocomplete>
             </div>
-   
+  
             <div class="form-group mt-3">
-              <button class="btn btn-secondary " matStepperPrevious>Anterior</button>
-              <button class="btn btn-secondary mx-2" matStepperNext>Siguiente</button>
+              <button class="btn btn-secondary" matStepperPrevious>
+                Anterior
+              </button>
+              <button class="btn btn-secondary mx-2" matStepperNext>
+                Siguiente
+              </button>
             </div>
-          
           </div>
-         
         </mat-step>
         <mat-step>
           <ng-template matStepLabel>Datos de la cita</ng-template>
-
-            <div class="row">
-              <div class="form-group col-6 ">
-                <label>Tipo</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" autocomplete="off">
-              </div>
-              <div class="form-group col-6">
-                <label>Fecha</label>
-                <input type="date" class="form-control"  autocomplete="off" >
-              </div>
-              <div class="form-group col-6">
-                <label>Hora</label>
-                <input type="time" class="form-control"  autocomplete="off" >
-              </div>
-              <div class="form-group mt-3">
-                <button class="btn btn-secondary " matStepperPrevious>Anterior</button>
-                <button type="submit" class="btn btn-primary mx-2"> Guardar</button>
-              </div>
+  
+          <div class="row">
+            <div class="form-group col-6">
+              <label>Modalidad</label>
+              <select
+                class="form-select"
+                aria-label="Default select example"
+                required
+                formControlName="modalidad"
+              >
+                <option value="1">Física</option>
+                <option value="2">Telefónica</option>
+                <option value="3">Web</option>
+              </select>
             </div>
+            <div class="form-group col-6">
+              <label>Fecha</label>
+              <input
+                type="date"
+                class="form-control"
+                autocomplete="off"
+                required
+                formControlName="fecha"
+              />
+            </div>
+            <div class="form-group col-6">
+              <label>Hora</label>
+              <select
+                class="form-select"
+                aria-label="Default select example"
+                required
+                formControlName="hora"
+              >
+                <option value="1">10:00 am - 10:20 am</option>
+                <option value="2">10:20 am - 10:40 am</option>
+                <option value="3">10:40 am - 11:00 am</option>
+              </select>
+            </div>
+            <div class="form-group mt-3">
+              <button class="btn btn-secondary" matStepperPrevious>
+                Anterior
+              </button>
+              <button
+                type="submit"
+                class="btn btn-primary mx-2"
+                [disabled]="form.invalid"
+              >
+                Guardar
+              </button>
+            </div>
+          </div>
         </mat-step>
       </mat-stepper>
     </form>
-    </div>
-
+  </div>
+</div>
 

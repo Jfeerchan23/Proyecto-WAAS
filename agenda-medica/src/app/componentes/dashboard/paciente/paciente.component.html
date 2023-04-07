@@ -1,3 +1,36 @@
-
-   <router-outlet></router-outlet>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<mat-toolbar class="encabezado">
+  <div class="contenedorImg">
+    <img class="logo" src="../../../assets/img/logo.webp"/>
+  </div>
+  <div class="contenedorMenu">
+   <table>
+      <tr>
+         <td >
+            <a [ngClass]="(dataDashboard$ | async)?.menuActivo == 'agenda' ? 'active' : ''"
+            routerLink="/dashboard/paciente/agenda" >Agenda</a>
+          
+         </td>
+         <td>
+            <a  [ngClass]="(dataDashboard$ | async)?.menuActivo == 'nueva-cita' ? 'active' : ''"
+            routerLink="/dashboard/paciente/nueva-cita" >Nueva cita</a>
+            
+         </td>
+         <td>
+            <a  [ngClass]="(dataDashboard$ | async)?.menuActivo == 'historial-clinico' ? 'active' : ''"
+            routerLink="/dashboard/paciente/historial-clinico" 
+            
+            >Historial clínico</a>
+         </td>
+      </tr>
+   </table>
+  </div>
+ <div class="contenedorLogout">
+   <a class="boton" [routerLink]="['/logout']">
+      <mat-icon class="icono">logout</mat-icon>
+    </a>
+ </div>
+  
+</mat-toolbar>
+<router-outlet></router-outlet>
  
