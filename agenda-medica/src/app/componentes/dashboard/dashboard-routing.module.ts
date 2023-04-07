@@ -10,7 +10,9 @@ const routes: Routes = [
   {
     
     path: '', component: DashboardComponent,children:[
-      {path: 'paciente', loadChildren:()=>import('./paciente/paciente.module').then(x=>x.PacienteModule)}
+      {path: 'paciente', loadChildren:()=>import('./paciente/paciente.module').then(x=>x.PacienteModule)},
+      {path: 'administracion', loadChildren:()=>import('./administrador/administrador.module').then(x=>x.AdministradorModule)}
+
     ]
 
 }

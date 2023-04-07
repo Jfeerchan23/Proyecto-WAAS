@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Barra de navegación en Java</title>
+	<style>
+      /* Estilos para el encabezado */
+      header {
+        background-color: #2d6187;
+        color: white;
+        padding: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      /* Estilos para los hipervínculos en la barra de navegación */
+      nav a {
+        color: white;
+        text-decoration: none;
+        margin-right: 10px;
+      }
+
+      /* Estilos para el botón de salir */
+      #logout {
+        background-color: #ff4b4b;
+        color: white;
+        padding: 5px 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      /* Estilos para el formulario */
+      form {
+        max-width: 500px;
+        margin: 0 auto;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+      }
+
+      input[type="text"],
+      input[type="date"],
+      input[type="tel"] {
+        width: 100%;
+        padding: 5px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+      }
+
+      /* Estilos para los botones */
+      input[type="submit"],
+      input[type="button"] {
+        background-color: #2d6187;
+        color: white;
+        padding: 5px 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      input[type="submit"]:hover,
+      input[type="button"]:hover {
+        background-color: #1e415a;
+      }
+    </style>
+</head>
+<body>
+	<header>
+      <nav>
+        <a href="#">Doctores</a>
+        <a href="#">Pacientes</a>
+        <a href="#">Secretaria</a>
+      </nav>
+      <button id="logout">Salir</button>
+    </header>
+
+
+	<h1>Registro de pacientes</h1>
+	<form>
+		<label for="nombre">Nombre:</label>
+		<input type="text" id="nombre" name="nombre" required>
+		<br><br>
+		<label for="fecha_nacimiento">Fecha de nacimiento:</label>
+		<input type="date" id="fecha_nacimiento" name="fecha_nacimiento" required>
+		<br><br>
+		<label for="telefono">Teléfono:</label>
+		<input type="tel" id="telefono" name="telefono" required>
+		<br><br>
+		<label for="curp">CURP:</label>
+		<input type="text" id="curp" name="curp" maxlength="18" required>
+		<br><br>
+		<label for="historia_clinica">Historia clínica:</label>
+		<input type="file" id="historia_clinica" name="historia_clinica" accept=".pdf,.zip" required>
+		<br><br>
+		<button type="submit">Guardar</button>
+		<button type="button" onclick="history.back()">Regresar</button>
+	</form>
+</body>
+</html>
+
+
+

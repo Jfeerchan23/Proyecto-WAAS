@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Registro de doctor</title>
+<style>
+      /* Estilos para el encabezado */
+      header {
+        background-color: #2d6187;
+        color: white;
+        padding: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      /* Estilos para los hipervínculos en la barra de navegación */
+      nav a {
+        color: white;
+        text-decoration: none;
+        margin-right: 10px;
+      }
+
+      /* Estilos para el botón de salir */
+      #logout {
+        background-color: #ff4b4b;
+        color: white;
+        padding: 5px 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      /* Estilos para el formulario */
+      form {
+        max-width: 500px;
+        margin: 0 auto;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+      }
+
+      input[type="text"],
+      input[type="date"],
+      input[type="tel"] {
+        width: 100%;
+        padding: 5px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+      }
+
+      /* Estilos para los botones */
+      input[type="submit"],
+      input[type="button"] {
+        background-color: #2d6187;
+        color: white;
+        padding: 5px 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      input[type="submit"]:hover,
+      input[type="button"]:hover {
+        background-color: #1e415a;
+      }
+    </style>
+</head>
+<body>
+    <header>
+      <nav>
+        <a href="#">Doctores</a>
+        <a href="#">Pacientes</a>
+        <a href="#">Secretaria</a>
+      </nav>
+      <button id="logout">Salir</button>
+    </header>
+
+	<h1>Registro de doctor</h1>
+
+	<form action="#" method="POST" enctype="multipart/form-data">
+		<label for="nombre">Nombre:</label>
+		<input type="text" id="nombre" name="nombre" required><br><br>
+
+		<label for="fecha_nacimiento">Fecha de nacimiento:</label>
+		<input type="date" id="fecha_nacimiento" name="fecha_nacimiento" required><br><br>
+
+		<label for="especialidad">Especialidad:</label>
+		<input type="checkbox" id="tiene_especialidad" name="tiene_especialidad" onchange="mostrarEspecialidad()"><br>
+		<div id="especialidad_container" style="display:none">
+			<input type="text" id="especialidad" name="especialidad"><br><br>
+		</div>
+
+		<label for="telefono">Número telefónico:</label>
+		<input type="tel" id="telefono" name="telefono" required><br><br>
+
+		<label for="certificado">Certificado de titulación:</label>
+		<input type="file" id="certificado" name="certificado" required><br><br>
+
+		<input type="submit" value="Guardar">
+		<button type="button" onclick="window.history.back()">Regresar</button>
+	</form>
+
+	<script>
+		function mostrarEspecialidad() {
+			var tieneEspecialidad = document.getElementById("tiene_especialidad").checked;
+			var especialidadContainer = document.getElementById("especialidad_container");
+			if (tieneEspecialidad) {
+				especialidadContainer.style.display = "block";
+			} else {
+				especialidadContainer.style.display = "none";
+			}
+		}
+	</script>
+
+</body>
+</html>

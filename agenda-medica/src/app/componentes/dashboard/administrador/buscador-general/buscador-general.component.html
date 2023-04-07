@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Sistema de gestión médica</title>
+  <style>
+    /* Estilos para la barra de navegación */
+    #navbar {
+      background-color: #333;
+      overflow: hidden;
+    }
+
+    #navbar a {
+      float: left;
+      color: white;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+      font-size: 17px;
+    }
+
+    #navbar a:hover {
+      background-color: #ddd;
+      color: black;
+    }
+
+    #navbar a.active {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    #navbar .right {
+      float: right;
+    }
+
+    /* Estilos para la tabla */
+    #tabla-resultados {
+      font-family: Arial, Helvetica, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    #tabla-resultados td, #tabla-resultados th {
+      border: 1px solid #ddd;
+      padding: 8px;
+    }
+
+    #tabla-resultados tr:nth-child(even){background-color: #f2f2f2;}
+
+    #tabla-resultados tr:hover {background-color: #ddd;}
+
+    #tabla-resultados th {
+      padding-top: 12px;
+      padding-bottom: 12px;
+      text-align: left;
+      background-color: #4CAF50;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <!-- Barra de navegación -->
+  <div id="navbar">
+    <a class="right" href="#">Salir</a>
+  </div>
+
+  <!-- Formulario de búsqueda -->
+  <form>
+    <label for="curp">CURP:</label>
+    <input type="text" id="curp" name="curp">
+    <label for="entidad">Entidad:</label>
+    <select id="entidad" name="entidad">
+      <option value="doctor">Doctor</option>
+      <option value="paciente">Paciente</option>
+      <option value="secretaria">Secretaria</option>
+    </select>
+    <button type="submit">Buscar</button>
+  </form>
+
+  <!-- Tabla de resultados -->
+  <table id="tabla-resultados">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Fecha de nacimiento</th>
+        <th>Número telefónico</th>
+        <th>CURP</th>
+        <th>Opciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>John Doe</td>
+        <td>01/01/1990</td>
+        <td>1234567890</td>
+        <td>DOEJ900101HDFXXX01</td>
+        <td>
+          <button>Editar datos</button>
+          <button>Bloquear</button>
+          <button>Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Botón para agregar entidad -->
+  <button>Agregar</button>
+</body>
+</html>
