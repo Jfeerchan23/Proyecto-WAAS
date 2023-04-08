@@ -13,10 +13,9 @@ import { Observable } from 'rxjs';
   styleUrls: ['./agenda-paciente.component.css'],
 })
 export class AgendaPacienteComponent implements OnInit{
-  public dataDashboard$: Observable<Dashboard> | undefined;
+  public dataDashboard$!: Observable<Dashboard>;
   constructor(private dashboardService: DashboardService) {
     dashboardService.dashboardObservableData = {
-      tituloSeccion: 'Paciente',
       menuActivo: 'agenda',
     };
     this.dataDashboard$ = dashboardService.dashboardObservable;

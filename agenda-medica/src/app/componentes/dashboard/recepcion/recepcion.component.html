@@ -1,1 +1,28 @@
-<p>recepcion works!</p>
+<mat-toolbar class="encabezado">
+    <div class="contenedorImg">
+      <img class="logo" src="../../../assets/img/logo.webp"/>
+    </div>
+    <div class="contenedorMenu">
+     <table>
+        <tr>
+           <td >
+              <a [ngClass]="(dataDashboard$ | async)?.menuActivo == 'agenda-recepcion' ? 'activo' : ''"
+              routerLink="/dashboard/recepcion/agenda-recepcion" >Agenda</a>
+            
+           </td>
+           <td>
+              <a  [ngClass]="(dataDashboard$ | async)?.menuActivo == 'nueva-cita' ? 'activo' : ''"
+              routerLink="/dashboard/recepcion/nueva-cita" >Nueva cita</a>
+              
+           </td>
+        </tr>
+     </table>
+    </div>
+   <div class="contenedorLogout">
+     <a class="boton" [routerLink]="['/logout']">
+        <mat-icon class="icono">logout</mat-icon>
+      </a>
+   </div>
+     
+</mat-toolbar>
+   <router-outlet></router-outlet>

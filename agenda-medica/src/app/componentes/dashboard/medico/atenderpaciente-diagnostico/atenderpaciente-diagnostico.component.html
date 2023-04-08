@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Datos de la consulta</title>
+    <style>
+      body {
+        background-color: #f2f2f2;
+        font-family: Arial, sans-serif;
+      }
+
+      h1 {
+        color: #1a1a1a;
+        text-align: center;
+      }
+
+      textarea {
+        width: 100%;
+        height: 300px;
+        padding: 10px;
+        border-radius: 10px;
+        border: none;
+        box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+        font-size: 18px;
+      }
+
+      .btn {
+        display: inline-block;
+        margin: 10px;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-size: 18px;
+        font-weight: bold;
+        text-align: center;
+        text-decoration: none;
+        color: #ffffff;
+        background-color: #4caf50;
+        box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+      }
+
+      .btn-yellow {
+        background-color: #ffcc00;
+      }
+
+      .btn-blue {
+        background-color: #2196f3;
+      }
+header {
+			background-color: #337ab7;
+			color: #fff;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			padding: 10px;
+		}
+        nav {
+			display: flex;
+			flex-direction: row;
+		}
+
+		nav a {
+			color: #fff;
+			margin-left: 20px;
+			text-decoration: none;
+		}
+
+		nav a:hover {
+			text-decoration: underline;
+		}
+
+
+    </style>
+
+ <header>
+		<div class="hospital-title">Hospital</div>
+		<nav>
+			<a href="#">Calendario</a>
+			<a href="#">Crear agenda</a>
+			<a href="#">Citas programadas</a>
+		</nav>
+		<a href="#" id="logout">Salir</a>
+	</header>
+
+
+
+  </head>
+  <body>
+    <h1>Datos de la consulta</h1>
+    <form action="guardar.php" method="post">
+      <textarea name="txtConsulta"></textarea>
+      <br>
+      <button type="submit" class="btn">Guardar</button>
+    </form>
+    <a href="historial.php" class="btn btn-yellow">Checar historial</a>
+    <a href="index.php" class="btn btn-blue">Regresar</a>
+  </body>
+</html>

@@ -1,1 +1,34 @@
-<p>medico works!</p>
+<mat-toolbar class="encabezado">
+    <div class="contenedorImg">
+      <img class="logo" src="../../../assets/img/logo.webp"/>
+    </div>
+    <div class="contenedorMenu">
+     <table>
+        <tr>
+           <td >
+              <a [ngClass]="(dataDashboard$ | async)?.menuActivo == 'principal-medico' ? 'active' : ''"
+              routerLink="/dashboard/medico/principal-medico" >Calendario</a>
+            
+           </td>
+           <td>
+              <a  [ngClass]="(dataDashboard$ | async)?.menuActivo == 'crear-agenda' ? 'active' : ''"
+              routerLink="/dashboard/medico/crear-agenda" >Crear Agenda</a>
+              
+           </td>
+           <td>
+              <a  [ngClass]="(dataDashboard$ | async)?.menuActivo == 'lista-pacientes' ? 'active' : ''"
+              routerLink="/dashboard/medico/lista-pacientes" 
+              
+              >Citas programadas</a>
+           </td>
+        </tr>
+     </table>
+    </div>
+   <div class="contenedorLogout">
+     <a class="boton" [routerLink]="['/logout']">
+        <mat-icon class="icono">logout</mat-icon>
+      </a>
+   </div>
+    
+  </mat-toolbar>
+<router-outlet></router-outlet>

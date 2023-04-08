@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Dashboard, DashboardService } from 'src/app/servicios/dashboard.service';
 
 @Component({
   selector: 'app-administrador',
@@ -6,5 +8,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./administrador.component.css']
 })
 export class AdministradorComponent {
-
+  public dataDashboard$: Observable<Dashboard> | undefined;
+  constructor(
+    private dashboardService: DashboardService, 
+  ) { 
+   
+    this.dataDashboard$ = dashboardService.dashboardObservable;
+  }
 }

@@ -1,0 +1,121 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Datos del paciente</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			background-color: #f5f5f5;
+		}
+		h1 {
+			color: #333333;
+			text-align: center;
+		}
+		table {
+			margin: 0 auto;
+			border-collapse: collapse;
+			width: 80%;
+			max-width: 800px;
+			background-color: white;
+			box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+		}
+		th, td {
+			padding: 15px;
+			text-align: left;
+			border-bottom: 1px solid #dddddd;
+		}
+		tr:hover {
+			background-color: #f2f2f2;
+		}
+		#buttons {
+			text-align: center;
+			margin-top: 20px;
+		}
+		button {
+			padding: 10px 20px;
+			background-color: #007bff;
+			color: white;
+			border: none;
+			border-radius: 5px;
+			font-size: 18px;
+			cursor: pointer;
+			margin: 0 10px;
+		}
+		button:hover {
+			background-color: #0062cc;
+		}
+
+  header {
+			background-color: #337ab7;
+			color: #fff;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			padding: 10px;
+		}
+        nav {
+			display: flex;
+			flex-direction: row;
+		}
+
+		nav a {
+			color: #fff;
+			margin-left: 20px;
+			text-decoration: none;
+		}
+
+		nav a:hover {
+			text-decoration: underline;
+		}
+
+
+	</style>
+
+
+ <header>
+		<div class="hospital-title">Hospital</div>
+		<nav>
+			<a href="#">Calendario</a>
+			<a href="#">Crear agenda</a>
+			<a href="#">Citas programadas</a>
+		</nav>
+		<a href="#" id="logout">Salir</a>
+	</header>
+
+  </head>
+<body>
+	<h1>Datos del paciente</h1>
+	<table>
+		<tr>
+			<th>Nombre:</th>
+			<td>Nombre del paciente</td>
+		</tr>
+		<tr>
+			<th>Edad:</th>
+			<td>25 años</td>
+		</tr>
+		<tr>
+			<th>Género:</th>
+			<td>Masculino</td>
+		</tr>
+		<tr>
+			<th>Teléfono:</th>
+			<td>555-1234</td>
+		</tr>
+		<tr>
+			<th>Correo electrónico:</th>
+			<td>ejemplo@ejemplo.com</td>
+		</tr>
+		<tr>
+			<th>Fecha de última visita:</th>
+			<td>01/04/2023</td>
+		</tr>
+	</table>
+	<div id="buttons">
+		<button>Atender</button>
+		<button>Checar historial</button>
+		<button>Regresar</button>
+	</div>
+</body>
+</html>

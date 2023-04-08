@@ -17,8 +17,7 @@ export class FormularioCitaComponent {
     private fb: FormBuilder,
     ) {
     dashboardService.dashboardObservableData = {
-      tituloSeccion: 'Paciente',
-      menuActivo: 'nueva-cita',
+      menuActivo: 'nueva-cita'
     };
     this.dataDashboard$ = dashboardService.dashboardObservable;
     this.form = this.fb.group({

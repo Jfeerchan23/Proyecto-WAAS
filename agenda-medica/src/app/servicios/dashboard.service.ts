@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 export interface Dashboard {
-  tituloSeccion: string;
   menuActivo: string;
 }
 
@@ -13,8 +12,7 @@ export class DashboardService {
   constructor() {}
   private dashboardObservablePrivete: BehaviorSubject<Dashboard> =
     new BehaviorSubject<Dashboard>({
-      tituloSeccion: 'Dashboard',
-      menuActivo: 'tablero-principal',
+      menuActivo: 'tablero-principal'
     });
 
   get dashboardObservable() {

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+        background-color: #f2f2f2;
+      }
+      form {
+        float: left;
+        width: 200px;
+        padding: 20px;
+        background-color: #ffffff;
+        border: 1px solid #cccccc;
+        border-radius: 5px;
+      }
+      label {
+        display: block;
+        margin-bottom: 10px;
+        color: #333333;
+      }
+      select, input[type=text], input[type=time] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #cccccc;
+        border-radius: 3px;
+        box-sizing: border-box;
+        margin-bottom: 20px;
+      }
+      input[type=submit] {
+        background-color: #007bff;
+        color: #ffffff;
+        padding: 10px;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+      }
+      input[type=submit]:hover {
+        background-color: #0062cc;
+      }
+      input[type=reset] {
+        background-color: #6c757d;
+        color: #ffffff;
+        padding: 10px;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+        margin-left: 10px;
+      }
+      input[type=reset]:hover {
+        background-color: #5a6268;
+      }
+      header {
+			background-color: #337ab7;
+			color: #fff;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			padding: 10px;
+		}
+        nav {
+			display: flex;
+			flex-direction: row;
+		}
+
+		nav a {
+			color: #fff;
+			margin-left: 20px;
+			text-decoration: none;
+		}
+
+		nav a:hover {
+			text-decoration: underline;
+		}
+    </style>
+
+  </head>
+  <body>
+    <form>
+      <label for="dia">Día:</label>
+      <select id="dia" name="dia">
+        <option value="lunes">Lunes</option>
+        <option value="martes">Martes</option>
+        <option value="miercoles">Miércoles</option>
+        <option value="jueves">Jueves</option>
+        <option value="viernes">Viernes</option>
+        <option value="sabado">Sábado</option>
+        <option value="domingo">Domingo</option>
+      </select>
+      <label for="inicio">Hora de inicio:</label>
+      <input type="time" id="inicio" name="inicio">
+      <label for="fin">Hora de fin:</label>
+      <input type="time" id="fin" name="fin">
+      <label for="periodo">Periodo de tiempo por consulta:</label>
+      <input type="text" id="periodo" name="periodo" placeholder="Ej: 30 minutos">
+      <label for="almuerzo">Hora de almuerzo:</label>
+      <input type="time" id="almuerzo1" name="almuerzo1" placeholder="Ej: 12:00">
+      <input type="time" id="almuerzo2" name="almuerzo2" placeholder="Ej: 14:00">
+      <input type="submit" value="Guardar">
+      <input type="reset" value="Editar">
+    </form>
+    <full-calendar [options]="calendarOptions" class="rounded" class="calendario"></full-calendar>
+
+  </body>
+</html>

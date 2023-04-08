@@ -15,8 +15,7 @@ export class HistorialClinicoComponent {
     
     ) {
     dashboardService.dashboardObservableData = {
-      tituloSeccion: 'Paciente',
-      menuActivo: 'historial-clinico',
+      menuActivo: 'historial-clinico'
     };
     this.dataDashboard$ = dashboardService.dashboardObservable;
 

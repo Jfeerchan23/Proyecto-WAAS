@@ -1,3 +1,40 @@
-
+<mat-toolbar class="encabezado">
+    <div class="contenedorImg">
+      <img class="logo" src="../../../assets/img/logo.webp"/>
+    </div>
+    <div class="contenedorMenu">
+     <table>
+        <tr>
+           <td >
+              <a [ngClass]="(dataDashboard$ | async)?.menuActivo == 'buscador-general' ? 'active' : ''"
+              routerLink="/dashboard/administracion/buscador-general" >General</a>
+            
+           </td>
+           <td>
+              <a  [ngClass]="(dataDashboard$ | async)?.menuActivo == 'medico' ? 'active' : ''"
+              routerLink="/dashboard/administracion/medico" >Médico</a>
+              
+           </td>
+           <td>
+              <a  [ngClass]="(dataDashboard$ | async)?.menuActivo == 'paciente' ? 'active' : ''"
+              routerLink="/dashboard/administracion/paciente" 
+              
+              >Paciente</a>
+           </td>
+           <td>
+            <a  [ngClass]="(dataDashboard$ | async)?.menuActivo == 'recepcion' ? 'active' : ''"
+            routerLink="/dashboard/administracion/recepcion" 
+            >Recepcionista</a>
+         </td>
+        </tr>
+     </table>
+    </div>
+   <div class="contenedorLogout">
+     <a class="boton" [routerLink]="['/logout']">
+        <mat-icon class="icono">logout</mat-icon>
+      </a>
+   </div>
+    
+  </mat-toolbar>
 <router-outlet></router-outlet>
  
