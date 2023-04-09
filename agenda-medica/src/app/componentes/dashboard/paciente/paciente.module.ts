@@ -20,7 +20,8 @@ import {MatStepperModule} from '@angular/material/stepper';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { HistorialClinicoComponent } from './historial-clinico/historial-clinico.component';
 import {ScrollingModule} from '@angular/cdk/scrolling';
-
+import {MatTableModule} from '@angular/material/table';
+import {MatPaginatorModule} from '@angular/material/paginator';
 @NgModule({
   declarations: [
     AgendaPacienteComponent,
@@ -46,7 +47,10 @@ import {ScrollingModule} from '@angular/cdk/scrolling';
     MatTooltipModule,
     MatStepperModule,
     MatAutocompleteModule,
-    ScrollingModule
+    ScrollingModule,
+    MatTableModule,
+    MatPaginatorModule
+    
   ]
 })
 export class PacienteModule { }

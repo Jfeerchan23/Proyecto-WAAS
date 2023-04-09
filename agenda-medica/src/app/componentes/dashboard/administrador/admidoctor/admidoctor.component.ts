@@ -19,4 +19,5 @@ export class AdmidoctorComponent {
     this.dataDashboard$ = dashboardService.dashboardObservable;
 
   }
+  
 }
