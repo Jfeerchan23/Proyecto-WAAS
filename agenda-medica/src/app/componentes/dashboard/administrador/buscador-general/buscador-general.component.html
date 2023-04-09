@@ -52,9 +52,15 @@
          <ng-container matColumnDef="opciones">
           <th mat-header-cell *matHeaderCellDef>Opciones</th>
           <td mat-cell *matCellDef="let element" class="opciones"> 
-            <button type="button" class="btn btn-secondary ">	<mat-icon>edit</mat-icon></button>
-            <button type="button" class="btn btn-warning mx-1"><mat-icon>block</mat-icon></button>
-            <button type="button" class="btn btn-danger"><mat-icon>delete</mat-icon></button>
+            <button type="button" class="btn btn-secondary "
+            #tooltip="matTooltip"
+            matTooltip="Editar">	<mat-icon>edit</mat-icon></button>
+            <button type="button" class="btn btn-warning mx-1"
+            #tooltip="matTooltip"
+            matTooltip="Bloquear"><mat-icon>block</mat-icon></button>
+            <button type="button" class="btn btn-danger"
+            #tooltip="matTooltip"
+            matTooltip="Eliminar"><mat-icon>delete</mat-icon></button>
           </td>
         </ng-container>
         

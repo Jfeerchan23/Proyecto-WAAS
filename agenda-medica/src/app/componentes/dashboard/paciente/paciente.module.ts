@@ -22,6 +22,7 @@ import { HistorialClinicoComponent } from './historial-clinico/historial-clinico
 import {ScrollingModule} from '@angular/cdk/scrolling';
 import {MatTableModule} from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
+
 @NgModule({
   declarations: [
     AgendaPacienteComponent,

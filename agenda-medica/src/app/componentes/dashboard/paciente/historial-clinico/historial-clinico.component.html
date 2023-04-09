@@ -36,7 +36,10 @@
          <ng-container matColumnDef="opciones">
           <th mat-header-cell *matHeaderCellDef>Opciones</th>
           <td mat-cell *matCellDef="let element" class="opciones"> 
-            <button type="button" class="btn btn-danger"><mat-icon>cancel</mat-icon></button>
+            <button type="button" class="btn btn-danger"  
+            #tooltip="matTooltip"
+        matTooltip="Cancelar cita"
+            ><mat-icon>cancel</mat-icon></button>
           </td>
         </ng-container>
         
