@@ -9,6 +9,7 @@ export interface Dashboard {
   providedIn: 'root',
 })
 export class DashboardService {
+  static dashboardObservable: any;
   constructor() {}
   private dashboardObservablePrivete: BehaviorSubject<Dashboard> =
     new BehaviorSubject<Dashboard>({

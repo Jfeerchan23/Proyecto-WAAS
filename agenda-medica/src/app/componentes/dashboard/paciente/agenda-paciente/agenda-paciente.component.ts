@@ -13,15 +13,14 @@ import { Observable } from 'rxjs';
   styleUrls: ['./agenda-paciente.component.css'],
 })
 export class AgendaPacienteComponent implements OnInit{
-  public dataDashboard$!: Observable<Dashboard>;
   constructor(private dashboardService: DashboardService) {
     dashboardService.dashboardObservableData = {
       menuActivo: 'agenda',
     };
-    this.dataDashboard$ = dashboardService.dashboardObservable;
+   
   }
   ngOnInit(): void {}
-
+//Configuración del calendario
   calendarOptions: CalendarOptions = {
     plugins: [dayGridPlugin, interactionPlugin, timeGridPlugin],
     height: 500,

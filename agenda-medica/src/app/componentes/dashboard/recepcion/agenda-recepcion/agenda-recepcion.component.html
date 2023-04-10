@@ -1,4 +1,4 @@
-
+<form [formGroup]="form">
 <div class="contenedor">
     <div class="row elemento">
         <div class="form-group col-6">
@@ -8,20 +8,15 @@
             placeholder="Elige una especialidad"
             aria-label="Number"
             matInput
+            formControlName="especialidad"
             [matAutocomplete]="auto"
             class="form-control"
             required
           />
-          <mat-autocomplete #auto="matAutocomplete">
-            <mat-option>
-             hola
+          <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+            <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+              {{option}}
             </mat-option>
-            <mat-option>
-                como
-               </mat-option>
-               <mat-option>
-                estas
-               </mat-option>
           </mat-autocomplete>
         </div>
         <div class="form-group col-6">
@@ -31,26 +26,24 @@
             placeholder="Elige un médico"
             aria-label="Number"
             matInput
-            [matAutocomplete]="auto"
+            formControlName="medico"
+            [matAutocomplete]="auto2"
             class="form-control"
             required
           />
-          <mat-autocomplete #auto="matAutocomplete">
-            <mat-option>
-                hola
-               </mat-option>
-               <mat-option>
-                   como
-                  </mat-option>
-                  <mat-option>
-                   estas
-                  </mat-option>
+          <mat-autocomplete #auto2="matAutocomplete">
+            <mat-option
+              *ngFor="let option of filteredMedicos| async"
+              [value]="option"
+            >
+              {{ option }}
+            </mat-option>
           </mat-autocomplete>
         </div>
       
 </div>
 </div>
-
-<div class="contenedor">
+</form>
+<div class="contenedor" *ngIf="form.get('medico')?.value">
     <full-calendar [options]="calendarOptions" class="rounded" class="elemento"></full-calendar>
  </div>

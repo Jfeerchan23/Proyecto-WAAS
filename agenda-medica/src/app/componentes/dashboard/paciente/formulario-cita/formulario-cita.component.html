@@ -1,6 +1,7 @@
 <div class="contenedor">
   <div class="container">
-    <form class="row g-3" [formGroup]="form">
+    <!-- Formulario para la creación de una nueva cita -->
+    <form class="row g-3" [formGroup]="form" (ngSubmit)="formSubmit()">
       <div class="col-12 titulo">
         <h2>Agendar cita</h2>
       </div>
@@ -59,7 +60,7 @@
               />
             </div>
             <div class="form-group mt-3">
-              <button class="btn btn-secondary" matStepperNext>Siguiente</button>
+              <button  type="button" class="btn btn-secondary" matStepperNext>Siguiente</button>
             </div>
           </div>
         </mat-step>
@@ -78,12 +79,9 @@
                 class="form-control"
                 required
               />
-              <mat-autocomplete #auto="matAutocomplete">
-                <mat-option
-                  *ngFor="let option of filteredOptions | async"
-                  [value]="option"
-                >
-                  {{ option }}
+              <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                  {{option}}
                 </mat-option>
               </mat-autocomplete>
             </div>
@@ -95,13 +93,13 @@
                 aria-label="Number"
                 matInput
                 formControlName="medico"
-                [matAutocomplete]="auto"
+                [matAutocomplete]="auto2"
                 class="form-control"
                 required
               />
-              <mat-autocomplete #auto="matAutocomplete">
+              <mat-autocomplete #auto2="matAutocomplete">
                 <mat-option
-                  *ngFor="let option of filteredOptions | async"
+                  *ngFor="let option of filteredMedicos| async"
                   [value]="option"
                 >
                   {{ option }}
@@ -110,10 +108,10 @@
             </div>
   
             <div class="form-group mt-3">
-              <button class="btn btn-secondary" matStepperPrevious>
+              <button  type="button" class="btn btn-secondary" matStepperPrevious>
                 Anterior
               </button>
-              <button class="btn btn-secondary mx-2" matStepperNext>
+              <button type="button" class="btn btn-secondary mx-2" matStepperNext>
                 Siguiente
               </button>
             </div>
@@ -160,7 +158,7 @@
               </select>
             </div>
             <div class="form-group mt-3">
-              <button class="btn btn-secondary" matStepperPrevious>
+              <button type="button" class="btn btn-secondary" matStepperPrevious>
                 Anterior
               </button>
               <button

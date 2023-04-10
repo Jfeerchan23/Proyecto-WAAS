@@ -1,28 +1,38 @@
 import { Component } from '@angular/core';
 import { CalendarOptions } from '@fullcalendar/core';
-import { Observable } from 'rxjs';
+import { Observable, map, startWith } from 'rxjs';
 import { Dashboard, DashboardService } from 'src/app/servicios/dashboard.service';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import esLocale from '@fullcalendar/core/locales/es';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 @Component({
   selector: 'app-agenda-recepcion',
   templateUrl: './agenda-recepcion.component.html',
   styleUrls: ['./agenda-recepcion.component.css']
 })
 export class AgendaRecepcionComponent {
-  public dataDashboard$!: Observable<Dashboard> ;
+  form: FormGroup;
+    /* Valorez inicializados */
+    options: string[] = ['Cardiología', 'Ortopedia', 'Pediatría'];
+    medicos: string[] = ['José López', 'Arturo Ramirez', 'Jesús Hernández'];
+    filteredOptions!: Observable<string[]> ;
+    filteredMedicos!: Observable<string[]> ;
+  
   constructor(
     dashboardService: DashboardService,
-    
+    private fb: FormBuilder
     ) {
     dashboardService.dashboardObservableData = {
       menuActivo: 'agenda-recepcion',
     };
-    this.dataDashboard$ = dashboardService.dashboardObservable;
-
+    this.form = this.fb.group({
+      especialidad: new FormControl('', Validators.required),
+      medico: new FormControl('', Validators.required)
+    });
   }
+  //Configuración del calendario
   calendarOptions: CalendarOptions = {
     plugins: [dayGridPlugin, interactionPlugin, timeGridPlugin],
     height: 440,
@@ -46,6 +56,25 @@ export class AgendaRecepcionComponent {
       { title: 'event 4', date: '2023-04-18', color: 'yellow' },
     ],
   };
+  ngOnInit() {
+    this.filteredOptions = this._setupFilterObservable(this.form.controls['especialidad'], this.options);
+    this.filteredMedicos = this._setupFilterObservable(this.form.controls['medico'], this.medicos);
+  }
+  
+  //Métodos para el autocompletado de los campos especialidad y médicos
+  private _setupFilterObservable(control: AbstractControl, options: string[]): Observable<string[]> {
+    return control.valueChanges.pipe(
+      startWith(''),
+      map((value) => this._filter(options, value))
+    );
+  }
+  
+  private _filter(options: string[], value: string): string[] {
+    const filterValue = value.toLowerCase();
+    return options.filter((option) =>
+      option.toLowerCase().includes(filterValue)
+    );
+  }
 
   handleEventClick(eventInfo: any) {
     console.log('Evento clickeado:', eventInfo.event);
