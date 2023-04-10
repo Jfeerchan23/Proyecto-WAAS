@@ -2,96 +2,25 @@
 <html>
   <head>
     <title>Datos de la consulta</title>
-    <style>
-      body {
-        background-color: #f2f2f2;
-        font-family: Arial, sans-serif;
-      }
-
-      h1 {
-        color: #1a1a1a;
-        text-align: center;
-      }
-
-      textarea {
-        width: 100%;
-        height: 300px;
-        padding: 10px;
-        border-radius: 10px;
-        border: none;
-        box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
-        font-size: 18px;
-      }
-
-      .btn {
-        display: inline-block;
-        margin: 10px;
-        padding: 10px 20px;
-        border-radius: 5px;
-        font-size: 18px;
-        font-weight: bold;
-        text-align: center;
-        text-decoration: none;
-        color: #ffffff;
-        background-color: #4caf50;
-        box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
-        cursor: pointer;
-      }
-
-      .btn-yellow {
-        background-color: #ffcc00;
-      }
-
-      .btn-blue {
-        background-color: #2196f3;
-      }
-header {
-			background-color: #337ab7;
-			color: #fff;
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-			padding: 10px;
-		}
-        nav {
-			display: flex;
-			flex-direction: row;
-		}
-
-		nav a {
-			color: #fff;
-			margin-left: 20px;
-			text-decoration: none;
-		}
-
-		nav a:hover {
-			text-decoration: underline;
-		}
-
-
-    </style>
-
- <header>
-		<div class="hospital-title">Hospital</div>
-		<nav>
-			<a href="#">Calendario</a>
-			<a href="#">Crear agenda</a>
-			<a href="#">Citas programadas</a>
-		</nav>
-		<a href="#" id="logout">Salir</a>
-	</header>
-
-
-
+    <!-- Bootstrap 5 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css">
   </head>
   <body>
-    <h1>Datos de la consulta</h1>
-    <form action="guardar.php" method="post">
-      <textarea name="txtConsulta"></textarea>
-      <br>
-      <button type="submit" class="btn">Guardar</button>
-    </form>
-    <a href="historial.php" class="btn btn-yellow">Checar historial</a>
-    <a href="index.php" class="btn btn-blue">Regresar</a>
+    <div class="container my-5">
+      <h1>Datos de la consulta</h1>
+      <form action="guardar.php" method="post">
+        <div class="mb-3">
+          <label for="txtConsulta" class="form-label">Consulta:</label>
+          <textarea name="txtConsulta" id="txtConsulta" class="form-control" rows="10"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+      </form>
+      <div class="d-flex justify-content-end">
+        <a href="historial.php" class="btn btn-warning me-2">Checar historial</a>
+        <a href="index.php" class="btn btn-info">Regresar</a>
+      </div>
+    </div>
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>
