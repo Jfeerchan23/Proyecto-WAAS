@@ -1,9 +1,12 @@
-import {Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CalendarOptions } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import {Dashboard,DashboardService} from 'src/app/servicios/dashboard.service';
+import {
+  Dashboard,
+  DashboardService,
+} from 'src/app/servicios/dashboard.service';
 import esLocale from '@fullcalendar/core/locales/es';
 import { Observable } from 'rxjs';
 
@@ -12,15 +15,14 @@ import { Observable } from 'rxjs';
   templateUrl: './agenda-paciente.component.html',
   styleUrls: ['./agenda-paciente.component.css'],
 })
-export class AgendaPacienteComponent implements OnInit{
+export class AgendaPacienteComponent implements OnInit {
   constructor(private dashboardService: DashboardService) {
     dashboardService.dashboardObservableData = {
       menuActivo: 'agenda',
     };
-   
   }
   ngOnInit(): void {}
-//Configuración del calendario
+  //Configuración del calendario
   calendarOptions: CalendarOptions = {
     plugins: [dayGridPlugin, interactionPlugin, timeGridPlugin],
     height: 500,
@@ -37,10 +39,10 @@ export class AgendaPacienteComponent implements OnInit{
       {
         title: 'Fernando Chimal',
         start: new Date('2023-04-02T10:30:00'),
-        end: new Date('2023-04-02T12:00:00')
+        end: new Date('2023-04-02T12:00:00'),
       },
-      { title: 'event 2', date: '2023-04-10' ,   color: 'black'},
-      { title: 'event 3', date: '2023-04-15', colo:'green' },
+      { title: 'event 2', date: '2023-04-10', color: 'black' },
+      { title: 'event 3', date: '2023-04-15', colo: 'green' },
       { title: 'event 4', date: '2023-04-18', color: 'yellow' },
     ],
   };

@@ -16,7 +16,4 @@ export class RecepcionComponent {
    
     this.dataDashboard$ = dashboardService.dashboardObservable;
   }
-  ngOnInit(): void {
-    
-  }
 }

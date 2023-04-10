@@ -1,6 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Dashboard, DashboardService } from 'src/app/servicios/dashboard.service';
+import {  DashboardService } from 'src/app/servicios/dashboard.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 @Component({
@@ -9,21 +8,18 @@ import { MatTableDataSource } from '@angular/material/table';
   styleUrls: ['./historial-clinico.component.css']
 })
 export class HistorialClinicoComponent {
-
-  public dataDashboard$!: Observable<Dashboard> ;
   constructor(
     dashboardService: DashboardService,
-    
     ) {
     dashboardService.dashboardObservableData = {
       menuActivo: 'historial-clinico'
     };
-    this.dataDashboard$ = dashboardService.dashboardObservable;
-
   }
+  /* Columnas de la tabla */
   displayedColumns: string[] = ['fecha', 'hora', 'medico', 'consultorio','informacion','opciones'];
   dataSource = new MatTableDataSource<cita>(cita);
 
+ /*  Paginación de la tabla */
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   ngAfterViewInit() {
@@ -38,7 +34,7 @@ export interface cita {
   consultorio: string;
   informacion: string;
 }
-
+/* Datos de ejemplo */
 const cita: cita[] = [
   {fecha: 1, medico: 'Hydrogen', hora: 1.0079, consultorio: 'H',informacion: "ahjsk"},
   {fecha: 2, medico: 'Helium', hora: 4.0026, consultorio: 'He',informacion: "ahjsk"},

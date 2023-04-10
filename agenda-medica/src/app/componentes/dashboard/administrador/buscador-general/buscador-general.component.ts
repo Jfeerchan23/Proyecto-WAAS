@@ -1,4 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
@@ -10,20 +11,25 @@ import { Dashboard, DashboardService } from 'src/app/servicios/dashboard.service
   styleUrls: ['./buscador-general.component.css']
 })
 export class BuscadorGeneralComponent {
+  form!: FormGroup;
   public dataDashboard$!: Observable<Dashboard> ;
   constructor(
     dashboardService: DashboardService,
-    
+    private fb: FormBuilder
     ) {
     dashboardService.dashboardObservableData = {
       menuActivo: 'buscador-general'
     };
-    this.dataDashboard$ = dashboardService.dashboardObservable;
+    this.form = this.fb.group({
+      curp: new FormControl('', Validators.required),
+    });
 
   }
+  //Columnas de la tabla
   displayedColumns: string[] = ['id', 'nombre', 'curp', 'telefono','opciones'];
-  dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
+  dataSource = new MatTableDataSource<usuario>(usuario);
 
+  //Paginador
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   ngAfterViewInit() {
@@ -31,14 +37,15 @@ export class BuscadorGeneralComponent {
   }
 }
 
-export interface PeriodicElement {
+export interface usuario {
   nombre: string;
   id: number;
   curp: number;
   telefono: string;
 }
 
-const ELEMENT_DATA: PeriodicElement[] = [
+//Datos de ejemplo
+const usuario: usuario[] = [
   {id: 1, nombre: 'Hydrogen', curp: 1.0079, telefono: 'H'},
   {id: 2, nombre: 'Helium', curp: 4.0026, telefono: 'He'},
   {id: 3, nombre: 'Lithium', curp: 6.941, telefono: 'Li'},

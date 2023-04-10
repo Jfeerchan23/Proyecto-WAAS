@@ -20,13 +20,18 @@ import {
 })
 export class FormularioCitaComponent {
   form: FormGroup;
-  constructor(dashboardService: DashboardService, private fb: FormBuilder,   private _snackBar: MatSnackBar,) {
+  constructor(
+    dashboardService: DashboardService,
+    private fb: FormBuilder,
+    private _snackBar: MatSnackBar
+  ) {
     dashboardService.dashboardObservableData = {
       menuActivo: 'nueva-cita',
     };
-    
+
     this.form = this.fb.group({
       nombre: new FormControl('', Validators.required),
+      fechaNacimiento: new FormControl('', Validators.required),
       curp: new FormControl('', Validators.required),
       correo: new FormControl('', Validators.required),
       telefono: new FormControl('', Validators.required),
@@ -39,26 +44,34 @@ export class FormularioCitaComponent {
     });
   }
 
-  /* Valorez inicializados */
+  /* Valores inicializados */
   options: string[] = ['Cardiología', 'Ortopedia', 'Pediatría'];
   medicos: string[] = ['José López', 'Arturo Ramirez', 'Jesús Hernández'];
-  filteredOptions!: Observable<string[]> ;
-  filteredMedicos!: Observable<string[]> ;
-
+  filteredOptions!: Observable<string[]>;
+  filteredMedicos!: Observable<string[]>;
 
   ngOnInit() {
-    this.filteredOptions = this._setupFilterObservable(this.form.controls['especialidad'], this.options);
-    this.filteredMedicos = this._setupFilterObservable(this.form.controls['medico'], this.medicos);
+    this.filteredOptions = this._setupFilterObservable(
+      this.form.controls['especialidad'],
+      this.options
+    );
+    this.filteredMedicos = this._setupFilterObservable(
+      this.form.controls['medico'],
+      this.medicos
+    );
   }
 
   //Métodos para el autocompletado de los campos especialidad y médicos
-  private _setupFilterObservable(control: AbstractControl, options: string[]): Observable<string[]> {
+  private _setupFilterObservable(
+    control: AbstractControl,
+    options: string[]
+  ): Observable<string[]> {
     return control.valueChanges.pipe(
       startWith(''),
       map((value) => this._filter(options, value))
     );
   }
-  
+
   private _filter(options: string[], value: string): string[] {
     const filterValue = value.toLowerCase();
     return options.filter((option) =>
@@ -66,16 +79,15 @@ export class FormularioCitaComponent {
     );
   }
 
-  
-  formSubmit(){
- /*  Se deberán guardar los datos del formulario */
+  formSubmit() {
+    /*  Se deberán guardar los datos del formulario */
     console.log(this.form.value);
-   
+
     this._snackBar.open('Cita guardada', '', {
       duration: 1000,
       horizontalPosition: 'center',
       verticalPosition: 'bottom',
-    })
+    });
     this.form.reset();
   }
 }

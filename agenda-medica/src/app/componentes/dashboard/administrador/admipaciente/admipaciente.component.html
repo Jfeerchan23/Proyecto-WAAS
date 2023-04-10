@@ -1,15 +1,20 @@
 <div class="contenedor">
   <div class="container">
-    <form class="row g-3" >
+    <form class="row g-3" [formGroup]="form" (ngSubmit)="formSubmit()">
       <div class="col-12 titulo">
         <h2>Registrar Paciente</h2>
       </div>
       <div class="row">
         <div class="form-group col-12">
           <label>Nombre completo</label>
-          <input type="text" id="nombre" name="nombre" class="form-control"
-          autocomplete="off"
-          required>
+          <input
+            type="text"
+            form
+            class="form-control"
+            autocomplete="off"
+            formControlName="nombre"
+            required
+          />
         </div>
         <div class="form-group col-6">
           <label>CURP</label>
@@ -17,6 +22,7 @@
             type="text"
             class="form-control"
             autocomplete="off"
+            formControlName="curp"
             required
           />
         </div>
@@ -26,8 +32,8 @@
             type="date"
             class="form-control"
             autocomplete="off"
+            formControlName="fechaNacimiento"
             required
-            id="fecha_nacimiento" name="fecha_nacimiento" 
           />
         </div>
         <div class="form-group col-6">
@@ -35,6 +41,7 @@
           <input
             type="email"
             class="form-control"
+            formControlName="correo"
             autocomplete="off"
             required
           />
@@ -44,6 +51,7 @@
           <input
             type="tel"
             class="form-control"
+            formControlName="telefono"
             autocomplete="off"
             required
           />
@@ -53,6 +61,7 @@
           <input
             type="text"
             class="form-control"
+            formControlName="direccion"
             autocomplete="off"
             required
           />
@@ -64,7 +73,7 @@
             class="form-control"
             autocomplete="off"
             required
-            id="historia-clinica" name="historia-clinica"
+           formControlName="historiaClinica"
           />
         </div>
 
@@ -73,6 +82,7 @@
           <button
             type="submit"
             class="btn btn-primary mx-2"
+            [disabled]="form.invalid"
           >
             Guardar
           </button>

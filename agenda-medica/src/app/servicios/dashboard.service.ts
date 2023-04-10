@@ -9,6 +9,8 @@ export interface Dashboard {
   providedIn: 'root',
 })
 export class DashboardService {
+
+ /*  Servicio para el manejo de menú activo del header */
   static dashboardObservable: any;
   constructor() {}
   private dashboardObservablePrivete: BehaviorSubject<Dashboard> =

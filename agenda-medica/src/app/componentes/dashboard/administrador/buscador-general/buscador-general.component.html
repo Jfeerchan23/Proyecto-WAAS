@@ -1,23 +1,22 @@
 <div class="contenedor_padre">
   <div class="contenedor_hijo">
     <div class="formulario">
-      <form class="row g-3">
-      
+      <form class="row g-3" [formGroup]="form">
         <div class="col-4">
           <label  class="visually-hidden">Tipo de usuario</label>
           <select class="form-select" placeholder="Tipo de usuario">
-            <option selected>Seleccione el tipo de usuario</option>
-            <option value="1">Médico</option>
+            <option value="1" selected>Médico</option>
             <option value="2">Paciente</option>
             <option value="3">Recepcionista</option>
           </select>
         </div>
           <div class="col-4">
           <label  class="visually-hidden">CURP</label>
-          <input type="text" class="form-control"  placeholder="CURP">
+          <input type="text" class="form-control"  placeholder="CURP" formControlName="curp" required>
         </div>
         <div class="col-4">
-          <button type="submit" class="btn btn-primary mb-3">Buscar</button>
+          <button type="submit" class="btn btn-primary mb-3"
+          [disabled]="form.invalid">Buscar</button>
         </div>
       </form>
     </div>
@@ -60,7 +59,9 @@
             matTooltip="Bloquear"><mat-icon>block</mat-icon></button>
             <button type="button" class="btn btn-danger"
             #tooltip="matTooltip"
-            matTooltip="Eliminar"><mat-icon>delete</mat-icon></button>
+            matTooltip="Eliminar"
+            data-bs-toggle="modal" data-bs-target="#exampleModal"
+            ><mat-icon>delete</mat-icon></button>
           </td>
         </ng-container>
         
@@ -78,3 +79,23 @@
  </div>
 
 </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">¿Está seguro?</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            El usuario será eliminado.
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-danger">Eliminar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+        
