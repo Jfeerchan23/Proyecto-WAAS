@@ -24,9 +24,7 @@ import {
 export class AgendaRecepcionComponent {
   form: FormGroup;
   /* Valorez inicializados */
-  options: string[] = ['Cardiología', 'Ortopedia', 'Pediatría'];
   medicos: string[] = ['José López', 'Arturo Ramirez', 'Jesús Hernández'];
-  filteredOptions!: Observable<string[]>;
   filteredMedicos!: Observable<string[]>;
 
   constructor(dashboardService: DashboardService, private fb: FormBuilder) {
@@ -34,7 +32,6 @@ export class AgendaRecepcionComponent {
       menuActivo: 'agenda-recepcion',
     };
     this.form = this.fb.group({
-      especialidad: new FormControl('', Validators.required),
       medico: new FormControl('', Validators.required),
     });
   }
@@ -63,11 +60,8 @@ export class AgendaRecepcionComponent {
     ],
   };
   ngOnInit() {
-    //Autocompletado de los campos especialidad y médico
-    this.filteredOptions = this._setupFilterObservable(
-      this.form.controls['especialidad'],
-      this.options
-    );
+    //Autocompletado del campo médico
+
     this.filteredMedicos = this._setupFilterObservable(
       this.form.controls['medico'],
       this.medicos

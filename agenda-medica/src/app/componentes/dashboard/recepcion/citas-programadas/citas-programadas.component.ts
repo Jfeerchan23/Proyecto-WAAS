@@ -29,7 +29,7 @@ export class CitasProgramadasComponent {
   dataSource = new MatTableDataSource<cita>(cita);
 
   ngOnInit() {
-    //Autocompletado de los campos especialidad y médico
+    //Autocompletado del campo médico
     this.filteredMedicos = this._setupFilterObservable(
       this.form.controls['medico'],
       this.medicos
