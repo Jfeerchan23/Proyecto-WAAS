@@ -15,6 +15,11 @@
               routerLink="/dashboard/recepcion/nueva-cita" >Nueva cita</a>
               
            </td>
+           <td>
+            <a  [ngClass]="(dataDashboard$ | async)?.menuActivo == 'citas-programadas' ? 'activo' : ''"
+            routerLink="/dashboard/recepcion/citas-programadas">Citas programadas</a>
+            
+         </td>
         </tr>
      </table>
     </div>

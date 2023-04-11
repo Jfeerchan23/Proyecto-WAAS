@@ -1,0 +1,118 @@
+<div class="contenedor_padre">
+<!-- Formulario para buscar la citas que tiene el paciente con cierto médico -->
+<div class="contenedor_hijo">
+<form [formGroup]="form" class="formulario">
+    <div class="contenedor">
+        <div class="row elemento">
+            <div class="form-group col-4">
+                <label>CURP del paciente</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  autocomplete="off"
+                  required
+                  formControlName="curp"
+                />
+              </div>
+            <div class="form-group col-4">
+              <label>Médico</label>
+              <input
+                type="text"
+                placeholder="Elige un médico"
+                aria-label="Number"
+                matInput
+                formControlName="medico"
+                [matAutocomplete]="auto2"
+                class="form-control"
+                required
+              />
+              <mat-autocomplete #auto2="matAutocomplete">
+                <mat-option
+                  *ngFor="let option of filteredMedicos| async"
+                  [value]="option"
+                >
+                  {{ option }}
+                </mat-option>
+              </mat-autocomplete>
+            </div>
+            <div class="form-group col-4 contenedor-button">
+                <button
+                type="submit"
+                class="btn btn-primary mx-2"
+                [disabled]="form.invalid"
+              >
+                Guardar
+              </button>
+            </div>
+    </div>
+    </div>
+    </form>
+<div class="mat-elevation-z8 tabla ">
+    <!-- Tabla de citas -->
+    <table mat-table [dataSource]="dataSource" >
+
+      <ng-container matColumnDef="fecha">
+        <th mat-header-cell *matHeaderCellDef > Fecha </th>
+        <td mat-cell *matCellDef="let element"> {{element.fecha}} </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="hora">
+        <th mat-header-cell *matHeaderCellDef > Hora </th>
+        <td mat-cell *matCellDef="let element"> {{element.hora}} </td>
+      </ng-container>
+      <ng-container matColumnDef="paciente">
+        <th mat-header-cell *matHeaderCellDef>Paciente</th>
+        <td mat-cell *matCellDef="let element"> {{element.paciente}} </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="medico">
+        <th mat-header-cell *matHeaderCellDef > Médico </th>
+        <td mat-cell *matCellDef="let element"> {{element.medico}} </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="consultorio">
+        <th mat-header-cell *matHeaderCellDef>Consultorio</th>
+        <td mat-cell *matCellDef="let element"> {{element.consultorio}} </td>
+      </ng-container>
+
+
+
+       <ng-container matColumnDef="opciones">
+        <th mat-header-cell *matHeaderCellDef>Opciones</th>
+        <td mat-cell *matCellDef="let element" class="opciones"> 
+          <button type="button" class="btn btn-danger"  
+          #tooltip="matTooltip"
+      matTooltip="Cancelar cita"
+      data-bs-toggle="modal" data-bs-target="#exampleModal"
+          ><mat-icon>cancel</mat-icon></button>
+        </td>
+      </ng-container>
+      
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                   showFirstLastButtons
+                   aria-label="Select page of periodic elements">
+    </mat-paginator>
+  </div>
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">¿Está seguro?</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          La cita se cancelará permanentemente.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-danger">Cancelar cita</button>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+</div>

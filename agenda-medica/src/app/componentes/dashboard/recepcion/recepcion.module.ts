@@ -20,12 +20,16 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import {ScrollingModule} from '@angular/cdk/scrolling';
+import { CitasProgramadasComponent } from './citas-programadas/citas-programadas.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableModule } from '@angular/material/table';
 
 
 @NgModule({
   declarations: [
     RecepcionComponent,
-    AgendaRecepcionComponent
+    AgendaRecepcionComponent,
+    CitasProgramadasComponent
   ],
   imports: [
     CommonModule,
@@ -33,6 +37,23 @@ import {ScrollingModule} from '@angular/cdk/scrolling';
     MatToolbarModule,
     MatIconModule,
     FullCalendarModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatMenuModule,
+    MatSidenavModule, 
+    MatGridListModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    FormsModule, 
+    ReactiveFormsModule,
+    MatSelectModule,
+    MatCardModule,
+    MatTooltipModule,
+    MatStepperModule,
+    MatAutocompleteModule,
+    ScrollingModule,
+    MatPaginatorModule,
     MatToolbarModule,
     MatIconModule,
     MatMenuModule,
@@ -48,7 +69,9 @@ import {ScrollingModule} from '@angular/cdk/scrolling';
     MatTooltipModule,
     MatStepperModule,
     MatAutocompleteModule,
-    ScrollingModule
+    ScrollingModule,
+    MatTableModule,
+    MatPaginatorModule
   ]
 })
 export class RecepcionModule { }
