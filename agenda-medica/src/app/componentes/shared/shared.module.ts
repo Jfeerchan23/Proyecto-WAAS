@@ -18,13 +18,17 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { ScrollingModule } from '@angular/cdk/scrolling';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { BrowserModule } from '@angular/platform-browser';
 
 
 @NgModule({
   declarations: [],
+  imports:[
+    CommonModule
+  ],
   exports: [
-    CommonModule,
-    CommonModule,
     FullCalendarModule,
     MatToolbarModule,
     MatIconModule,
@@ -44,6 +48,8 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
     ScrollingModule,
     MatTableModule,
     MatPaginatorModule,
+    BrowserAnimationsModule,
+    MatSnackBarModule,
   ]
 })
 export class SharedModule { }
