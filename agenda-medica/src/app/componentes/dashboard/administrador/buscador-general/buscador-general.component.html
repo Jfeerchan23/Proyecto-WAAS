@@ -6,7 +6,7 @@
           <label  class="visually-hidden">Tipo de usuario</label>
           <select class="form-select" placeholder="Tipo de usuario" 
            formControlName="tipo"  [(ngModel)]="formUsuario.tipo"
-           (ngModelChange)="onSelectChange()">
+           (ngModelChange)="onSelectChange(formUsuario.tipo)">
             <option value="1" selected>Médico</option>
             <option value="2">Paciente</option>
             <option value="3">Recepcionista</option>

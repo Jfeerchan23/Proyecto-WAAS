@@ -21,7 +21,7 @@ import { UsuariosService } from 'src/app/servicios/usuarios/usuarios.service';
 })
 export class BuscadorGeneralComponent {
   form!: FormGroup;
-  recepcionistas: any = {};
+  medicos: any = {};
   formUsuario: any = {};
 
   public dataDashboard$!: Observable<Dashboard>;
@@ -56,25 +56,11 @@ export class BuscadorGeneralComponent {
   }
 
   inicializar() {
-    this.formUsuario.tipo=1;
+    this.formUsuario.tipo = '1';
     this.usuariosService.obtenerTodosUsuarios().subscribe(
       (response) => {
         this.recuperados = response;
-        this.recepcionistas = response.recepcionistas;
-
-        for (let i = 0; i < this.recepcionistas.length; i++) {
-          console.log(this.recepcionistas[i]);
-          const objecto = {
-            id: this.recepcionistas[i].idRecepcionista,
-            nombre: this.recepcionistas[i].nombreRecepcionista,
-            curp: this.recepcionistas[i].CURPRecepcionista,
-            telefono: this.recepcionistas[i].telefonoRecepcionista,
-          };
-          this.usuarios.push(objecto);
-        }
-        this.dataSource = new MatTableDataSource(this.usuarios);
-        this.dataSource.paginator = this.paginator;
-        this.paginator.firstPage();
+       this.onSelectChange(this.formUsuario.tipo);
       },
 
       (error) => {
@@ -83,8 +69,52 @@ export class BuscadorGeneralComponent {
     );
   }
 
-  onSelectChange() {
-    console.log('El valor seleccionado ha cambiado a: ' + this.formUsuario.tipo);
-    // hacer algo más aquí
+  onSelectChange(tipo: string) {
+    this.usuarios = [];
+    switch (tipo) {
+      case '1':
+        let medico = this.recuperados.medicos;
+
+        for (let i = 0; i < medico.length; i++) {
+          const objecto = {
+            id: medico[i].idMedico,
+            nombre: medico[i].nombreMedico,
+            curp: medico[i].CURPMedico,
+            telefono: medico[i].telefonoMedico,
+          };
+          this.usuarios.push(objecto);
+        }
+        break;
+      case '2':
+        let paciente = this.recuperados.pacientes;
+
+        for (let i = 0; i < paciente.length; i++) {
+          const objecto = {
+            id: paciente[i].idPaciente,
+            nombre: paciente[i].nombrePaciente,
+            curp: paciente[i].CURPPaciente,
+            telefono: paciente[i].telefonoPaciente,
+          };
+          this.usuarios.push(objecto);
+        }
+        break;
+      case '3':
+        let recepcionistas = this.recuperados.recepcionistas;
+
+        for (let i = 0; i < recepcionistas.length; i++) {
+          const objecto = {
+            id: recepcionistas[i].idRecepcionista,
+            nombre: recepcionistas[i].nombreRecepcionista,
+            curp: recepcionistas[i].CURPRecepcionista,
+            telefono: recepcionistas[i].telefonoRecepcionista,
+          };
+          this.usuarios.push(objecto);
+        }
+       ;
+        break;
+    }
+    this.dataSource = new MatTableDataSource(this.usuarios);
+    this.dataSource.paginator = this.paginator;
+    this.paginator.firstPage()
   }
 }
