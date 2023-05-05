@@ -15,6 +15,21 @@ routes.get('/recepcionistas', (req, res) =>{
     })
 })
 
+/* Insertar un recepcionista */
+routes.post('/recepcionistas', (req, res) =>{
+  req.getConnection((err, conn) =>{
+      if(err) return res.send(err)
+
+      console.log(req.body)
+      conn.query('INSERT INTO recepcionistas set ?', [req.body], (err, rows) =>{
+          if(err) return res.send(err)
+
+          res.send('recepcionista agregado!')
+      })
+  })
+})
+
+
 /* Obtener un recepcionista */
 routes.get('/recepcionistas/:id', (req, res) => {
   const id = req.params.id;
@@ -34,21 +49,41 @@ routes.get('/recepcionistas/:id', (req, res) => {
   });
 });
 
+/* Actualizar un recepcionista */
+
+routes.put('/recepcionistas/:id', (req, res) => {
+  const id = req.params.id;
+  const updatedRecepcionista = req.body;
+
+  req.getConnection((err, conn) => {
+    if (err) return res.send(err);
+
+    conn.query('UPDATE recepcionistas SET ? WHERE idRecepcionista = ?', [updatedRecepcionista, id], (err, result) => {
+      if (err) return res.send(err);
+
+      res.send(`Recepcionista con id ${id} actualizado.`);
+    });
+  });
+});
+
+/* Eliminar un recepcionista */
+routes.delete('/recepcionistas/:id', (req, res) => {
+  const id = req.params.id;
+
+  req.getConnection((err, conn) => {
+    if (err) return res.send(err);
+
+    conn.query('DELETE * FROM recepcionistas WHERE idRecepcionista = ?', [id], (err, rows) => {
+      if (err) return res.send(err);
+      res.send('recepcionista eliminado!')
+    });
+  });
+});
 
 
-/* Insertar un recepcionista */
-routes.post('/recepcionistas', (req, res) =>{
-    req.getConnection((err, conn) =>{
-        if(err) return res.send(err)
 
-        console.log(req.body)
-        conn.query('INSERT INTO recepcionistas set ?', [req.body], (err, rows) =>{
-            if(err) return res.send(err)
 
-            res.send('recepcionista agregado!')
-        })
-    })
-})
+
 
 
 /* Obtener todos los usuarios */

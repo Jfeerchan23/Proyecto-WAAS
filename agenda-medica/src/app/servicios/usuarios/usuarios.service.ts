@@ -23,6 +23,7 @@ export class UsuariosService {
 
 	guardarRecepcionista($recepcionista: any): Observable<any> {
 		let data = Object.assign({}, $recepcionista);
+		console.log(data);
 		return this.http.post(`${this.URL}/api/recepcionistas`, data);
 	}
 
