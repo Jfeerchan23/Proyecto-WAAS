@@ -35,7 +35,7 @@ export class AdmipacienteComponent {
       correo: new FormControl('', Validators.required),
       telefono: new FormControl('', Validators.required),
       direccion: new FormControl('', Validators.required),
-      historiaClinica: new FormControl('', Validators.required),
+      historiaClinica: new FormControl('', ),
     });
   }
   formSubmit() {

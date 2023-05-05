@@ -38,7 +38,7 @@ export class AdmidoctorComponent {
       direccion: new FormControl('', Validators.required),
       especialidad: new FormControl('', Validators.required),
       consultorio: new FormControl('', Validators.required),
-      certificado: new FormControl('', Validators.required),
+      cedula: new FormControl('', Validators.required),
     });
   }
   formSubmit() {

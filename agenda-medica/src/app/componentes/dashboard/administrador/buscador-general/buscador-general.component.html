@@ -4,7 +4,9 @@
       <form class="row g-3" [formGroup]="form">
         <div class="col-4">
           <label  class="visually-hidden">Tipo de usuario</label>
-          <select class="form-select" placeholder="Tipo de usuario">
+          <select class="form-select" placeholder="Tipo de usuario" 
+           formControlName="tipo"  [(ngModel)]="formUsuario.tipo"
+           (ngModelChange)="onSelectChange()">
             <option value="1" selected>Médico</option>
             <option value="2">Paciente</option>
             <option value="3">Recepcionista</option>
@@ -12,7 +14,8 @@
         </div>
           <div class="col-4">
           <label  class="visually-hidden">CURP</label>
-          <input type="text" class="form-control"  placeholder="CURP" formControlName="curp" required>
+          <input type="text" class="form-control"  placeholder="CURP" formControlName="curp" required
+          [(ngModel)]="formUsuario.curp">
         </div>
         <div class="col-4">
           <button type="submit" class="btn btn-primary mb-3"

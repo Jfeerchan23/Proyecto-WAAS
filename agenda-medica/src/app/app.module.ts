@@ -13,6 +13,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { DashboardModule } from './componentes/dashboard/dashboard.module';
 import { FullCalendarModule } from '@fullcalendar/angular'
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [AppComponent, LoginComponent],
@@ -29,7 +30,8 @@ import { FullCalendarModule } from '@fullcalendar/angular'
     ReactiveFormsModule,
     MatSnackBarModule,
     DashboardModule,
-    FullCalendarModule
+    FullCalendarModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent],

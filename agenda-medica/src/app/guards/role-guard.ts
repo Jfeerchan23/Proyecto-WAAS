@@ -3,11 +3,12 @@ import { Observable } from "rxjs";
 
 export class RoleGuard implements CanActivate {
     canActivate(): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
-        if(this.hasUser()){
+      /*   if(this.hasUser()){
             return true;
         }
         alert('No tienes permisos')
-        return false;
+        return false; */
+        return true;
     }
     
 

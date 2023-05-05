@@ -9,6 +9,7 @@ import {
 } from 'src/app/servicios/dashboard.service';
 import esLocale from '@fullcalendar/core/locales/es';
 import { Observable } from 'rxjs';
+import { UsuariosService } from 'src/app/servicios/usuarios/usuarios.service';
 
 @Component({
   selector: 'app-agenda-paciente',
@@ -16,12 +17,24 @@ import { Observable } from 'rxjs';
   styleUrls: ['./agenda-paciente.component.css'],
 })
 export class AgendaPacienteComponent implements OnInit {
-  constructor(private dashboardService: DashboardService) {
+  constructor(
+    private dashboardService: DashboardService,
+    private usuariosService: UsuariosService
+  ) {
     dashboardService.dashboardObservableData = {
       menuActivo: 'agenda',
     };
   }
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.usuariosService.obtenerRecepcionistas().subscribe(
+      (response) => {
+        console.log(response);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
   //Configuración del calendario
   calendarOptions: CalendarOptions = {
     plugins: [dayGridPlugin, interactionPlugin, timeGridPlugin],

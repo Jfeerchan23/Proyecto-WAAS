@@ -11,6 +11,7 @@ import {
   Dashboard,
   DashboardService,
 } from 'src/app/servicios/dashboard.service';
+import { UsuariosService } from 'src/app/servicios/usuarios/usuarios.service';
 
 @Component({
   selector: 'app-adminsecretaria',
@@ -18,10 +19,13 @@ import {
   styleUrls: ['./adminsecretaria.component.css'],
 })
 export class AdminsecretariaComponent {
-  form: FormGroup;
+  
+  recepcionista: any = {};
+  form!: FormGroup;
   public dataDashboard$!: Observable<Dashboard>;
   constructor(
     dashboardService: DashboardService,
+    private usuariosService: UsuariosService,
     private fb: FormBuilder,
     private _snackBar: MatSnackBar
   ) {
@@ -29,24 +33,36 @@ export class AdminsecretariaComponent {
       menuActivo: 'recepcion',
     };
 
-    this.form = this.fb.group({
-      nombre: new FormControl('', Validators.required),
-      curp: new FormControl('', Validators.required),
-      fechaNacimiento: new FormControl('', Validators.required),
-      correo: new FormControl('', Validators.required),
-      telefono: new FormControl('', Validators.required),
-      direccion: new FormControl('', Validators.required),
+  }
+
+  ngOnInit(): void{
+    this.form = new FormGroup({
+      nombreRecepcionista: new FormControl(this.recepcionista.nombreRecepcionista, Validators.required),
+      CURPRecepcionista: new FormControl(this.recepcionista.CURPRecepcionista, Validators.required),
+      fechaNacimientoRecepcionista: new FormControl(this.recepcionista.fechaNacimientoRecepcionista, Validators.required),
+      correoRecepcionista: new FormControl(this.recepcionista.correoRecepcionista, Validators.required),
+      telefonoRecepcionista: new FormControl(this.recepcionista.telefonoRecepcionista, Validators.required),
+      direccionRecepcionista: new FormControl(this.recepcionista.direccionRecepcionista, Validators.required),
     });
+
+
+
   }
   formSubmit() {
     /*  Se deberán guardar los datos del formulario */
-    console.log(this.form.value);
+    
+this.usuariosService.guardarRecepcionista(this.recepcionista).subscribe(
 
-    this._snackBar.open('Usuario creado', '', {
+)
+    
+
+    this._snackBar.open('Recepcionista creado', '', {
       duration: 1000,
       horizontalPosition: 'center',
       verticalPosition: 'bottom',
     });
+    
     this.form.reset();
   }
+  
 }

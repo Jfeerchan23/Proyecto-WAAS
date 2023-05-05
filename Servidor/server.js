@@ -18,6 +18,11 @@ const dbConfig = {
 app.use(myconn(mysql, dbConfig, 'single'))
 app.use(express.json())
 
+/* Habilitacion de CORS */
+const cors = require('cors');
+app.use(cors());
+
+
 // Rutas
 app.get('/', (req, res)=>{
     res.send('Welcome')
