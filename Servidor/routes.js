@@ -15,6 +15,25 @@ routes.get('/recepcionistas', (req, res) =>{
     })
 })
 
+/* Obtener un recepcionista */
+routes.get('/recepcionistas/:id', (req, res) => {
+  const id = req.params.id;
+
+  req.getConnection((err, conn) => {
+    if (err) return res.send(err);
+
+    conn.query('SELECT * FROM recepcionistas WHERE idRecepcionista = ?', [id], (err, rows) => {
+      if (err) return res.send(err);
+
+      const recepcionista = rows[0];
+      const fecha = new Date(recepcionista.fechaNacimientoRecepcionista);
+      recepcionista.fechaNacimientoRecepcionista = fecha.toISOString().slice(0,10);
+
+      res.json(recepcionista);
+    });
+  });
+});
+
 
 
 /* Insertar un recepcionista */

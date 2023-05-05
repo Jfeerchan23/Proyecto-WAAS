@@ -18,7 +18,7 @@ export class UsuariosService {
 	}
 
 	obtenerRecepcionista($id: any): Observable<any> {
-		return this.http.get(`${this.URL}/api/recepcionistas${$id}`);
+		return this.http.get(`${this.URL}/api/recepcionistas/${$id}`);
 	}
 
 	guardarRecepcionista($recepcionista: any): Observable<any> {

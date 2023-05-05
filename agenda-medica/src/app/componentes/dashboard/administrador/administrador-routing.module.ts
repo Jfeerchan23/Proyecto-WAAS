@@ -13,6 +13,9 @@ const routes: Routes = [
       { path: 'medico', component: AdmidoctorComponent },
       { path: 'recepcion', component: AdminsecretariaComponent },
       { path: 'paciente', component: AdmipacienteComponent },
+      { path: 'editar-medico/:idMedico', component: AdmidoctorComponent },
+      { path: 'editar-recepcionista/:idRecepcionista', component: AdminsecretariaComponent },
+      { path: 'editar-paciente/:idPaciente', component: AdmipacienteComponent },
     ],
   },
 ];

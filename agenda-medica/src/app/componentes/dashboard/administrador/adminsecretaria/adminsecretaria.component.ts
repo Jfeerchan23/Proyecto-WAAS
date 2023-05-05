@@ -6,6 +6,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import {
   Dashboard,
@@ -21,13 +22,17 @@ import { UsuariosService } from 'src/app/servicios/usuarios/usuarios.service';
 export class AdminsecretariaComponent {
   
   recepcionista: any = {};
+  idRecepcionista:any;
   form!: FormGroup;
+
   public dataDashboard$!: Observable<Dashboard>;
   constructor(
     dashboardService: DashboardService,
     private usuariosService: UsuariosService,
-    private fb: FormBuilder,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private route: ActivatedRoute,
+		private router: Router
+
   ) {
     dashboardService.dashboardObservableData = {
       menuActivo: 'recepcion',
@@ -36,14 +41,27 @@ export class AdminsecretariaComponent {
   }
 
   ngOnInit(): void{
-    this.form = new FormGroup({
-      nombreRecepcionista: new FormControl(this.recepcionista.nombreRecepcionista, Validators.required),
-      CURPRecepcionista: new FormControl(this.recepcionista.CURPRecepcionista, Validators.required),
-      fechaNacimientoRecepcionista: new FormControl(this.recepcionista.fechaNacimientoRecepcionista, Validators.required),
-      correoRecepcionista: new FormControl(this.recepcionista.correoRecepcionista, Validators.required),
-      telefonoRecepcionista: new FormControl(this.recepcionista.telefonoRecepcionista, Validators.required),
-      direccionRecepcionista: new FormControl(this.recepcionista.direccionRecepcionista, Validators.required),
-    });
+    this.route.params.subscribe(
+      params => {
+
+        if (params['idRecepcionista']) {
+          this.idRecepcionista=params['idRecepcionista'];
+         this.obtenerRecepcionista(this.idRecepcionista);
+				}
+        this.form = new FormGroup({
+          nombreRecepcionista: new FormControl(this.recepcionista.nombreRecepcionista, Validators.required),
+          CURPRecepcionista: new FormControl(this.recepcionista.CURPRecepcionista, Validators.required),
+          fechaNacimientoRecepcionista: new FormControl(this.recepcionista.fechaNacimientoRecepcionista, Validators.required),
+          correoRecepcionista: new FormControl(this.recepcionista.correoRecepcionista, Validators.required),
+          telefonoRecepcionista: new FormControl(this.recepcionista.telefonoRecepcionista, Validators.required),
+          direccionRecepcionista: new FormControl(this.recepcionista.direccionRecepcionista, Validators.required),
+        });
+      }
+
+
+
+    );
+    
 
 
 
@@ -52,10 +70,7 @@ export class AdminsecretariaComponent {
     /*  Se deberán guardar los datos del formulario */
     
 this.usuariosService.guardarRecepcionista(this.recepcionista).subscribe(
-
 )
-    
-
     this._snackBar.open('Recepcionista creado', '', {
       duration: 1000,
       horizontalPosition: 'center',
@@ -63,6 +78,22 @@ this.usuariosService.guardarRecepcionista(this.recepcionista).subscribe(
     });
     
     this.form.reset();
+  }
+
+  obtenerRecepcionista(id:any){
+    this.usuariosService.obtenerRecepcionista(id).subscribe(
+      response => {
+        this.recepcionista = response;
+        console.log(this.recepcionista);
+      },
+      error => {
+        console.log(error);
+      }
+
+
+
+
+    )
   }
   
 }
