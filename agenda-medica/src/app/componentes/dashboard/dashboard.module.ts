@@ -10,6 +10,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatGridListModule} from '@angular/material/grid-list';
+import { RoleGuard } from 'src/app/guards/role-guard';
 
 
 @NgModule({
@@ -26,6 +27,7 @@ import {MatGridListModule} from '@angular/material/grid-list';
     MatMenuModule,
     MatSidenavModule,
     MatGridListModule
-  ]
+  ],
+  providers: [RoleGuard] // Agrega RoleGuard como proveedor
 })
 export class DashboardModule { }

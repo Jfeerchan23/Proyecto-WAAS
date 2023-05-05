@@ -22,6 +22,7 @@ import { HistorialClinicoComponent } from './historial-clinico/historial-clinico
 import {ScrollingModule} from '@angular/cdk/scrolling';
 import {MatTableModule} from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import { RoleGuard } from 'src/app/guards/role-guard';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,7 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     ScrollingModule,
     MatTableModule,
     MatPaginatorModule
-    
-  ]
+  ],
+  providers: [RoleGuard] // Agrega RoleGuard como proveedor
 })
 export class PacienteModule { }

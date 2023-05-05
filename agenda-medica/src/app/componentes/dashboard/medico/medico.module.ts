@@ -25,6 +25,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import {ScrollingModule} from '@angular/cdk/scrolling';
+import { RoleGuard } from 'src/app/guards/role-guard';
 
 
 @NgModule({
@@ -57,6 +58,7 @@ import {ScrollingModule} from '@angular/cdk/scrolling';
     MatStepperModule,
     MatAutocompleteModule,
     ScrollingModule
-  ]
+  ],
+  providers: [RoleGuard] // Agrega RoleGuard como proveedor
 })
 export class MedicoModule { }

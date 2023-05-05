@@ -23,6 +23,7 @@ import {ScrollingModule} from '@angular/cdk/scrolling';
 import { CitasProgramadasComponent } from './citas-programadas/citas-programadas.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
+import { RoleGuard } from 'src/app/guards/role-guard';
 
 
 @NgModule({
@@ -72,6 +73,7 @@ import { MatTableModule } from '@angular/material/table';
     ScrollingModule,
     MatTableModule,
     MatPaginatorModule
-  ]
+  ],
+  providers: [RoleGuard] // Agrega RoleGuard como proveedor
 })
 export class RecepcionModule { }
