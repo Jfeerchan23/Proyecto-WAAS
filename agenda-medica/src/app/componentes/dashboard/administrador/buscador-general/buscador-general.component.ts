@@ -7,6 +7,7 @@ import {
 } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import {
   Dashboard,
@@ -23,6 +24,8 @@ export class BuscadorGeneralComponent {
   form!: FormGroup;
   medicos: any = {};
   formUsuario: any = {};
+  usuarioPorEliminar: any;
+  indice: any;
 
   public dataDashboard$!: Observable<Dashboard>;
 
@@ -40,7 +43,7 @@ export class BuscadorGeneralComponent {
   constructor(
     dashboardService: DashboardService,
     private usuariosService: UsuariosService,
-    private fb: FormBuilder
+    private router: Router
   ) {
     dashboardService.dashboardObservableData = {
       menuActivo: 'buscador-general',
@@ -60,7 +63,7 @@ export class BuscadorGeneralComponent {
     this.usuariosService.obtenerTodosUsuarios().subscribe(
       (response) => {
         this.recuperados = response;
-       this.onSelectChange(this.formUsuario.tipo);
+        this.onSelectChange(this.formUsuario.tipo);
       },
 
       (error) => {
@@ -110,11 +113,102 @@ export class BuscadorGeneralComponent {
           };
           this.usuarios.push(objecto);
         }
-       ;
         break;
     }
     this.dataSource = new MatTableDataSource(this.usuarios);
     this.dataSource.paginator = this.paginator;
-    this.paginator.firstPage()
+    this.paginator.firstPage();
+  }
+
+  seleccionarUsuario(idUsuario: any) {
+    this.usuarioPorEliminar = idUsuario;
+  }
+
+  eliminarUsuario() {
+    switch (this.formUsuario.tipo) {
+      case '1':
+        console.log(this.recuperados['medicos']);
+        this.indice = this.recuperados['medicos'].findIndex(
+          (persona: any) => persona.idMedico === this.usuarioPorEliminar
+        );
+
+        if (this.indice !== -1) {
+          this.recuperados['medicos'].splice(this.indice, 1);
+        }
+        this.onSelectChange('1');
+        this.usuariosService.eliminarMedico(this.usuarioPorEliminar).subscribe(
+          (response) => {
+            console.log(response);
+          },
+
+          (error) => {
+            console.log(error);
+          }
+        );
+        break;
+
+      case '2':
+        console.log(this.recuperados['pacientes']);
+        this.indice = this.recuperados['pacientes'].findIndex(
+          (persona: any) => persona.idPaciente === this.usuarioPorEliminar
+        );
+
+        if (this.indice !== -1) {
+          this.recuperados['pacientes'].splice(this.indice, 1);
+        }
+        this.onSelectChange('2');
+        this.usuariosService
+          .eliminarPaciente(this.usuarioPorEliminar)
+          .subscribe(
+            (response) => {
+              console.log(response);
+            },
+
+            (error) => {
+              console.log(error);
+            }
+          );
+        break;
+
+      case '3':
+        console.log(this.recuperados['recepcionistas']);
+        this.indice = this.recuperados['recepcionistas'].findIndex(
+          (persona: any) => persona.idRecepcionista === this.usuarioPorEliminar
+        );
+
+        if (this.indice !== -1) {
+          this.recuperados['recepcionistas'].splice(this.indice, 1);
+        }
+        this.onSelectChange('3');
+        this.usuariosService
+          .eliminarRecepcionista(this.usuarioPorEliminar)
+          .subscribe(
+            (response) => {
+              console.log(response);
+            },
+
+            (error) => {
+              console.log(error);
+            }
+          );
+        break;
+    }
+  }
+
+  editarUsuario(id: any) {
+    switch (this.formUsuario.tipo) {
+      case '1':
+        this.router.navigate(['/dashboard/administracion/editar-medico', id]);
+        break;
+      case '2':
+        this.router.navigate(['/dashboard/administracion/editar-paciente', id]);
+        break;
+      case '3':
+        this.router.navigate([
+          '/dashboard/administracion/editar-recepcionista',
+          id,
+        ]);
+        break;
+    }
   }
 }

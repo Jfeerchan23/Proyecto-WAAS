@@ -3,6 +3,9 @@ const mysql = require('mysql')
 const myconn = require('express-myconnection')
 
 const routes = require('./routes')
+const recepcionistaRoutes = require('./src/routes/recepcionistaRoutes')
+const medicoRoutes = require('./src/routes/medicoRoutes')
+const pacienteRoutes = require('./src/routes/pacienteRoutes')
 
 const app = express()
 app.set('port', process.env.PORT|| 8080)
@@ -29,6 +32,9 @@ app.get('/', (req, res)=>{
 })
 
 app.use('/api', routes)
+app.use('/api', recepcionistaRoutes)
+app.use('/api', medicoRoutes)
+app.use('/api', pacienteRoutes)
 
 
 //Ejecucion de servidor

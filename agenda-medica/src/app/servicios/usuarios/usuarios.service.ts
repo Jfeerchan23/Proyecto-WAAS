@@ -12,8 +12,8 @@ export class UsuariosService {
     private http: HttpClient,
   ) { }
 
-  //Recepcionistas
-  obtenerRecepcionistas(): Observable<any> {
+	//Recepcionistas
+	obtenerRecepcionistas(): Observable<any> {
 		return this.http.get(`${this.URL}/api/recepcionistas`);
 	}
 
@@ -29,7 +29,7 @@ export class UsuariosService {
 
 	editarRecepcionista($recepcionista: any, $id: any): Observable<any> {
 		let data = Object.assign({}, $recepcionista);
-		return this.http.post(`${this.URL}/api/recepcionistas/${$id}`, data);
+		return this.http.put(`${this.URL}/api/recepcionistas/${$id}`, data);
 	}
 
 	eliminarRecepcionista($id: any): Observable<any> {
@@ -40,5 +40,55 @@ export class UsuariosService {
 	}
 
 
+	/* Medicos */
+
+	obtenerMedicos(): Observable<any> {
+		return this.http.get(`${this.URL}/api/medicos`);
+	}
+
+	obtenerMedico($id: any): Observable<any> {
+		return this.http.get(`${this.URL}/api/medicos/${$id}`);
+	}
+
+	guardarMedico($medico: any): Observable<any> {
+		let data = Object.assign({}, $medico);
+		console.log(data);
+		return this.http.post(`${this.URL}/api/medicos`, data);
+	}
+
+	editarMedico($medico: any, $id: any): Observable<any> {
+		let data = Object.assign({}, $medico);
+		return this.http.put(`${this.URL}/api/medicos/${$id}`, data);
+	}
+
+	eliminarMedico($id: any): Observable<any> {
+		return this.http.delete(`${this.URL}/api/medicos/${$id}`);
+	}
+	
+
+	/* Pacientes */
+
+	obtenerPacientes(): Observable<any> {
+		return this.http.get(`${this.URL}/api/pacientes`);
+	}
+
+	obtenerPaciente($id: any): Observable<any> {
+		return this.http.get(`${this.URL}/api/pacientes/${$id}`);
+	}
+
+	guardarPaciente($paciente: any): Observable<any> {
+		let data = Object.assign({}, $paciente);
+		console.log(data);
+		return this.http.post(`${this.URL}/api/pacientes`, data);
+	}
+
+	editarPaciente($paciente: any, $id: any): Observable<any> {
+		let data = Object.assign({}, $paciente);
+		return this.http.put(`${this.URL}/api/pacientes/${$id}`, data);
+	}
+
+	eliminarPaciente($id: any): Observable<any> {
+		return this.http.delete(`${this.URL}/api/pacientes/${$id}`);
+	}
 
 }

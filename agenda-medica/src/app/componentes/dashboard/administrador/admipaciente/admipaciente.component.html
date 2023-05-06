@@ -2,7 +2,7 @@
   <div class="container">
     <form class="row g-3" [formGroup]="form" (ngSubmit)="formSubmit()">
       <div class="col-12 titulo">
-        <h2>Registrar Paciente</h2>
+        <h2>{{titulo}}</h2>
       </div>
       <div class="row">
         <div class="form-group col-12">
@@ -12,7 +12,8 @@
             form
             class="form-control"
             autocomplete="off"
-            formControlName="nombre"
+            formControlName="nombrePaciente"
+            [(ngModel)]="paciente.nombrePaciente"
             required
           />
         </div>
@@ -22,7 +23,8 @@
             type="text"
             class="form-control"
             autocomplete="off"
-            formControlName="curp"
+            formControlName="CURPPaciente"
+            [(ngModel)]="paciente.CURPPaciente"
             required
           />
         </div>
@@ -32,7 +34,8 @@
             type="date"
             class="form-control"
             autocomplete="off"
-            formControlName="fechaNacimiento"
+            formControlName="fechaNacimientoPaciente"
+            [(ngModel)]="paciente.fechaNacimientoPaciente"
             required
           />
         </div>
@@ -41,7 +44,8 @@
           <input
             type="email"
             class="form-control"
-            formControlName="correo"
+            formControlName="correoPaciente"
+            [(ngModel)]="paciente.correoPaciente"
             autocomplete="off"
             required
           />
@@ -51,7 +55,8 @@
           <input
             type="tel"
             class="form-control"
-            formControlName="telefono"
+            formControlName="telefonoPaciente"
+            [(ngModel)]="paciente.telefonoPaciente"
             autocomplete="off"
             required
           />
@@ -61,12 +66,13 @@
           <input
             type="text"
             class="form-control"
-            formControlName="direccion"
+            formControlName="direccionPaciente"
+            [(ngModel)]="paciente.direccionPaciente"
             autocomplete="off"
             required
           />
         </div>
-        <div class="form-group col-6">
+      <!--   <div class="form-group col-6">
           <label>Historia clínica:</label>
           <input
             type="file"
@@ -75,7 +81,7 @@
             required
            formControlName="historiaClinica"
           />
-        </div>
+        </div> -->
 
         <div class="form-group col-12 mt-3">
           <button type="button" class="btn btn-secondary">Regresar</button>

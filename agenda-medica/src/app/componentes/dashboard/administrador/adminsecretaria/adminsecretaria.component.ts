@@ -20,10 +20,11 @@ import { UsuariosService } from 'src/app/servicios/usuarios/usuarios.service';
   styleUrls: ['./adminsecretaria.component.css'],
 })
 export class AdminsecretariaComponent {
-  
   recepcionista: any = {};
-  idRecepcionista:any;
+  idRecepcionista: any;
   form!: FormGroup;
+
+  titulo: any = 'Agregar Recepcionista';
 
   public dataDashboard$!: Observable<Dashboard>;
   constructor(
@@ -31,69 +32,81 @@ export class AdminsecretariaComponent {
     private usuariosService: UsuariosService,
     private _snackBar: MatSnackBar,
     private route: ActivatedRoute,
-		private router: Router
-
+    private router: Router
   ) {
     dashboardService.dashboardObservableData = {
       menuActivo: 'recepcion',
     };
-
   }
 
-  ngOnInit(): void{
-    this.route.params.subscribe(
-      params => {
-
-        if (params['idRecepcionista']) {
-          this.idRecepcionista=params['idRecepcionista'];
-         this.obtenerRecepcionista(this.idRecepcionista);
-				}
-        this.form = new FormGroup({
-          nombreRecepcionista: new FormControl(this.recepcionista.nombreRecepcionista, Validators.required),
-          CURPRecepcionista: new FormControl(this.recepcionista.CURPRecepcionista, Validators.required),
-          fechaNacimientoRecepcionista: new FormControl(this.recepcionista.fechaNacimientoRecepcionista, Validators.required),
-          correoRecepcionista: new FormControl(this.recepcionista.correoRecepcionista, Validators.required),
-          telefonoRecepcionista: new FormControl(this.recepcionista.telefonoRecepcionista, Validators.required),
-          direccionRecepcionista: new FormControl(this.recepcionista.direccionRecepcionista, Validators.required),
-        });
+  ngOnInit(): void {
+    this.route.params.subscribe((params) => {
+      if (params['idRecepcionista']) {
+        this.idRecepcionista = params['idRecepcionista'];
+        this.obtenerRecepcionista(this.idRecepcionista);
+        this.titulo = 'Editar Recepcionista';
       }
-
-
-
-    );
-    
-
-
-
+      this.form = new FormGroup({
+        nombreRecepcionista: new FormControl(
+          this.recepcionista.nombreRecepcionista,
+          Validators.required
+        ),
+        CURPRecepcionista: new FormControl(
+          this.recepcionista.CURPRecepcionista,
+          Validators.required
+        ),
+        fechaNacimientoRecepcionista: new FormControl(
+          this.recepcionista.fechaNacimientoRecepcionista,
+          Validators.required
+        ),
+        correoRecepcionista: new FormControl(
+          this.recepcionista.correoRecepcionista,
+          Validators.required
+        ),
+        telefonoRecepcionista: new FormControl(
+          this.recepcionista.telefonoRecepcionista,
+          Validators.required
+        ),
+        direccionRecepcionista: new FormControl(
+          this.recepcionista.direccionRecepcionista,
+          Validators.required
+        ),
+      });
+    });
   }
   formSubmit() {
-    /*  Se deberán guardar los datos del formulario */
-    
-this.usuariosService.guardarRecepcionista(this.recepcionista).subscribe(
-)
-    this._snackBar.open('Recepcionista creado', '', {
-      duration: 1000,
-      horizontalPosition: 'center',
-      verticalPosition: 'bottom',
-    });
-    
+    console.log(this.idRecepcionista);
+    if (this.idRecepcionista) {
+      this.usuariosService
+        .editarRecepcionista(this.recepcionista, this.idRecepcionista)
+        .subscribe();
+      this._snackBar.open('Recepcionista actualizado', '', {
+        duration: 1000,
+        horizontalPosition: 'center',
+        verticalPosition: 'bottom',
+      });
+      this.router.navigate(['/dashboard/administracion']);
+    } else {
+      this.usuariosService.guardarRecepcionista(this.recepcionista).subscribe();
+      this._snackBar.open('Recepcionista creado', '', {
+        duration: 1000,
+        horizontalPosition: 'center',
+        verticalPosition: 'bottom',
+      });
+    }
+
     this.form.reset();
   }
 
-  obtenerRecepcionista(id:any){
+  obtenerRecepcionista(id: any) {
     this.usuariosService.obtenerRecepcionista(id).subscribe(
-      response => {
+      (response) => {
         this.recepcionista = response;
         console.log(this.recepcionista);
       },
-      error => {
+      (error) => {
         console.log(error);
       }
-
-
-
-
-    )
+    );
   }
-  
 }

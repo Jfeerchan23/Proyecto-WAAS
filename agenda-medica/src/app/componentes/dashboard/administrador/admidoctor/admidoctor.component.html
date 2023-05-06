@@ -2,14 +2,15 @@
   <div class="container">
     <form class="row g-3" [formGroup]="form" (ngSubmit)="formSubmit()">
       <div class="col-12 titulo">
-        <h2>Registrar Médico</h2>
+        <h2>{{titulo}}</h2>
       </div>
       <div class="row">
         <div class="form-group col-12">
           <label>Nombre completo</label>
           <input type="text" form class="form-control"
           autocomplete="off"
-          formControlName="nombre"
+          formControlName="nombreMedico"
+          [(ngModel)]="medico.nombreMedico"
           required>
         </div>
         <div class="form-group col-6">
@@ -18,7 +19,8 @@
             type="text"
             class="form-control"
             autocomplete="off"
-            formControlName="curp"
+            formControlName="CURPMedico"
+            [(ngModel)]="medico.CURPMedico"
             required
           />
         </div>
@@ -28,9 +30,9 @@
             type="date"
             class="form-control"
             autocomplete="off"
-            formControlName="fechaNacimiento"
+            formControlName="fechaNacimientoMedico"
+            [(ngModel)]="medico.fechaNacimientoMedico"
             required
-            id="fecha_nacimiento" name="fecha_nacimiento" 
           />
         </div>
         <div class="form-group col-6">
@@ -38,7 +40,8 @@
           <input
             type="email"
             class="form-control"
-            formControlName="correo"
+            formControlName="correoMedico"
+            [(ngModel)]="medico.correoMedico"
             autocomplete="off"
             required
           />
@@ -48,7 +51,8 @@
           <input
             type="tel"
             class="form-control"
-            formControlName="telefono"
+            formControlName="telefonoMedico"
+            [(ngModel)]="medico.telefonoMedico"
             autocomplete="off"
             required
           />
@@ -58,7 +62,8 @@
           <input
             type="text"
             class="form-control"
-            formControlName="direccion"
+            formControlName="direccionMedico"
+            [(ngModel)]="medico.direccionMedico"
             autocomplete="off"
             required
           />
@@ -68,10 +73,10 @@
           <input
             type="text"
             class="form-control"
-            formControlName="especialidad"
+            formControlName="especialidadMedico"
+            [(ngModel)]="medico.especialidadMedico"
             autocomplete="off"
             required
-            id="especialidad" name="especialidad"
           />
         </div>
         <div class="form-group col-6">
@@ -79,10 +84,10 @@
           <input
             type="text"
             class="form-control"
-            formControlName="consultorio"
+            formControlName="consultorioMedico"
+            [(ngModel)]="medico.consultorioMedico"
             autocomplete="off"
             required
-            id="consultorio" name="consultorio"
           />
         </div>
         <div class="form-group col-6">
@@ -90,10 +95,11 @@
           <input
             type="text"
             class="form-control"
-            formControlName="cedula"
+            formControlName="cedulaProfesionalMedico"
+            [(ngModel)]="medico.cedulaProfesionalMedico"
             autocomplete="off"
             required
-            id="cedula" name="cedula"
+            
           />
         </div>
         <div class="form-group col-12 mt-3">
