@@ -5,17 +5,17 @@ const pacienteController = require('../controllers/pacienteController');
 /* Obtener todos los pacientes */
 pacienteRoutes.get('/pacientes', pacienteController.obtenerTodos)
 
-/* Insertar un recepcionista */
+/* Insertar un paciente */
 pacienteRoutes.post('/pacientes',pacienteController.insertar)
 
 
-/* Obtener un recepcionista */
+/* Obtener un paciente */
 pacienteRoutes.get('/pacientes/:id',pacienteController.obtener);
 
-/* Actualizar un recepcionista */
+/* Actualizar un paciente */
 pacienteRoutes.put('/pacientes/:id', pacienteController.actualizar);
 
-/* Eliminar un recepcionista */
+/* Eliminar un paciente */
 pacienteRoutes.delete('/pacientes/:id',pacienteController.eliminar);
 
 module.exports = pacienteRoutes;

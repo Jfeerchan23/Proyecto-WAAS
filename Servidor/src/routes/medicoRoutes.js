@@ -5,17 +5,17 @@ const medicoController = require('../controllers/medicoController');
 /* Obtener todos los medicos */
 medicoRoutes.get('/medicos', medicoController.obtenerTodos)
 
-/* Insertar un recepcionista */
+/* Insertar un medico */
 medicoRoutes.post('/medicos',medicoController.insertar)
 
 
-/* Obtener un recepcionista */
+/* Obtener un medico */
 medicoRoutes.get('/medicos/:id',medicoController.obtener);
 
-/* Actualizar un recepcionista */
+/* Actualizar un medico */
 medicoRoutes.put('/medicos/:id', medicoController.actualizar);
 
-/* Eliminar un recepcionista */
+/* Eliminar un medico */
 medicoRoutes.delete('/medicos/:id',medicoController.eliminar);
 
 module.exports = medicoRoutes;

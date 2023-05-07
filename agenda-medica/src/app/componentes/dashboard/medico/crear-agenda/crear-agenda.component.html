@@ -9,40 +9,32 @@
     <div class="container my-4">
       <div class="row">
         <div class="col-md-3">
-          <form>
+          <form [formGroup]="form" (ngSubmit)="formSubmit()">
             <div class="mb-3">
-              <label for="dia" class="form-label">Día:</label>
-              <select id="dia" name="dia" class="form-select">
-                <option value="lunes">Lunes</option>
-                <option value="martes">Martes</option>
-                <option value="miercoles">Miércoles</option>
-                <option value="jueves">Jueves</option>
-                <option value="viernes">Viernes</option>
-                <option value="sabado">Sábado</option>
-                <option value="domingo">Domingo</option>
-              </select>
+              <label for="dia" class="form-label">Agenda valida hasta el día:</label>
+              <input type="date"  class="form-control" formControlName="fecha" [(ngModel)]="agenda.fecha">
             </div>
             <div class="mb-3">
               <label for="inicio" class="form-label">Hora de inicio:</label>
-              <input type="time" id="inicio" name="inicio" class="form-control">
+              <input type="time" class="form-control" formControlName="horaInicio" [(ngModel)]="agenda.horaInicio">
             </div>
             <div class="mb-3">
               <label for="fin" class="form-label">Hora de fin:</label>
-              <input type="time" id="fin" name="fin" class="form-control">
+              <input type="time" class="form-control" formControlName="horaFin" [(ngModel)]="agenda.horaFin">
             </div>
             <div class="mb-3">
               <label for="periodo" class="form-label">Periodo de tiempo por consulta:</label>
-              <input type="text" id="periodo" name="periodo" class="form-control" placeholder="Ej: 30 minutos">
+              <input type="text" class="form-control" placeholder="Ej: 30 minutos" formControlName="duracion" [(ngModel)]="agenda.duracion">
             </div>
             <div class="mb-3">
               <label for="almuerzo" class="form-label">Hora de almuerzo:</label>
               <div class="input-group">
-                <input type="time" id="almuerzo1" name="almuerzo1" class="form-control" placeholder="Ej: 12:00">
+                <input type="time" class="form-control"  placeholder="Ej: 12:00" formControlName="descansoInicio" [(ngModel)]="agenda.descansoInicio">
                 <span class="input-group-text">a</span>
-                <input type="time" id="almuerzo2" name="almuerzo2" class="form-control" placeholder="Ej: 14:00">
+                <input type="time"class="form-control" placeholder="Ej: 14:00" formControlName="descansoFin" [(ngModel)]="agenda.descansoFin">
               </div>
             </div>
-            <button type="submit" class="btn btn-success">Guardar</button>
+            <button type="submit" class="btn btn-success"  [disabled]="form.invalid">Guardar</button>
             <button type="reset" class="btn btn-secondary mx-2">Editar</button>
           </form>
         </div>

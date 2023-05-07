@@ -6,6 +6,7 @@ const routes = require('./routes')
 const recepcionistaRoutes = require('./src/routes/recepcionistaRoutes')
 const medicoRoutes = require('./src/routes/medicoRoutes')
 const pacienteRoutes = require('./src/routes/pacienteRoutes')
+const citaRoutes = require('./src/routes/citaRoutes')
 
 const app = express()
 app.set('port', process.env.PORT|| 8080)
@@ -35,6 +36,7 @@ app.use('/api', routes)
 app.use('/api', recepcionistaRoutes)
 app.use('/api', medicoRoutes)
 app.use('/api', pacienteRoutes)
+app.use('/api', citaRoutes)
 
 
 //Ejecucion de servidor

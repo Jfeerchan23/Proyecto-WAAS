@@ -6,6 +6,9 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import esLocale from '@fullcalendar/core/locales/es';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UsuariosService } from 'src/app/servicios/usuarios/usuarios.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-crear-agenda',
@@ -14,8 +17,11 @@ import esLocale from '@fullcalendar/core/locales/es';
 })
 export class CrearAgendaComponent {
   public dataDashboard$!: Observable<Dashboard>;
+  form!: FormGroup;
+  agenda: any = {};
+  idMedico:any;
 
-  constructor(private dashboardService: DashboardService) {
+  constructor(private dashboardService: DashboardService, private usuariosService: UsuariosService,private _snackBar: MatSnackBar,) {
     dashboardService.dashboardObservableData = {
       menuActivo: 'crear-agenda'
     };
@@ -45,7 +51,27 @@ export class CrearAgendaComponent {
     ],
   };
 
+  ngOnInit():void {
+    this.form = new FormGroup({
+      fecha: new FormControl(this.agenda.fecha, Validators.required),
+      horaInicio: new FormControl(this.agenda.horaInicio, Validators.required),
+      descansoInicio: new FormControl(this.agenda.descansoInicio, Validators.required),
+      descansoFin: new FormControl(this.agenda.descansoFin, Validators.required),
+      horaFin: new FormControl(this.agenda.horaFin, Validators.required),
+      duracion: new FormControl(this.agenda.duracion, Validators.required),
+    });
+
+  }
+
+  formSubmit(){
+   
+     // this.usuariosService.crearCitas(1, this.agenda).subscribe()
+  
+  
+  }
+
   handleEventClick(eventInfo: any) {
+
     console.log('Evento clickeado:', eventInfo.event);
     // Agrega aquí la lógica que deseas ejecutar cuando se hace clic en un evento
   }
