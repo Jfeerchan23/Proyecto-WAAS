@@ -24,7 +24,6 @@ recepcionistaController.obtener = (req, res) => {
         const recepcionista = rows[0];
         const fecha = new Date(recepcionista.fechaNacimientoRecepcionista);
         recepcionista.fechaNacimientoRecepcionista = fecha.toISOString().slice(0,10);
-  
         res.json(recepcionista);
       });
     });

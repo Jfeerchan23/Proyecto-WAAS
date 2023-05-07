@@ -60,6 +60,7 @@ export class AdmidoctorComponent {
           consultorioMedico: new FormControl(this.medico.consultorioMedico, Validators.required),
           especialidadMedico: new FormControl(this.medico.especialidadMedico, Validators.required),
           cedulaProfesionalMedico: new FormControl(this.medico.cedulaProfesionalMedico, Validators.required),
+          bloqueadoMedico: new FormControl(this.medico.bloqueadoMedico, Validators.required),
         });
  
       }
@@ -70,6 +71,7 @@ export class AdmidoctorComponent {
   formSubmit() {
 
     console.log(this.idMedico);
+    this.medico.bloqueadoMedico===false? 0:1;
     if (this.idMedico) {
       this.usuariosService
         .editarMedico(this.medico, this.idMedico)

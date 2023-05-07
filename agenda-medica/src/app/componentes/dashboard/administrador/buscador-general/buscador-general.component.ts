@@ -6,6 +6,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -43,6 +44,7 @@ export class BuscadorGeneralComponent {
   constructor(
     dashboardService: DashboardService,
     private usuariosService: UsuariosService,
+    private _snackBar: MatSnackBar,
     private router: Router
   ) {
     dashboardService.dashboardObservableData = {
@@ -210,5 +212,25 @@ export class BuscadorGeneralComponent {
         ]);
         break;
     }
+  }
+
+  buscarPorCURP(){
+
+const user = this.usuarios.find((user) => user.curp === this.formUsuario.curp);
+if(user!=null){
+  console.log(user);
+  this.usuarios=[];
+  this.usuarios.push(user);
+  this.dataSource = new MatTableDataSource(this.usuarios);
+  this.dataSource.paginator = this.paginator;
+  this.paginator.firstPage();
+}else{
+  this._snackBar.open('No se encontró ningún usuario con ese CURP', '', {
+    duration: 1500,
+    horizontalPosition: 'center',
+    verticalPosition: 'bottom',
+  });
+}
+
   }
 }

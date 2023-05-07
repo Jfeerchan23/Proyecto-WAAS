@@ -25,6 +25,8 @@ import { FullCalendarModule } from '@fullcalendar/angular';
 import {MatTableModule} from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import { RoleGuard } from 'src/app/guards/role-guard';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+
 
 @NgModule({
   declarations: [
@@ -55,7 +57,8 @@ import { RoleGuard } from 'src/app/guards/role-guard';
     MatAutocompleteModule,
     ScrollingModule,
     MatTableModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatSlideToggleModule
   ],
   providers: [RoleGuard] // Agrega RoleGuard como proveedor
 })

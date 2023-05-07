@@ -71,11 +71,16 @@ export class AdminsecretariaComponent {
           this.recepcionista.direccionRecepcionista,
           Validators.required
         ),
+        bloqueadoRecepcionista: new FormControl(
+          this.recepcionista.bloqueadoRecepcionista,
+          Validators.required
+        ),
       });
     });
   }
   formSubmit() {
     console.log(this.idRecepcionista);
+    this.recepcionista.bloqueadoRecepcionista===false? 0:1;
     if (this.idRecepcionista) {
       this.usuariosService
         .editarRecepcionista(this.recepcionista, this.idRecepcionista)
