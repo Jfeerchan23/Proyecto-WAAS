@@ -18,4 +18,7 @@ medicoRoutes.put('/medicos/:id', medicoController.actualizar);
 /* Eliminar un medico */
 medicoRoutes.delete('/medicos/:id',medicoController.eliminar);
 
+/* Obtener especialidades */
+medicoRoutes.get('/especialidades',medicoController.obtenerEspecialidades);
+
 module.exports = medicoRoutes;
