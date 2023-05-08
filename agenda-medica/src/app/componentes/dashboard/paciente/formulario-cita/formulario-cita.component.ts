@@ -79,7 +79,7 @@ export class FormularioCitaComponent {
         
         this.isReadOnlyNombre=true;
       }else{
-        console.log("no se encuentra en el perfil de paciente");
+        //CUANDO SE ENCUENTRA EN EL PERFIL DEL RECEPCIONISTA
         this.usuariosService.obtenerPacientes().subscribe(
           (response)=>{
             this.autocompletadoPaciente=true;
