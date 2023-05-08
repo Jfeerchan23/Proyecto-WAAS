@@ -11,15 +11,35 @@
           <div class="row">
             <div class="form-group col-12">
               <label>Nombre completo</label>
-              <input
+              <ng-container *ngIf="autocompletadoPaciente">
+                <input
                 type="text"
                 class="form-control"
                 autocomplete="off"
                 required
                 formControlName="nombrePaciente"
                  [(ngModel)]="cita.nombrePaciente"
-                 [readonly]="isReadOnly"
+                 [matAutocomplete]="auto3"
               />
+              
+                <mat-autocomplete autoActiveFirstOption #auto3="matAutocomplete" (optionSelected)="onSelectionChangePaciente($event)">
+                  <mat-option *ngFor="let option of filteredPacientes | async" [value]="option">
+                    {{ option.nombrePaciente }}
+                  </mat-option>
+                </mat-autocomplete>
+              </ng-container>
+              <ng-container *ngIf="autocompletadoPaciente===false">
+                <input
+                type="text"
+                class="form-control"
+                autocomplete="off"
+                required
+                formControlName="nombrePaciente"
+                 [(ngModel)]="cita.nombrePaciente"
+                 [readonly]="isReadOnlyNombre"
+              />
+
+              </ng-container>
             </div>
             <div class="form-group col-6">
               <label>Fecha de nacimiento</label>

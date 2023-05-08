@@ -29,6 +29,9 @@ export class FormularioCitaComponent {
   idEspecialidad:any;
   idMedico:any;
   citasDisponibles:any=[];
+  pacientes:any={};
+  autocompletadoPaciente=false;
+  isReadOnlyNombre = false;
 
   constructor(
     dashboardService: DashboardService,
@@ -62,16 +65,31 @@ export class FormularioCitaComponent {
  /* Valores inicializados */
  optionsEspecialidades: any = [];
  optionsMedicos: any = [];
+ optionsPacientes: any = [];
  filteredEspecialidades!: Observable<any>;
  filteredMedicos!: Observable<any>;
-
+ filteredPacientes!: Observable<any>;
   ngOnInit() {
+    this.isReadOnly=true;
     //CUANDO SE ENCUENTRA EN EL PERFIL DE UN PACIENTE
     this.route.params.subscribe((params) => {
       if (params['idPaciente']) {
         this.idPaciente = params['idPaciente'];
         this.obtenerPaciente(this.idPaciente);
-        this.isReadOnly=true;
+        
+        this.isReadOnlyNombre=true;
+      }else{
+        console.log("no se encuentra en el perfil de paciente");
+        this.usuariosService.obtenerPacientes().subscribe(
+          (response)=>{
+            this.autocompletadoPaciente=true;
+            this.optionsPacientes = response.map((item:any)=> item);
+            this.filteredPacientes =  this._setupFilterObservable(
+              this.form.controls['nombrePaciente'], 
+              this.optionsPacientes,
+               'nombrePaciente');
+          }
+        )
       }
     });
     this.usuariosService.obtenerEspecialidades().subscribe(
@@ -178,6 +196,13 @@ export class FormularioCitaComponent {
     this.cita.hora=null;
     this.cita.medico=event.option.value.nombreMedico;
     this.idMedico = event.option.value.idMedico
+   }
+
+   onSelectionChangePaciente(event: any){
+    this.cita.nombrePaciente=event.option.value.nombrePaciente;
+    this.idPaciente = event.option.value.idPaciente;
+    this.obtenerPaciente(this.idPaciente);
+    this.isReadOnly=true;
    }
 
    onFechaChange(event: any){
