@@ -91,12 +91,23 @@ export class UsuariosService {
 		return this.http.delete(`${this.URL}/api/pacientes/${$id}`);
 	}
 
-	 /* Crear citas */
+	 /*Citas */
 
 	crearCitas($id: any, $datos:any): Observable<any> {
 		let data = Object.assign({}, $datos);
 		console.log(data);
 		return this.http.post(`${this.URL}/api/citas/crear/${$id}`,data);
+	}
+	editarCita($datos: any, $id: any): Observable<any> {
+		let data = Object.assign({}, $datos);
+		console.log(data);
+		return this.http.put(`${this.URL}/api/citas/${$id}`, data);
+	}
+
+	citasDisponibles($datos:any): Observable<any> {
+		let data = Object.assign({}, $datos);
+		console.log(data);
+		return this.http.post(`${this.URL}/api/citasDisponibles`,data);
 	}
 	 /* Especialidades */
 

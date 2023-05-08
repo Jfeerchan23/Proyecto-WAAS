@@ -81,8 +81,8 @@
             class="form-control"
             required
           />
-          <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-            <mat-option *ngFor="let option of filteredOptions | async" [value]="option.idEspecialidad">
+          <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="onSelectionChange($event)">
+            <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
               {{ option.nombreEspecialidad }}
             </mat-option>
           </mat-autocomplete>

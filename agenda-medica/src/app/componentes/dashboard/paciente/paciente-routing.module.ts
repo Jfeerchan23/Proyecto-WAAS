@@ -11,6 +11,7 @@ const routes: Routes = [
   {path: '', component: PacienteComponent, children: [
     { path: 'agenda', component: AgendaPacienteComponent},
     { path: 'nueva-cita', component: FormularioCitaComponent},
+    { path: 'nueva-cita/:idPaciente', component: FormularioCitaComponent},
     { path: 'historial-clinico', component: HistorialClinicoComponent}
   ]
 }

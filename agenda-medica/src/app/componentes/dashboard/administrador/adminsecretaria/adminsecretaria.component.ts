@@ -73,7 +73,7 @@ export class AdminsecretariaComponent {
         ),
         bloqueadoRecepcionista: new FormControl(
           this.recepcionista.bloqueadoRecepcionista,
-          Validators.required
+        
         ),
       });
     });

@@ -11,7 +11,6 @@ citaController.obtenerTodos = (req, res) => {
     })
 }
 
-
 citaController.obtener = (req, res) => {
     const id = req.params.id;
 
@@ -174,5 +173,16 @@ function fechaHoy() {
     return fechaDeHoy;
   }
   
+citaController.citasDisponibles = (req, res) => {
+    const id = req.body.idMedico;
+    req.getConnection((err, conn) => {
+        if (err) return res.send(err);
 
+        conn.query('SELECT * FROM citas WHERE idMedico= ? AND fecha=? AND idPaciente IS NULL', [req.body.idMedico,req.body.fechaCita], (err, rows) => {
+            if (err) return res.send(err)
+            res.json(rows)
+        });
+    });
+}
+  
 module.exports = citaController

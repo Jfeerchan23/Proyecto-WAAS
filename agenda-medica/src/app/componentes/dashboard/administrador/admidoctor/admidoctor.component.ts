@@ -15,12 +15,6 @@ import {
   DashboardService,
 } from 'src/app/servicios/dashboard.service';
 import { UsuariosService } from 'src/app/servicios/usuarios/usuarios.service';
-
-interface Especialidad {
-  idEspecialidad: number;
-  nombreEspecialidad: string;
-}
-
 @Component({
   selector: 'app-admidoctor',
   templateUrl: './admidoctor.component.html',
@@ -31,6 +25,7 @@ export class AdmidoctorComponent {
   idMedico:any;
   form: FormGroup;
   titulo:any = "Agregar Medico";
+  idEspecialidad:any;
   public dataDashboard$!: Observable<Dashboard>;
   constructor(
     dashboardService: DashboardService,
@@ -53,17 +48,26 @@ export class AdmidoctorComponent {
       consultorioMedico: new FormControl(this.medico.consultorioMedico, Validators.required),
       especialidadMedico: new FormControl(this.medico.especialidadMedico, Validators.required),
       cedulaProfesionalMedico: new FormControl(this.medico.cedulaProfesionalMedico, Validators.required),
-      bloqueadoMedico: new FormControl(this.medico.bloqueadoMedico, Validators.required),
+      bloqueadoMedico: new FormControl(this.medico.bloqueadoMedico),
     });
 
   }
 
    /* Valores inicializados */
-   options: Especialidad[] = [];
-   filteredOptions!: Observable<Especialidad[]>;
+   options: any = [];
+   filteredOptions!: Observable<any>;
 
   ngOnInit():void{
-
+    this.usuariosService.obtenerEspecialidades().subscribe(
+      (response)=>{
+        this.options = response.map((especialidad:any)=> especialidad);
+        console.log(this.options);
+        this.filteredOptions = this._setupFilterObservable(
+          this.form.controls['especialidadMedico'],
+          this.options
+        );
+      }
+    );  
 
     
     this.route.params.subscribe((params) => {
@@ -76,21 +80,13 @@ export class AdmidoctorComponent {
     });
   
 
-    this.usuariosService.obtenerEspecialidades().subscribe(
-      (response)=>{
-        this.options = response.map((especialidad:Especialidad)=> especialidad);
-        console.log(this.options);
-        this.filteredOptions = this._setupFilterObservable(
-          this.form.controls['especialidadMedico'],
-          this.options
-        );
-      }
-    );  
+  
   }
   formSubmit() {
 
     console.log(this.idMedico);
     this.medico.bloqueadoMedico===false? 0:1;
+    this.medico.especialidadMedico=this.idEspecialidad;
     if (this.idMedico) {
       this.usuariosService
         .editarMedico(this.medico, this.idMedico)
@@ -119,7 +115,9 @@ export class AdmidoctorComponent {
     this.usuariosService.obtenerMedico(id).subscribe(
       response => {
         this.medico = response;
-        console.log(this.medico);
+        this.idEspecialidad=this.medico.especialidadMedico;
+        const user = this.options.filter((u:any) => u.idEspecialidad === this.medico.especialidadMedico)[0];
+        this.medico.especialidadMedico=user.nombreEspecialidad;
       },
       error => {
         console.log(error);
@@ -129,23 +127,29 @@ export class AdmidoctorComponent {
   }
   private _setupFilterObservable(
     control: AbstractControl,
-    options: Especialidad[]
-  ): Observable<Especialidad[]> {
+    options: any
+  ): Observable<any> {
     return control.valueChanges.pipe(
       startWith(''),
       map((value) => this._filter(options, value))
     );
   }
   
-  private _filter(options: Especialidad[], value: string): Especialidad[] {
+  private _filter(options: any, value: string): any{
     const filterValue = String(value).toLowerCase();
-    const filteredOptions = options.filter((option) =>
+    const filteredOptions = options.filter((option:any) =>
     option.nombreEspecialidad.toLowerCase().includes(filterValue)
   );
-   console.log(options);
-    return options.filter((option) =>
+    return options.filter((option:any) =>
       option.nombreEspecialidad.toLowerCase().includes(filterValue)
     );
+  }
+
+  onSelectionChange(event: any){
+   console.log(event.option.value);
+   this.medico.especialidadMedico=event.option.value.nombreEspecialidad;
+   this.idEspecialidad=event.option.value.idEspecialidad;
+   
   }
 
 }

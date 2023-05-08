@@ -7,11 +7,13 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, map, startWith } from 'rxjs';
 import {
   Dashboard,
   DashboardService,
 } from 'src/app/servicios/dashboard.service';
+import { UsuariosService } from 'src/app/servicios/usuarios/usuarios.service';
 
 @Component({
   selector: 'app-formulario-cita',
@@ -20,74 +22,177 @@ import {
 })
 export class FormularioCitaComponent {
   form: FormGroup;
+  cita: any = {};
+  medicos:any={};
+  idPaciente :any;
+  isReadOnly = false;
+  idEspecialidad:any;
+  idMedico:any;
+  citasDisponibles:any=[];
+
   constructor(
     dashboardService: DashboardService,
+    private usuariosService: UsuariosService,
     private fb: FormBuilder,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private route: ActivatedRoute,
+    private router: Router,
   ) {
     dashboardService.dashboardObservableData = {
       menuActivo: 'nueva-cita',
     };
 
-    this.form = this.fb.group({
-      nombre: new FormControl('', Validators.required),
-      fechaNacimiento: new FormControl('', Validators.required),
-      curp: new FormControl('', Validators.required),
-      correo: new FormControl('', Validators.required),
-      telefono: new FormControl('', Validators.required),
-      direccion: new FormControl('', Validators.required),
-      especialidad: new FormControl('', Validators.required),
-      medico: new FormControl('', Validators.required),
-      modalidad: new FormControl('', Validators.required),
-      fecha: new FormControl('', Validators.required),
-      hora: new FormControl('', Validators.required),
+    this.form = new FormGroup({
+      nombrePaciente: new FormControl(this.cita.nombrePaciente, Validators.required),
+      fechaNacimientoPaciente: new FormControl(this.cita.fechaNacimientoPaciente, Validators.required),
+      CURPPaciente: new FormControl(this.cita.CURPPaciente, Validators.required),
+      correoPaciente: new FormControl(this.cita.correoPaciente, Validators.required),
+      telefonoPaciente: new FormControl(this.cita.telefonoPaciente, Validators.required),
+      direccionPaciente: new FormControl(this.cita.direccionPaciente, Validators.required),
+      especialidadMedico: new FormControl(this.cita.especialidadMedico, Validators.required),
+      medico: new FormControl(this.cita.medico, Validators.required),
+      modalidad: new FormControl(this.cita.modalidad, Validators.required),
+      fecha: new FormControl(this.cita.fecha, Validators.required),
+      hora: new FormControl(this.cita.hora, Validators.required),
     });
   }
 
-  /* Valores inicializados */
-  options: string[] = ['Cardiología', 'Ortopedia', 'Pediatría'];
-  medicos: string[] = ['José López', 'Arturo Ramirez', 'Jesús Hernández'];
-  filteredOptions!: Observable<string[]>;
-  filteredMedicos!: Observable<string[]>;
+
+
+ /* Valores inicializados */
+ optionsEspecialidades: any = [];
+ optionsMedicos: any = [];
+ filteredEspecialidades!: Observable<any>;
+ filteredMedicos!: Observable<any>;
 
   ngOnInit() {
-    this.filteredOptions = this._setupFilterObservable(
-      this.form.controls['especialidad'],
-      this.options
-    );
-    this.filteredMedicos = this._setupFilterObservable(
-      this.form.controls['medico'],
-      this.medicos
-    );
+    //CUANDO SE ENCUENTRA EN EL PERFIL DE UN PACIENTE
+    this.route.params.subscribe((params) => {
+      if (params['idPaciente']) {
+        this.idPaciente = params['idPaciente'];
+        this.obtenerPaciente(this.idPaciente);
+        this.isReadOnly=true;
+      }
+    });
+    this.usuariosService.obtenerEspecialidades().subscribe(
+      (response)=>{
+
+        this.optionsEspecialidades = response.map((item:any)=> item);
+
+        this.filteredEspecialidades =  this._setupFilterObservable(
+          this.form.controls['especialidadMedico'], 
+          this.optionsEspecialidades,
+           'nombreEspecialidad');
+
+      }
+    )
+    this.usuariosService.obtenerMedicos().subscribe(
+
+      (response)=>{
+        this.medicos = response.map((item:any)=> item);
+      }
+    )
+  
+
   }
 
-  //Métodos para el autocompletado de los campos especialidad y médicos
-  private _setupFilterObservable(
-    control: AbstractControl,
-    options: string[]
-  ): Observable<string[]> {
-    return control.valueChanges.pipe(
-      startWith(''),
-      map((value) => this._filter(options, value))
-    );
+  obtenerPaciente(id:any){
+    this.usuariosService.obtenerPaciente(id).subscribe(
+      (response)=>{
+        this.cita=response;
+      }
+    )
+
   }
 
-  private _filter(options: string[], value: string): string[] {
-    const filterValue = value.toLowerCase();
-    return options.filter((option) =>
-      option.toLowerCase().includes(filterValue)
-    );
-  }
 
   formSubmit() {
     /*  Se deberán guardar los datos del formulario */
-    console.log(this.form.value);
+    console.log(this.idMedico);
+    if(this.idMedico!==undefined && this.cita.hora!==undefined){
+    
+      const cita = {
+        idCita:this.cita.hora,
+        idPaciente : this.cita.idPaciente,
+      }
+  
+      this.usuariosService.editarCita(cita,this.cita.hora).subscribe(
+        
+      );
+      this._snackBar.open('Cita guardada', '', {
+        duration: 1000,
+        horizontalPosition: 'center',
+        verticalPosition: 'bottom',
+      });
 
-    this._snackBar.open('Cita guardada', '', {
-      duration: 1000,
-      horizontalPosition: 'center',
-      verticalPosition: 'bottom',
-    });
-    this.form.reset();
+      this.form.reset();
+      this.router.navigate(['/dashboard/paciente']);
+    }else{
+      this._snackBar.open('Verifica el nombre del medico', '', {
+        duration: 1000,
+        horizontalPosition: 'center',
+        verticalPosition: 'bottom',
+      });
+    }
+    
+    
   }
+ 
+
+  private _setupFilterObservable(
+    control: AbstractControl,
+    options: any,
+    property: string
+  ): Observable<any> {
+    return control.valueChanges.pipe(
+      startWith(''),
+      map((value) => this._filter(options, value, property))
+    );
+  }
+  
+  private _filter(options: any, value: string, property: string): any {
+    const filterValue = String(value).toLowerCase();
+    return options.filter((option:any) =>
+      option[property].toLowerCase().includes(filterValue)
+    );
+  }
+
+
+
+  onSelectionChange(event: any){
+    this.cita.especialidadMedico=event.option.value.nombreEspecialidad;
+    this.idEspecialidad=event.option.value.idEspecialidad;
+    this.cita.medico=null;
+    this.cita.fecha=null;
+    this.cita.hora=null;
+    this.optionsMedicos= this.medicos.filter((item:any) => item.especialidadMedico === this.idEspecialidad);
+    this.filteredMedicos = this._setupFilterObservable(
+      this.form.controls['medico'],
+      this.optionsMedicos,
+      'nombreMedico'
+    )
+   }
+
+   onSelectionChangeMedico(event: any){
+    this.cita.fecha=null;
+    this.cita.hora=null;
+    this.cita.medico=event.option.value.nombreMedico;
+    this.idMedico = event.option.value.idMedico
+   }
+
+   onFechaChange(event: any){
+    if(this.idMedico!==undefined){
+      const datos ={
+        fechaCita :event,
+        idMedico : this.idMedico
+      }
+      this.usuariosService.citasDisponibles(datos).subscribe(
+        (response)=>{
+          this.citasDisponibles=response;
+      
+        }
+      );
+    }
+   }
+
 }

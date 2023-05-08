@@ -16,7 +16,9 @@
                 class="form-control"
                 autocomplete="off"
                 required
-                formControlName="nombre"
+                formControlName="nombrePaciente"
+                 [(ngModel)]="cita.nombrePaciente"
+                 [readonly]="isReadOnly"
               />
             </div>
             <div class="form-group col-6">
@@ -26,7 +28,9 @@
                 class="form-control"
                 autocomplete="off"
                 required
-                formControlName="fechaNacimiento"
+                formControlName="fechaNacimientoPaciente"
+                [(ngModel)]="cita.fechaNacimientoPaciente"
+                [readonly]="isReadOnly"
               />
             </div>
             <div class="form-group col-6">
@@ -36,7 +40,9 @@
                 class="form-control"
                 autocomplete="off"
                 required
-                formControlName="curp"
+                formControlName="CURPPaciente"
+                [(ngModel)]="cita.CURPPaciente"
+                [readonly]="isReadOnly"
               />
             </div>
             <div class="form-group col-6">
@@ -46,7 +52,9 @@
                 class="form-control"
                 autocomplete="off"
                 required
-                formControlName="correo"
+                formControlName="correoPaciente"
+                [(ngModel)]="cita.correoPaciente"
+                [readonly]="isReadOnly"
               />
             </div>
             <div class="form-group col-6">
@@ -56,7 +64,9 @@
                 class="form-control"
                 autocomplete="off"
                 required
-                formControlName="telefono"
+                formControlName="telefonoPaciente"
+                [(ngModel)]="cita.telefonoPaciente"
+                [readonly]="isReadOnly"
               />
             </div>
             <div class="form-group col-6">
@@ -66,7 +76,9 @@
                 class="form-control"
                 autocomplete="off"
                 required
-                formControlName="direccion"
+                formControlName="direccionPaciente"
+                [(ngModel)]="cita.direccionPaciente"
+                [readonly]="isReadOnly"
               />
             </div>
             <div class="form-group mt-3">
@@ -84,18 +96,19 @@
                 placeholder="Elige una especialidad"
                 aria-label="Number"
                 matInput
-                formControlName="especialidad"
+                formControlName="especialidadMedico"
+                [(ngModel)]="cita.especialidadMedico"
                 [matAutocomplete]="auto"
                 class="form-control"
                 required
               />
-              <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-                <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-                  {{option}}
+              <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="onSelectionChange($event)">
+                <mat-option *ngFor="let option of filteredEspecialidades | async" [value]="option">
+                  {{ option.nombreEspecialidad }}
                 </mat-option>
               </mat-autocomplete>
             </div>
-            <div class="form-group col-12">
+            <div class="form-group col-12" *ngIf="cita.especialidadMedico">
               <label>Médico</label>
               <input
                 type="text"
@@ -103,16 +116,14 @@
                 aria-label="Number"
                 matInput
                 formControlName="medico"
+                [(ngModel)]="cita.medico"
                 [matAutocomplete]="auto2"
                 class="form-control"
                 required
               />
-              <mat-autocomplete #auto2="matAutocomplete">
-                <mat-option
-                  *ngFor="let option of filteredMedicos| async"
-                  [value]="option"
-                >
-                  {{ option }}
+              <mat-autocomplete autoActiveFirstOption #auto2="matAutocomplete" (optionSelected)="onSelectionChangeMedico($event)"  >
+                <mat-option *ngFor="let option of filteredMedicos | async" [value]="option">
+                  {{ option.nombreMedico }}
                 </mat-option>
               </mat-autocomplete>
             </div>
@@ -138,6 +149,7 @@
                 aria-label="Default select example"
                 required
                 formControlName="modalidad"
+                [(ngModel)]="cita.modalidad"
               >
                 <option value="1">Física</option>
                 <option value="2">Telefónica</option>
@@ -152,19 +164,20 @@
                 autocomplete="off"
                 required
                 formControlName="fecha"
+                [(ngModel)]="cita.fecha"
+                (ngModelChange)="onFechaChange($event)"
               />
             </div>
-            <div class="form-group col-6">
+            <div class="form-group col-6" *ngIf="cita.fecha && cita.medico" >
               <label>Hora</label>
               <select
                 class="form-select"
                 aria-label="Default select example"
                 required
                 formControlName="hora"
+                [(ngModel)]="cita.hora"
               >
-                <option value="1">10:00 am - 10:20 am</option>
-                <option value="2">10:20 am - 10:40 am</option>
-                <option value="3">10:40 am - 11:00 am</option>
+                <option *ngFor="let opcion of citasDisponibles" [value]="opcion.idCita">{{ opcion.horaInicio }}-{{ opcion.horaTermino }}</option>
               </select>
             </div>
             <div class="form-group mt-3">

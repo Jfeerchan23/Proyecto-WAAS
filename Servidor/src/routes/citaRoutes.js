@@ -21,4 +21,7 @@ citaRoutes.delete('/citas/:id',citaController.eliminar);
 /*Crear serie de citas*/
 citaRoutes.post('/citas/crear/:id',citaController.crearCitas);
 
+/* Obtener todas las citas */
+citaRoutes.post('/citasDisponibles', citaController.citasDisponibles);
+
 module.exports = citaRoutes;
