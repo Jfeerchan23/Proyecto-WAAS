@@ -32,8 +32,6 @@ app.get('/', (req, res)=>{
 })
 
 app.use('/api', routes)
-app.use('/api', medicoRoutes)
-app.use('/api', pacienteRoutes)
 app.use('/api', citaRoutes)
 
 
