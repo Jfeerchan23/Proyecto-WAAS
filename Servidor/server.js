@@ -3,7 +3,6 @@ const mysql = require('mysql')
 const myconn = require('express-myconnection')
 
 const routes = require('./routes')
-const recepcionistaRoutes = require('./src/routes/recepcionistaRoutes')
 const medicoRoutes = require('./src/routes/medicoRoutes')
 const pacienteRoutes = require('./src/routes/pacienteRoutes')
 const citaRoutes = require('./src/routes/citaRoutes')
@@ -33,7 +32,6 @@ app.get('/', (req, res)=>{
 })
 
 app.use('/api', routes)
-app.use('/api', recepcionistaRoutes)
 app.use('/api', medicoRoutes)
 app.use('/api', pacienteRoutes)
 app.use('/api', citaRoutes)

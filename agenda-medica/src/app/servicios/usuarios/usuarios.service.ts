@@ -4,44 +4,45 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root'
 })
 export class UsuariosService {
-  URL = "http://localhost:8080";
-  constructor(
-    private http: HttpClient,
-  ) { }
+	URL = "http://localhost:8080";
+	constructor(
+		private http: HttpClient,
+	) { }
+
+	obtenerTodosUsuarios(): Observable<any> {
+		return this.http.get(`${this.URL}/api/informacion/usuarios`);
+	}
+
 
 	//Recepcionistas
 	obtenerRecepcionistas(): Observable<any> {
 		return this.http.get(`${this.URL}/api/recepcionistas`);
 	}
 
-	obtenerRecepcionista($id: any): Observable<any> {
-		return this.http.get(`${this.URL}/api/recepcionistas/${$id}`);
-	}
-
 	guardarRecepcionista($recepcionista: any): Observable<any> {
 		let data = Object.assign({}, $recepcionista);
 		console.log(data);
-		return this.http.post(`${this.URL}/api/recepcionistas`, data);
+		return this.http.post(`${this.URL}/api/recepcionistas/registrar`, data);
+	}
+
+	obtenerRecepcionista($id: any): Observable<any> {
+		return this.http.get(`${this.URL}/api/recepcionistas/obtener/${$id}`);
 	}
 
 	editarRecepcionista($recepcionista: any, $id: any): Observable<any> {
 		let data = Object.assign({}, $recepcionista);
-		return this.http.put(`${this.URL}/api/recepcionistas/${$id}`, data);
+		return this.http.put(`${this.URL}/api/recepcionistas/actualizar/${$id}`, data);
 	}
 
 	eliminarRecepcionista($id: any): Observable<any> {
-		return this.http.delete(`${this.URL}/api/recepcionistas/${$id}`);
-	}
-	obtenerTodosUsuarios(): Observable<any> {
-		return this.http.get(`${this.URL}/api/todos`);
+		return this.http.delete(`${this.URL}/api/recepcionistas/eliminar/${$id}`);
 	}
 
 
 	/* Medicos */
-
 	obtenerMedicos(): Observable<any> {
 		return this.http.get(`${this.URL}/api/medicos`);
 	}
@@ -64,10 +65,9 @@ export class UsuariosService {
 	eliminarMedico($id: any): Observable<any> {
 		return this.http.delete(`${this.URL}/api/medicos/${$id}`);
 	}
-	
+
 
 	/* Pacientes */
-
 	obtenerPacientes(): Observable<any> {
 		return this.http.get(`${this.URL}/api/pacientes`);
 	}
@@ -91,12 +91,12 @@ export class UsuariosService {
 		return this.http.delete(`${this.URL}/api/pacientes/${$id}`);
 	}
 
-	 /*Citas */
 
-	crearCitas($id: any, $datos:any): Observable<any> {
+	/*Citas */
+	crearCitas($id: any, $datos: any): Observable<any> {
 		let data = Object.assign({}, $datos);
 		console.log(data);
-		return this.http.post(`${this.URL}/api/citas/crear/${$id}`,data);
+		return this.http.post(`${this.URL}/api/citas/crear/${$id}`, data);
 	}
 	editarCita($datos: any, $id: any): Observable<any> {
 		let data = Object.assign({}, $datos);
@@ -104,13 +104,14 @@ export class UsuariosService {
 		return this.http.put(`${this.URL}/api/citas/${$id}`, data);
 	}
 
-	citasDisponibles($datos:any): Observable<any> {
+	citasDisponibles($datos: any): Observable<any> {
 		let data = Object.assign({}, $datos);
 		console.log(data);
-		return this.http.post(`${this.URL}/api/citasDisponibles`,data);
+		return this.http.post(`${this.URL}/api/citasDisponibles`, data);
 	}
-	 /* Especialidades */
 
+
+	/* Especialidades REVIZAR */
 	obtenerEspecialidades(): Observable<any> {
 		return this.http.get(`${this.URL}/api/especialidades`);
 	}
