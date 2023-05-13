@@ -131,7 +131,8 @@ export class FormularioCitaComponent {
     
       const cita = {
         idCita:this.cita.hora,
-        idPaciente : this.cita.idPaciente,
+        idPaciente: this.cita.idPaciente,
+        idMedico: this.idMedico
       }
   
       this.usuariosService.editarCita(cita,this.cita.hora).subscribe(
