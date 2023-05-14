@@ -4,6 +4,8 @@ const informacionGeneralRoutes = require('./src/routes/informacionGeneralRoutes'
 const recepcionistaRoutes = require('./src/routes/recepcionistaRoutes')
 const medicoRoutes = require('./src/routes/medicoRoutes')
 const pacientesRoutes = require('./src/routes/pacienteRoutes')
+const loginRoutes = require('./src/routes/loginRoutes')
+
 
 const cors = require('cors');
 routes.use(cors());
@@ -13,5 +15,6 @@ routes.use('/informacion', informacionGeneralRoutes)
 routes.use('/recepcionistas', recepcionistaRoutes)
 routes.use('/medicos', medicoRoutes)
 routes.use('/pacientes', pacientesRoutes)
+routes.use('/login', loginRoutes)
 
 module.exports = routes;
