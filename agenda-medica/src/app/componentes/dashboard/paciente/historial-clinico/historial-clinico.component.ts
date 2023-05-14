@@ -25,7 +25,7 @@ export class HistorialClinicoComponent {
     };
   }
   /* Columnas de la tabla */
-  displayedColumns: string[] = ['fecha', 'hora', 'medico', 'consultorio','informacion','opciones'];
+  displayedColumns: string[] = ['fecha', 'hora', 'medico', 'consultorio','modalidad','informacion','opciones'];
   dataSource :any;
 
  /*  Paginación de la tabla */

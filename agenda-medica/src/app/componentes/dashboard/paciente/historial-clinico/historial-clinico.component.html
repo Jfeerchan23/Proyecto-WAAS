@@ -24,6 +24,15 @@
           <td mat-cell *matCellDef="let element"> {{element.consultorioMedico}} </td>
         </ng-container>
 
+        <ng-container matColumnDef="modalidad">
+          <th mat-header-cell *matHeaderCellDef>Modalidad</th>
+          <td mat-cell *matCellDef="let element">
+            <ng-container *ngIf="element.modalidad==1">Física</ng-container>
+            <ng-container  *ngIf="element.modalidad==2">Telefónica</ng-container>
+            <ng-container *ngIf="element.modalidad==3">Web</ng-container>
+            </td>
+        </ng-container>
+
         <ng-container matColumnDef="informacion">
           <th mat-header-cell *matHeaderCellDef>Información de la consulta</th>
           <td mat-cell *matCellDef="let element"> {{element.notasConsultas}} </td>

@@ -65,7 +65,7 @@ export class CrearAgendaComponent {
 
   formSubmit(){
    
-     // this.usuariosService.crearCitas(1, this.agenda).subscribe()
+      this.usuariosService.crearCitas(this.idMedico, this.agenda).subscribe()
   
   
   }
