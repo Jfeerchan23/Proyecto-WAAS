@@ -19,7 +19,7 @@ citaRoutes.put('/citas/:id', citaController.actualizar);
 citaRoutes.delete('/citas/:id',citaController.eliminar);
 
 /*Crear serie de citas*/
-citaRoutes.post('/citas/crear/:id',citaController.crearCitas);
+citaRoutes.post('/citas/crear/',citaController.crearCitas);
 
 /* Obtener todas las citas */
 citaRoutes.post('/citasDisponibles', citaController.citasDisponibles);

@@ -67,9 +67,9 @@ export class UsuariosService {
 	}
 
 	/* Especialidades REVIZAR */
-	// obtenerEspecialidades(): Observable<any> {
-	// 	return this.http.get(`${this.URL}/api/especialidades`);
-	// }
+	obtenerEspecialidades(): Observable<any> {
+		return this.http.get(`${this.URL}/api/especialidades`);
+	}
 
 
 	/* Pacientes */

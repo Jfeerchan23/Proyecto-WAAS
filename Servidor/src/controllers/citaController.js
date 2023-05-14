@@ -52,11 +52,20 @@ citaController.eliminar = (req, res) => {
         });
     });
 }
+
+
 citaController.insertar = (req, res) => {
     req.getConnection((err, conn) => {
         if (err) return res.send(err)
 
-        console.log(req.body)
+        console.log(req.body.fecha)
+        console.log(new Date());
+        let dia = new Date().getDate();
+        console.log(dia);
+        let mes = new Date().getMonth() + 1;
+        let formatoFecha = new Date().getFullYear() + "-" + mes + "-" + dia
+        console.log(formatoFecha)
+        req.body.fecha = formatoFecha
         conn.query('INSERT INTO citas set ?', [req.body], (err, rows) => {
             if (err) return res.send(err)
 
@@ -65,124 +74,153 @@ citaController.insertar = (req, res) => {
     })
 }
 
+/**
+ * Crea las citas del medico para un rango de fechas
+ * @param {*} req Contiene la petición del usuario
+ * @param {*} res Contiene la respuesta que se enviara a la peticion
+ */
 citaController.crearCitas = (req, res) => {
+    const { idMedico, fechaInicio, fechaFin, duracionCitas, horaInicio, horaFin, inicioAlmuerzo, finAlmuerzo } = req.body;
+    if (!idMedico || !fechaInicio || !fechaFin || !duracionCitas || !horaInicio || !horaFin || !inicioAlmuerzo || !finAlmuerzo) return res.status(400).send("Datos incompletos");
 
-    const fechaInicio = new Date(fechaHoy()); // fecha de inicio (en formato YYYY-MM-DD)
-    const fechaFin = new Date(req.body.fecha); // fecha de fin (en formato YYYY-MM-DD)
-    const fechasEntre = obtenerFechasEntre(fechaInicio, fechaFin); // obtiene todas las fechas entre la fecha de inicio y la fecha de fin
-    let y = fechasEntre; // muestra el array de fechas en la consola del navegador o de Node.js
-
-    let x = crearLapsos(req.body.horaInicio, req.body.descansoInicio, req.body.duracion);
-
-
-    y.forEach(objeto1 => {
-        x.forEach(objeto => {
-            const cita = {
-                idMedico: req.params.id,
-                fecha: objeto1,
-                horaInicio: objeto.horaInicio,
-                horaTermino: objeto.horaFin
-            }
-           
-
-            req.getConnection((err, conn) => {
-                if (err) return res.send(err)
-        
-                conn.query('INSERT INTO citas set ?', [cita], (err, rows) => {
-                    if (err) return res.send(err)
-                })
-            })
-
-
-
-
-        });
-
+    let diasAProgramar = obtenerDiasEntreFechas(fechaInicio,fechaFin);
+    let citas = [];
+    let primerPeriodo = obtenerSeccionesEntreHoras(horaInicio, inicioAlmuerzo, duracionCitas);
+    primerPeriodo.forEach(seccion => {
+        citas.push(seccion);
     });
-    res.send('citas creadas!')
 
+    let segundoPeriodo = obtenerSeccionesEntreHoras(finAlmuerzo, horaFin, duracionCitas);
+    segundoPeriodo.forEach(seccion => {
+        citas.push(seccion);
+    });
+
+    const fechasProgramadas = [];
+    diasAProgramar.forEach(diaAProgramar => {
+        req.getConnection((err, conn) => {
+            if (err) return res.send(err)
+
+            conn.query('SELECT idCita FROM citas WHERE idMedico =  ? AND fecha = ?',
+                [idMedico, diaAProgramar], (err, rows) => {
+                    if (err) return res.send(err)
+                    if (rows.length > 0) {
+                        fechasProgramadas.push(diaAProgramar);
+                    }
+                })
+        })
+    })
+
+    setTimeout(()=> {
+        if (fechasProgramadas.length == 0) {
+            diasAProgramar.forEach(diaAProgramar => {
+                citas.forEach(cita => {
+                    const datosCita = {
+                        idMedico: idMedico,
+                        fecha: diaAProgramar,
+                        horaInicio: cita.horaInicio,
+                        horaTermino: cita.horaFin
+                    }
+    
+                    req.getConnection((err, conn) => {
+                        if (err) return res.send(err)
+    
+                        conn.query('INSERT INTO citas set ?', [datosCita], (err, rows) => {
+                            if (err) return res.send(err)
+                        })
+                    })
+                });
+            });
+            res.send("Citas generadas")
+        } else {
+            res.send("El/Los dia(s) " + fechasProgramadas.toString() + " ya se encuentra(n) programado(s)")
+        }
+    }, 1000);
+    
 }
 
-function crearLapsos(horaInicio, horaFin, duracion) {
+/**
+ * Regresa un arreglo con las secciones de un intervalo de horas
+ * @param {string} horaInicio hora inicial del intervalo a seccionar
+ * @param {string} horaFin hora final del intervalo a seccionar
+ * @param {string} tiempoSeccion Tiempo a seccionar en entre las horas
+ */
+function obtenerSeccionesEntreHoras(horaInicio, horaFin, tiempoSeccion) {
+    let horaInicioSeccion = horaInicio;
+    let secciones = [];
 
-    let horaOriginal = horaInicio;
-    let horaLimite = horaFin;
+    while (horaInicioSeccion < horaFin) {
+        const [horasString, minutosString, segundosString] = horaInicioSeccion.split(':');
+        let horas = parseInt(horasString);
+        let minutos = parseInt(minutosString);
+        let segundos = parseInt(segundosString);
 
-    let lapsos = []; // Declarar un arreglo vacío para almacenar los pares primeraHora y horaOriginal
-
-    while (horaOriginal < horaLimite) {
-
-        if (horaOriginal >= horaLimite) {
-            break;
-        }
-
-        const [horasStr, minutosStr, segundosStr] = horaOriginal.split(':');
-
-        let horas = parseInt(horasStr);
-        let minutos = parseInt(minutosStr);
-        let segundos = parseInt(segundosStr);
-
-        minutos += parseInt(duracion);
-
+        minutos += parseInt(tiempoSeccion);
         if (minutos >= 60) {
             horas++;
             minutos -= 60;
         }
 
-        const horasStrActualizadas = horas.toString().padStart(2, '0');
-        const minutosStrActualizados = minutos.toString().padStart(2, '0');
-        const segundosStrActualizados = segundos.toString().padStart(2, '0');
+        //Formateamos la hora para poder compararlas
+        const horasStringFinSeccion = horas.toString().padStart(2, '0');
+        const minutosStringFinSeccion = minutos.toString().padStart(2, '0');
+        const segundosStringFinSeccion = segundos.toString().padStart(2, '0');
+        const horaFinSeccion = `${horasStringFinSeccion}:${minutosStringFinSeccion}:${segundosStringFinSeccion}`;
 
-        const horaActualizada = `${horasStrActualizadas}:${minutosStrActualizados}:${segundosStrActualizados}`;
-
-        if (horaActualizada >= horaLimite) {
-            break;
+        if (horaFinSeccion <= horaFin) {
+            const seccion = {
+                horaInicio: horaInicioSeccion,
+                horaFin: horaFinSeccion
+            };
+            secciones.push(seccion);
+            horaInicioSeccion = horaFinSeccion;
         }
-
-        const objetoLapso = { // Crear un objeto literal con las propiedades primeraHora y horaOriginal
-            horaInicio: horaOriginal,
-            horaFin: horaActualizada
-        };
-
-        lapsos.push(objetoLapso); // Agregar el objeto al arreglo lapsos
-
-        horaOriginal = horaActualizada;
     }
-
-
-    return lapsos; // Retornar el arreglo lapsos con los pares primeraHora y horaOriginal
+    return secciones;
 }
 
-function obtenerFechasEntre(fechaInicio, fechaFin) {
-    const fechas = []; // crea un array vacío para almacenar las fechas
-    let fechaActual = new Date(fechaInicio); // crea un objeto Date con la fecha de inicio
-    while (fechaActual <= fechaFin) { // mientras la fecha actual sea menor o igual a la fecha de fin
-        fechas.push(new Date(fechaActual)); // añade una copia de la fecha actual al array de fechas
-        fechaActual.setDate(fechaActual.getDate() + 1); // incrementa la fecha actual en un día
+/**
+ * Regresa un arreglo de los dias con formado YYYY-MM-DD a partir de un intervalo de fechas 
+ * @param {DATE} fechaInicio Fecha inicial del intervalo de fechas a obtener
+ * @param {Date} fechaFin Fecha final del intervalo de fechas a obtener
+ */
+function obtenerDiasEntreFechas(fechaInicio, fechaFin) {
+    const dias = [];
+    
+    //Corregimos los problemas de la conversion de fecha
+    let fechaActual = new Date();
+    const [anioFechaInicio, mesFechaInicio, diaFechaInicio] = fechaInicio.split('-');
+    fechaActual.setFullYear(anioFechaInicio);
+    fechaActual.setMonth(parseInt(mesFechaInicio) -1);
+    fechaActual.setDate(diaFechaInicio);
+
+    //Corregimos los problemas de la conversion de fecha
+    let fechaLimite = new Date();
+    const [anioFechaFin, mesFechaFin, diaFechaFin] = fechaInicio.split('-');
+    fechaLimite.setFullYear(anioFechaFin);
+    fechaLimite.setMonth(parseInt(mesFechaFin) -1);
+    fechaLimite.setDate(diaFechaFin);
+
+    while (fechaActual <= fechaLimite) {
+        //Formateamos la fecha
+        let anio = fechaActual.getFullYear();
+        let mes = (fechaActual.getMonth() + 1).toString().padStart(2, '0');
+        let dia = fechaActual.getDate().toString().padStart(2, '0');
+        dias.push(`${anio}-${mes}-${dia}`);
+        fechaActual.setDate(fechaActual.getDate() + 1);
     }
-    return fechas; // devuelve el array de fechas
+    return dias;
 }
 
-function fechaHoy() {
-    const hoy = new Date();  // crea un nuevo objeto Date con la fecha y hora actuales
-    hoy.setDate(hoy.getDate() + 1); // suma un día a la fecha de hoy
-    const anioDeHoy = hoy.getFullYear(); // obtiene el año actual (por ejemplo, 2023)
-    const mesDeHoy = (hoy.getMonth() + 1).toString().padStart(2, "0"); // obtiene el mes actual (del 0 al 11) y lo convierte en una cadena de texto con dos dígitos, agregando un cero a la izquierda si es necesario
-    const diaDeHoy = hoy.getDate().toString().padStart(2, "0"); // obtiene el día del mes (del 1 al 31) y lo convierte en una cadena de texto con dos dígitos, agregando un cero a la izquierda si es necesario
-    const fechaDeHoy = anioDeHoy + "-" + mesDeHoy + "-" + diaDeHoy; // concatena los valores obtenidos para formar la fecha completa
-    return fechaDeHoy;
-  }
-  
 citaController.citasDisponibles = (req, res) => {
     const id = req.body.idMedico;
     req.getConnection((err, conn) => {
         if (err) return res.send(err);
 
-        conn.query('SELECT * FROM citas WHERE idMedico= ? AND fecha=? AND idPaciente IS NULL', [req.body.idMedico,req.body.fechaCita], (err, rows) => {
+        conn.query('SELECT * FROM citas WHERE idMedico= ? AND fecha=? AND idPaciente IS NULL', [req.body.idMedico, req.body.fechaCita], (err, rows) => {
             if (err) return res.send(err)
             res.json(rows)
         });
     });
 }
-  
+
 module.exports = citaController
