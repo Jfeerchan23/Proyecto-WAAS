@@ -7,5 +7,6 @@ pacienteRoutes.post('/registrar',pacienteController.insertar)
 pacienteRoutes.get('/obtener/:id',pacienteController.obtener);
 pacienteRoutes.put('/actualizar/:id', pacienteController.actualizar);
 pacienteRoutes.delete('/eliminar/:id',pacienteController.eliminar);
-
+pacienteRoutes.get('/historialClinico/:id', pacienteController.historialClinico);
+pacienteRoutes.get('/agenda/:id', pacienteController.agenda);
 module.exports = pacienteRoutes;

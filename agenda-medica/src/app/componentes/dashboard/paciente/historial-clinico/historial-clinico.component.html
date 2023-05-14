@@ -11,32 +11,30 @@
     
         <ng-container matColumnDef="hora">
           <th mat-header-cell *matHeaderCellDef > Hora </th>
-          <td mat-cell *matCellDef="let element"> {{element.hora}} </td>
+          <td mat-cell *matCellDef="let element"> {{element.horaInicio}} </td>
         </ng-container>
     
         <ng-container matColumnDef="medico">
           <th mat-header-cell *matHeaderCellDef > Médico </th>
-          <td mat-cell *matCellDef="let element"> {{element.medico}} </td>
+          <td mat-cell *matCellDef="let element"> {{element.nombreMedico}} </td>
         </ng-container>
     
         <ng-container matColumnDef="consultorio">
           <th mat-header-cell *matHeaderCellDef>Consultorio</th>
-          <td mat-cell *matCellDef="let element"> {{element.consultorio}} </td>
+          <td mat-cell *matCellDef="let element"> {{element.consultorioMedico}} </td>
         </ng-container>
 
         <ng-container matColumnDef="informacion">
           <th mat-header-cell *matHeaderCellDef>Información de la consulta</th>
-          <td mat-cell *matCellDef="let element"> {{element.informacion}} </td>
+          <td mat-cell *matCellDef="let element"> {{element.notasConsultas}} </td>
         </ng-container>
 
          <ng-container matColumnDef="opciones">
           <th mat-header-cell *matHeaderCellDef>Opciones</th>
           <td mat-cell *matCellDef="let element" class="opciones"> 
-            <button type="button" class="btn btn-danger"  
-            #tooltip="matTooltip"
-        matTooltip="Cancelar cita"
-        data-bs-toggle="modal" data-bs-target="#exampleModal"
-            ><mat-icon>cancel</mat-icon></button>
+            <ng-container *ngIf="element.notasConsultas===null">
+              <button type="button" class="btn btn-danger"  #tooltip="matTooltip"matTooltip="Cancelar cita"data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="seleccionarCita(element.idCita)"><mat-icon>cancel</mat-icon></button>
+            </ng-container>
           </td>
         </ng-container>
         
@@ -63,8 +61,8 @@
         La cita se cancelará permanentemente.
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-        <button type="button" class="btn btn-danger">Cancelar cita</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >Cerrar</button>
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="cancelarCita()">Cancelar cita</button>
       </div>
     </div>
   </div>

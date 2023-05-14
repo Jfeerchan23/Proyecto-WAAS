@@ -48,6 +48,7 @@ export class AdmidoctorComponent {
       consultorioMedico: new FormControl(this.medico.consultorioMedico, Validators.required),
       especialidadMedico: new FormControl(this.medico.especialidadMedico, Validators.required),
       cedulaProfesionalMedico: new FormControl(this.medico.cedulaProfesionalMedico, Validators.required),
+      contrasenaMedico: new FormControl(this.medico.constrasenaMedico, Validators.required),
       bloqueadoMedico: new FormControl(this.medico.bloqueadoMedico),
     });
 

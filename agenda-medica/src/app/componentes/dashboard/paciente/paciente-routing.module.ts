@@ -10,9 +10,11 @@ const routes: Routes = [
   {path: '', redirectTo:'agenda', pathMatch: 'full'},
   {path: '', component: PacienteComponent, children: [
     { path: 'agenda', component: AgendaPacienteComponent},
+    { path: 'agenda/:idPaciente', component: AgendaPacienteComponent},
     { path: 'nueva-cita', component: FormularioCitaComponent},
     { path: 'nueva-cita/:idPaciente', component: FormularioCitaComponent},
-    { path: 'historial-clinico', component: HistorialClinicoComponent}
+    { path: 'historial-clinico', component: HistorialClinicoComponent},
+    { path: 'historial-clinico/:idPaciente', component: HistorialClinicoComponent}
   ]
 }
 

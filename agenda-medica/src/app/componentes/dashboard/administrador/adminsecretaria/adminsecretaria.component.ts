@@ -47,34 +47,14 @@ export class AdminsecretariaComponent {
         this.titulo = 'Editar Recepcionista';
       }
       this.form = new FormGroup({
-        nombreRecepcionista: new FormControl(
-          this.recepcionista.nombreRecepcionista,
-          Validators.required
-        ),
-        CURPRecepcionista: new FormControl(
-          this.recepcionista.CURPRecepcionista,
-          Validators.required
-        ),
-        fechaNacimientoRecepcionista: new FormControl(
-          this.recepcionista.fechaNacimientoRecepcionista,
-          Validators.required
-        ),
-        correoRecepcionista: new FormControl(
-          this.recepcionista.correoRecepcionista,
-          Validators.required
-        ),
-        telefonoRecepcionista: new FormControl(
-          this.recepcionista.telefonoRecepcionista,
-          Validators.required
-        ),
-        direccionRecepcionista: new FormControl(
-          this.recepcionista.direccionRecepcionista,
-          Validators.required
-        ),
-        bloqueadoRecepcionista: new FormControl(
-          this.recepcionista.bloqueadoRecepcionista,
-        
-        ),
+        nombreRecepcionista: new FormControl(this.recepcionista.nombreRecepcionista,Validators.required),
+        CURPRecepcionista: new FormControl(this.recepcionista.CURPRecepcionista,Validators.required),
+        fechaNacimientoRecepcionista: new FormControl(this.recepcionista.fechaNacimientoRecepcionista,Validators.required),
+        correoRecepcionista: new FormControl(this.recepcionista.correoRecepcionista,Validators.required),
+        telefonoRecepcionista: new FormControl(this.recepcionista.telefonoRecepcionista,Validators.required),
+        direccionRecepcionista: new FormControl(this.recepcionista.direccionRecepcionista,Validators.required),
+        contrasenaRecepcionista: new FormControl(this.recepcionista.contrasenaRecepcionista,Validators.required),
+        bloqueadoRecepcionista: new FormControl(this.recepcionista.bloqueadoRecepcionista),
       });
     });
   }

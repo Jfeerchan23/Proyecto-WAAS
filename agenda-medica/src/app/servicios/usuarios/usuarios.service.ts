@@ -67,9 +67,9 @@ export class UsuariosService {
 	}
 
 	/* Especialidades REVIZAR */
-	// obtenerEspecialidades(): Observable<any> {
-	// 	return this.http.get(`${this.URL}/api/especialidades`);
-	// }
+	obtenerEspecialidades(): Observable<any> {
+	 	return this.http.get(`${this.URL}/api/especialidades`);
+	 }
 
 
 	/* Pacientes */
@@ -115,7 +115,15 @@ export class UsuariosService {
 		return this.http.post(`${this.URL}/api/citasDisponibles`, data);
 	}
 
+	/* Historial clínico */
 
-	
+	obtenerHistorialClinico($id:any){
+		return this.http.get(`${this.URL}/api/pacientes/historialClinico/${$id}`);
+	}
+
+	/* Agenda */
+	agendaPaciente($id:any){
+		return this.http.get(`${this.URL}/api/pacientes/agenda/${$id}`);
+	}
 
 }

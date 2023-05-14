@@ -57,7 +57,7 @@
             required
           />
         </div>
-        <div class="form-group col-6">
+        <div class="form-group col-4">
           <label>Dirección</label>
           <input
             type="text"
@@ -68,7 +68,7 @@
             required
           />
         </div>
-        <div class="form-group col-6">
+        <div class="form-group col-4">
           <label>Especialidad</label>
           <input
             type="text"
@@ -108,7 +108,17 @@
             [(ngModel)]="medico.cedulaProfesionalMedico"
             autocomplete="off"
             required
-            
+          />
+        </div>
+        <div class="form-group col-4">
+          <label>Contraseña</label>
+          <input
+            type="password"
+            class="form-control"
+            formControlName="contrasenaMedico"
+            [(ngModel)]="medico.contrasenaMedico"
+            autocomplete="off"
+            required
           />
         </div>
 

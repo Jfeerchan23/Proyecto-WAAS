@@ -36,7 +36,6 @@ export class FormularioCitaComponent {
   constructor(
     dashboardService: DashboardService,
     private usuariosService: UsuariosService,
-    private fb: FormBuilder,
     private _snackBar: MatSnackBar,
     private route: ActivatedRoute,
     private router: Router,
@@ -132,7 +131,8 @@ export class FormularioCitaComponent {
       const cita = {
         idCita:this.cita.hora,
         idPaciente: this.cita.idPaciente,
-        idMedico: this.idMedico
+        idMedico: this.idMedico,
+        modalidad: this.cita.modalidad
       }
   
       this.usuariosService.editarCita(cita,this.cita.hora).subscribe(
