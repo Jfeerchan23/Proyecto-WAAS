@@ -73,7 +73,7 @@ export class FormularioCitaComponent {
     this.route.params.subscribe((params) => {
       if (params['idPaciente']) {
         this.idPaciente = params['idPaciente'];
-        this.obtenerPaciente(this.idPaciente);
+        this.obtenerPaciente(this.idPaciente,null);
         this.perfil=1;
         this.isReadOnlyNombre=true;
       }else{
@@ -108,10 +108,14 @@ export class FormularioCitaComponent {
 
   }
 
-  obtenerPaciente(id:any){
+  obtenerPaciente(id:any, event:any){
     this.usuariosService.obtenerPaciente(id).subscribe(
       (response)=>{
         this.cita=response;
+        if(event!=null){
+          this.cita.nombrePaciente=event.option.value.nombrePaciente;
+        }
+       
       }
     )
 
@@ -176,10 +180,11 @@ export class FormularioCitaComponent {
 
 
    onSelectionChangePaciente(event: any){
-    this.cita.nombrePaciente=event.option.value.nombrePaciente;
+    
     this.idPaciente = event.option.value.idPaciente;
-    this.obtenerPaciente(this.idPaciente);
+    this.obtenerPaciente(this.idPaciente,event);
     this.isReadOnly=true;
+    
    }
 
    changeEspecialidad(){
