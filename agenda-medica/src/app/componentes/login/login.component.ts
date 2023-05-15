@@ -14,6 +14,8 @@ export class LoginComponent {
   form: FormGroup;
   dataUsuarios: any = {};
   datosUsuarios:any={};
+  rol:any;
+  id:any;
   constructor(
     private fb: FormBuilder,
     private _snackBar: MatSnackBar,
@@ -29,15 +31,7 @@ export class LoginComponent {
     });
   }
 
-  ingresar() {
-    this.router.navigate(['dashboard/paciente']);
-    /* this._snackBar.open('Usuario o contraseña inválidos', '', {
-      duration: 1500,
-      horizontalPosition: 'center',
-      verticalPosition: 'bottom',
-    }); */
-  }
-
+ 
 
   onSubmitLogin(){
     this.dataUsuarios.email_usuario = this.form.value.usuario;
@@ -48,6 +42,27 @@ export class LoginComponent {
         this.datosUsuarios=response;
         this.storage.setItem('id',this.datosUsuarios.id);
         this.storage.setItem('rol',this.datosUsuarios.rol);
+       this.id= this.storage.getItem('id');
+       this.rol=this.storage.getItem('rol');
+
+        switch(this.rol){
+          case 1:
+            this.router.navigate(['dashboard/paciente/agenda',this.id]);
+          break;
+
+          case 2:
+
+          break;
+
+          case 3:
+
+          break;
+
+          case 4:
+
+          break;
+        }
+
       }
     )
 

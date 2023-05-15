@@ -36,10 +36,7 @@ export class RoleGuard implements CanActivate {
         userRole='medico';
 
     }
-    console.log(userRole);
-    const requiredRoles = (next.data as RouteData).requiredRoles;
-    console.log(requiredRoles);
-    
+    const requiredRoles = (next.data as RouteData).requiredRoles;    
     if (requiredRoles && userRole && requiredRoles.includes(userRole)) {
       return true;
     } else {

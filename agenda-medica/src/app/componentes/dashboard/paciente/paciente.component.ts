@@ -11,9 +11,14 @@ import { Observable } from 'rxjs';
   styleUrls: ['./paciente.component.css'],
 })
 export class PacienteComponent implements OnInit {
+  id: any;
   public dataDashboard$!: Observable<Dashboard>;
   constructor(private dashboardService: DashboardService) {
     this.dataDashboard$ = dashboardService.dashboardObservable;
   }
-  ngOnInit(): void {}
+  ngOnInit(): void {
+
+   this.id= sessionStorage.getItem('id');
+
+  }
 }
