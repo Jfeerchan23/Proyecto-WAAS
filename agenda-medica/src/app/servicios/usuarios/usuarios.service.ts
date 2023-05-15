@@ -115,6 +115,10 @@ export class UsuariosService {
 		return this.http.post(`${this.URL}/api/citasDisponibles`, data);
 	}
 
+	citasProgramadas(): Observable<any> {
+		return this.http.get(`${this.URL}/api/citasProgramadas`);
+	}
+
 	/* Historial clínico */
 
 	obtenerHistorialClinico($id:any){

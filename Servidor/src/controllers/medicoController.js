@@ -140,7 +140,7 @@ medicoController.agendaDisponible= (req, res)=>{
   req.getConnection((err, conn) => {
     if (err) return res.send(err);
 
-    conn.query('SELECT citas.idCita, citas.fecha, citas.horaInicio, citas.horaTermino FROM medicos JOIN citas WHERE medicos.idMedico = citas.idMedico AND citas.idMedico=? AND citas.idPaciente IS NULL', [id], (err, rows) => {
+    conn.query("SELECT citas.idCita, citas.fecha, citas.horaInicio, citas.horaTermino FROM medicos JOIN citas WHERE medicos.idMedico = citas.idMedico AND citas.idMedico=? AND citas.idPaciente IS NULL AND CONCAT(citas.fecha, ' ', citas.horaInicio) >= NOW()", [id], (err, rows) => {
       if (err) return res.send(err);
       for(let i=0; i<rows.length;i++){
         const fecha = rows[i].fecha;

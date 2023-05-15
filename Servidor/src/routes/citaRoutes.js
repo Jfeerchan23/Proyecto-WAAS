@@ -24,4 +24,7 @@ citaRoutes.post('/citas/crear/:id',citaController.crearCitas);
 /* Obtener todas las citas */
 citaRoutes.post('/citasDisponibles', citaController.citasDisponibles);
 
+/* Obtener todas las citas */
+citaRoutes.get('/citasProgramadas', citaController.citasProgramadas);
+
 module.exports = citaRoutes;
