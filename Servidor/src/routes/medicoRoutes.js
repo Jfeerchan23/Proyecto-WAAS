@@ -7,6 +7,7 @@ medicoRoutes.post('/registrar', medicoController.insertar)
 medicoRoutes.get('/obtener/:id', medicoController.obtener);
 medicoRoutes.put('/actualizar/:id', medicoController.actualizar);
 medicoRoutes.delete('/eliminar/:id', medicoController.eliminar);
+medicoRoutes.get('/agenda/:id', medicoController.agenda);
 // medicoRoutes.get('/especialidades',medicoController.obtenerEspecialidades);
 
 module.exports = medicoRoutes;

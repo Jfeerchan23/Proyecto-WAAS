@@ -126,6 +126,10 @@ export class UsuariosService {
 		return this.http.get(`${this.URL}/api/pacientes/agenda/${$id}`);
 	}
 
+	agendaMedico($id:any){
+		return this.http.get(`${this.URL}/api/medicos/agenda/${$id}`);
+	}
+
 	/* login */
 	login(data: any): Observable<any> {
 		return this.http.post(`${this.URL}/api/login/auth`, data);

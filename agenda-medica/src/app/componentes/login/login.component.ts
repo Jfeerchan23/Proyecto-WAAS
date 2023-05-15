@@ -54,6 +54,7 @@ export class LoginComponent {
           break;
 
           case 2:
+            this.router.navigate(['dashboard/medico/principal-medico',this.id]);
 
           break;
 

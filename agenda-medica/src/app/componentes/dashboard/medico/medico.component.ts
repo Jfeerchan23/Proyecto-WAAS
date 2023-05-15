@@ -8,6 +8,7 @@ import { Dashboard, DashboardService } from 'src/app/servicios/dashboard.service
   styleUrls: ['./medico.component.css']
 })
 export class MedicoComponent {
+  id:any;
   public dataDashboard$!: Observable<Dashboard>;
   constructor(
     private dashboardService: DashboardService, 
@@ -16,6 +17,7 @@ export class MedicoComponent {
     this.dataDashboard$ = dashboardService.dashboardObservable;
   }
   ngOnInit(): void {
+    this.id= sessionStorage.getItem('id');
     
   }
 

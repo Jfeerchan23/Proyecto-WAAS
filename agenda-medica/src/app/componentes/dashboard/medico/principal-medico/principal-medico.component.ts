@@ -6,6 +6,8 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import esLocale from '@fullcalendar/core/locales/es';
+import { UsuariosService } from 'src/app/servicios/usuarios/usuarios.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-principal-medico',
@@ -14,19 +16,52 @@ import esLocale from '@fullcalendar/core/locales/es';
 })
 export class PrincipalMedicoComponent {
   public dataDashboard$!: Observable<Dashboard>;
-
-  constructor(private dashboardService: DashboardService) {
+  idMedico:any;
+  eventos:any=[];
+  arreglo:any=[];
+  constructor(
+    private dashboardService: DashboardService,
+    private usuariosService: UsuariosService,
+    private route: ActivatedRoute,
+    private router: Router,) {
     dashboardService.dashboardObservableData = {
     
       menuActivo: 'principal-medico'
     };
     this.dataDashboard$ = dashboardService.dashboardObservable;
   }
+
+ ngOnInit():void{
+  this.route.params.subscribe((params) => {
+    if (params['idMedico']) {
+      this.idMedico = params['idMedico'];
+      this.usuariosService.agendaMedico(this.idMedico).subscribe(
+        (response)=>{
+          this.eventos=response;
+         for(let i=0; i<this.eventos.length;i++){
+          const evento={
+            title:this.eventos[i].nombrePaciente,
+            start: new Date(this.eventos[i].start),
+            end: new Date(this.eventos[i].end),
+          }
+         this.arreglo.push(evento);
+         }
+         this.calendarOptions.events=this.arreglo;
+        }
+      )
+ 
+    }
+  });
+ }
+
+
+
+
   calendarOptions: CalendarOptions = {
     plugins: [dayGridPlugin, interactionPlugin, timeGridPlugin],
     height: 500,
     locale: esLocale,
-    themeSystem: 'bootstrap5',
+    themeSystem: 'standard',
     headerToolbar: {
       left: 'prev,next today',
       center: 'title',
@@ -34,16 +69,7 @@ export class PrincipalMedicoComponent {
     },
     initialView: 'dayGridMonth',
     eventClick: this.handleEventClick.bind(this), // MUST ensure `this` context is maintained
-    events: [
-      {
-        title: 'Fernando Chimal',
-        start: new Date('2023-04-02T10:30:00'),
-        end: new Date('2023-04-02T12:00:00')
-      },
-      { title: 'event 2', date: '2023-04-10' ,   color: 'black'},
-      { title: 'event 3', date: '2023-04-15', colo:'green' },
-      { title: 'event 4', date: '2023-04-18', color: 'yellow' },
-    ],
+    events: [],
   };
 
   handleEventClick(eventInfo: any) {

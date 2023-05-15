@@ -11,10 +11,11 @@ import { AtenderpacienteDiagnosticoComponent } from './atenderpaciente-diagnosti
 const routes: Routes = [
   {path: '', redirectTo:'principal-medico', pathMatch: 'full'},
   {path: '', component: MedicoComponent, children: [
-    { path: 'principal-medico', component: PrincipalMedicoComponent},
+    { path: 'principal-medico/:idMedico', component: PrincipalMedicoComponent},
     { path: 'lista-pacientes', component: ListadepacientesComponent},
+    { path: 'lista-pacientes/:idMedico', component: ListadepacientesComponent},
     { path: 'editar-agenda', component: EditarAgendaComponent},
-    { path: 'crear-agenda', component: CrearAgendaComponent},
+    { path: 'crear-agenda/:idMedico', component: CrearAgendaComponent},
     { path: 'paciente-datos', component: AtenderpacientedatosComponent},
     { path: 'paciente-diagnostico', component: AtenderpacienteDiagnosticoComponent}
   ]
