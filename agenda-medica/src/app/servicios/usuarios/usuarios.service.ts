@@ -68,7 +68,7 @@ export class UsuariosService {
 
 	/* Especialidades REVIZAR */
 	obtenerEspecialidades(): Observable<any> {
-	 	return this.http.get(`${this.URL}/api/especialidades`);
+	 	return this.http.get(`${this.URL}/api/medicos/especialidades`);
 	 }
 
 

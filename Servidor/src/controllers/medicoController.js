@@ -101,16 +101,16 @@ medicoController.insertar = (req, res) => {
   })
 }
 
-//   medicoController.obtenerEspecialidades = (req, res) =>{
-//     req.getConnection((err, conn) =>{
-//         if(err) return res.send(err)
+ medicoController.obtenerEspecialidades = (req, res) =>{
+    req.getConnection((err, conn) =>{
+         if(err) return res.send(err)
 
-//         conn.query('SELECT * FROM especialidades', (err, rows) =>{
-//             if(err) return res.send(err)
-//             res.json(rows)
-//         })
-//     })
-// }
+         conn.query('SELECT * FROM especialidades', (err, rows) =>{
+             if(err) return res.send(err)
+             res.json(rows)
+        })
+   })
+}
 
 medicoController.agenda = (req, res)=>{
   const id = req.params.id;
