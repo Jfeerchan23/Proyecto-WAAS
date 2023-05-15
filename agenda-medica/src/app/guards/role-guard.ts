@@ -22,6 +22,15 @@ export class RoleGuard implements CanActivate {
         case '1': 
         userRole='paciente';
         break;
+        case '2': 
+        userRole='medico';
+        break;
+        case '3': 
+        userRole='recepcion';
+        break;
+        case '4': 
+        userRole='admin';
+        break;
 
         default:
         userRole='medico';

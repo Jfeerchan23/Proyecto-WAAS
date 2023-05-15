@@ -10,7 +10,7 @@ const routes: Routes = [
       {path: 'paciente', loadChildren:()=>import('./paciente/paciente.module').then(x=>x.PacienteModule), canActivate:[ RoleGuard], data: {
         requiredRoles: ["paciente"]
       }},
-      {path: 'administracion', loadChildren:()=>import('./administrador/administrador.module').then(x=>x.AdministradorModule), canActivate:[ RoleGuard], data: {
+      {path: 'admin', loadChildren:()=>import('./administrador/administrador.module').then(x=>x.AdministradorModule), canActivate:[ RoleGuard], data: {
         requiredRoles: ["admin"]
       }},
       {path: 'recepcion', loadChildren:()=>import('./recepcion/recepcion.module').then(x=>x.RecepcionModule), canActivate:[ RoleGuard], data: {
