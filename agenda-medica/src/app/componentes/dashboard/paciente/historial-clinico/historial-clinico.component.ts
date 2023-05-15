@@ -14,6 +14,8 @@ export class HistorialClinicoComponent {
   citas: any = [];
   idCita:any;
   indice: any;
+  fechaHoy:any;
+  horaActual:any;
   constructor(
     dashboardService: DashboardService,
     private usuariosService: UsuariosService,
@@ -39,14 +41,22 @@ export class HistorialClinicoComponent {
          this.usuariosService.obtenerHistorialClinico(this.idPaciente).subscribe(
           (response)=>{
            this.citas = response;
+       
            this.dataSource = new MatTableDataSource(this.citas);
            this.dataSource.paginator = this.paginator;
            this.paginator.firstPage();
+           this.fechaHoy = new Date().toISOString().slice(0, 10);
+           
+           const date = new Date();
+           const options = { hour12: false };
+           this.horaActual = date.toLocaleTimeString('es-ES', options);
+          
           }
          )
         }
+       
       });
-    
+     
   }
 
   seleccionarCita(id:any){
@@ -74,6 +84,5 @@ export class HistorialClinicoComponent {
     
   }
 
+
 }
-
-
