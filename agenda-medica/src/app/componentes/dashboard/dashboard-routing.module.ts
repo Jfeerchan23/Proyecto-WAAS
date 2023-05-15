@@ -7,10 +7,18 @@ const routes: Routes = [
   {
     
     path: '', component: DashboardComponent,children:[
-      {path: 'paciente', loadChildren:()=>import('./paciente/paciente.module').then(x=>x.PacienteModule), canActivate:[ RoleGuard]},
-      {path: 'administracion', loadChildren:()=>import('./administrador/administrador.module').then(x=>x.AdministradorModule)},
-      {path: 'recepcion', loadChildren:()=>import('./recepcion/recepcion.module').then(x=>x.RecepcionModule)},
-      {path: 'medico', loadChildren:()=>import('./medico/medico.module').then(x=>x.MedicoModule)}
+      {path: 'paciente', loadChildren:()=>import('./paciente/paciente.module').then(x=>x.PacienteModule), canActivate:[ RoleGuard], data: {
+        requiredRoles: ["paciente"]
+      }},
+      {path: 'administracion', loadChildren:()=>import('./administrador/administrador.module').then(x=>x.AdministradorModule), canActivate:[ RoleGuard], data: {
+        requiredRoles: ["admin"]
+      }},
+      {path: 'recepcion', loadChildren:()=>import('./recepcion/recepcion.module').then(x=>x.RecepcionModule), canActivate:[ RoleGuard], data: {
+        requiredRoles: ["recepcion"]
+      }},
+      {path: 'medico', loadChildren:()=>import('./medico/medico.module').then(x=>x.MedicoModule), canActivate:[ RoleGuard], data: {
+        requiredRoles: ["medico"]
+      }}
 
     ]
 
