@@ -31,7 +31,10 @@ export class LoginComponent {
     });
   }
 
- 
+ ngOnInit(){
+  sessionStorage.removeItem('rol');
+  sessionStorage.removeItem('id');
+ }
 
   onSubmitLogin(){
     this.dataUsuarios.email_usuario = this.form.value.usuario;
@@ -55,10 +58,12 @@ export class LoginComponent {
           break;
 
           case 3:
+            this.router.navigate(['dashboard/recepcion']);
 
           break;
 
           case 4:
+            this.router.navigate(['dashboard/administracion']);
 
           break;
         }
