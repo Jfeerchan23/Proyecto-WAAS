@@ -128,7 +128,7 @@ export class AgendaRecepcionComponent{
            title:"DISPONIBLE",
            start: new Date(this.eventos[i].start),
            end: new Date(this.eventos[i].end),
-           color:'green'
+           color:'green',
          }
         this.arreglo.push(evento);
         }
