@@ -126,4 +126,10 @@ export class UsuariosService {
 		return this.http.get(`${this.URL}/api/pacientes/agenda/${$id}`);
 	}
 
+	/* login */
+	login(data: any): Observable<any> {
+		return this.http.post(`${this.URL}/api/login/auth`, data);
+	}
+
+
 }
