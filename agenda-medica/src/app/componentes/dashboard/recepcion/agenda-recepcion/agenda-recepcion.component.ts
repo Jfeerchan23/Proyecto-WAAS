@@ -100,9 +100,10 @@ export class AgendaRecepcionComponent{
 
 
   onSelectionChange(event: any){
+    console.log('funcion onSelectionChange')
     this.eventos=[];
     this.arreglo=[];
-    this.nombreMedico=event.option.value.nombreMedico;
+   
     this.idMedico=event.option.value.idMedico;
     this.usuariosService.agendaMedico(this.idMedico).subscribe(
       (response)=>{
@@ -112,11 +113,29 @@ export class AgendaRecepcionComponent{
           title:this.eventos[i].nombrePaciente,
           start: new Date(this.eventos[i].start),
           end: new Date(this.eventos[i].end),
+          color:'red'
         }
        this.arreglo.push(evento);
        }
-       this.calendarOptions.events=this.arreglo;
+       this.nombreMedico=event.option.value.nombreMedico;
       }
     )
+    this.usuariosService.agendaDisponibleMedico(this.idMedico).subscribe(
+      (response)=>{
+        this.eventos=response;
+        for(let i=0; i<this.eventos.length;i++){
+         const evento={
+           title:"DISPONIBLE",
+           start: new Date(this.eventos[i].start),
+           end: new Date(this.eventos[i].end),
+           color:'green'
+         }
+        this.arreglo.push(evento);
+        }
+        this.calendarOptions.events=this.arreglo;
+      }
+    )
+   
+
    }
 }

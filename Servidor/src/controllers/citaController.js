@@ -73,7 +73,7 @@ citaController.crearCitas = (req, res) => {
     let y = fechasEntre; // muestra el array de fechas en la consola del navegador o de Node.js
 
     let x = crearLapsos(req.body.horaInicio, req.body.descansoInicio, req.body.duracion);
-
+    let z = crearLapsos(req.body.descansoFin, req.body.horaFin, req.body.duracion);
 
     y.forEach(objeto1 => {
         x.forEach(objeto => {
@@ -92,10 +92,23 @@ citaController.crearCitas = (req, res) => {
                     if (err) return res.send(err)
                 })
             })
+        });
+        z.forEach(objeto => {
+            const cita = {
+                idMedico: req.params.id,
+                fecha: objeto1,
+                horaInicio: objeto.horaInicio,
+                horaTermino: objeto.horaFin
+            }
+           
 
-
-
-
+            req.getConnection((err, conn) => {
+                if (err) return res.send(err)
+        
+                conn.query('INSERT INTO citas set ?', [cita], (err, rows) => {
+                    if (err) return res.send(err)
+                })
+            })
         });
 
     });
@@ -109,7 +122,6 @@ function crearLapsos(horaInicio, horaFin, duracion) {
     let horaLimite = horaFin;
 
     let lapsos = []; // Declarar un arreglo vacío para almacenar los pares primeraHora y horaOriginal
-
     while (horaOriginal < horaLimite) {
 
         if (horaOriginal >= horaLimite) {
@@ -135,16 +147,18 @@ function crearLapsos(horaInicio, horaFin, duracion) {
 
         const horaActualizada = `${horasStrActualizadas}:${minutosStrActualizados}:${segundosStrActualizados}`;
 
-        if (horaActualizada >= horaLimite) {
-            break;
-        }
+       
 
         const objetoLapso = { // Crear un objeto literal con las propiedades primeraHora y horaOriginal
             horaInicio: horaOriginal,
             horaFin: horaActualizada
         };
+        console.log(objetoLapso);
 
         lapsos.push(objetoLapso); // Agregar el objeto al arreglo lapsos
+        if (horaActualizada >= horaLimite) {
+            break;
+        }
 
         horaOriginal = horaActualizada;
     }
