@@ -26,6 +26,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import {ScrollingModule} from '@angular/cdk/scrolling';
 import { RoleGuard } from 'src/app/guards/role-guard';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableModule } from '@angular/material/table';
 
 
 @NgModule({
@@ -41,7 +43,26 @@ import { RoleGuard } from 'src/app/guards/role-guard';
   imports: [
     CommonModule,
     MedicoRoutingModule,
+    MatToolbarModule,
+    MatIconModule,
     FullCalendarModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatMenuModule,
+    MatSidenavModule, 
+    MatGridListModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    FormsModule, 
+    ReactiveFormsModule,
+    MatSelectModule,
+    MatCardModule,
+    MatTooltipModule,
+    MatStepperModule,
+    MatAutocompleteModule,
+    ScrollingModule,
+    MatPaginatorModule,
     MatToolbarModule,
     MatIconModule,
     MatMenuModule,
@@ -57,7 +78,9 @@ import { RoleGuard } from 'src/app/guards/role-guard';
     MatTooltipModule,
     MatStepperModule,
     MatAutocompleteModule,
-    ScrollingModule
+    ScrollingModule,
+    MatTableModule,
+    MatPaginatorModule
   ],
   providers: [RoleGuard] // Agrega RoleGuard como proveedor
 })

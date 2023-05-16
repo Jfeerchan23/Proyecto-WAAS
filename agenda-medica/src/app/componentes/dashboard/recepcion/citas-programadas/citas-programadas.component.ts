@@ -93,8 +93,6 @@ export class CitasProgramadasComponent {
 
   seleccionarCita(idCita:any){
     this.idCita=idCita;
-   
-    
   }
   cancelarCita(){
     const cita = {

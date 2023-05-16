@@ -155,5 +155,22 @@ medicoController.agendaDisponible= (req, res)=>{
     });
   });
 }
+medicoController.citasProgramadas = (req, res)=>{
+  const id = req.params.id;
+  req.getConnection((err, conn) => {
+    if (err) return res.send(err);
+
+    conn.query("SELECT citas.fecha, medicos.idMedico, pacientes.idPaciente, citas.horaInicio, citas.horaTermino, citas.modalidad, medicos.nombreMedico, medicos.consultorioMedico, citas.idCita, pacientes.nombrePaciente, pacientes.CURPPaciente FROM medicos JOIN citas JOIN pacientes WHERE citas.idPaciente=pacientes.idPaciente AND medicos.idMedico=citas.idMedico AND citas.notasConsultas IS NULL AND CONCAT(citas.fecha, ' ', citas.horaInicio) >= NOW() AND medicos.idMedico=?", [id], (err, rows) => {
+      if (err) return res.send(err);
+
+      for (let i = 0; i < rows.length; i++) {
+        const fecha = new Date(rows[i].fecha);
+        rows[i].fecha = fecha.toISOString().slice(0, 10);
+      }
+      res.json(rows)
+     
+    });
+  });
+}
 
 module.exports = medicoController

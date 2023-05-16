@@ -118,22 +118,26 @@ export class UsuariosService {
 	citasProgramadas(): Observable<any> {
 		return this.http.get(`${this.URL}/api/citasProgramadas`);
 	}
+	citasProgramadasMedico($id:any): Observable<any> {
+		return this.http.get(`${this.URL}/api/medicos/citasProgramadas/${$id}`);
+	}
+
 
 	/* Historial clínico */
 
-	obtenerHistorialClinico($id:any){
+	obtenerHistorialClinico($id:any):Observable<any>{
 		return this.http.get(`${this.URL}/api/pacientes/historialClinico/${$id}`);
 	}
 
 	/* Agenda */
-	agendaPaciente($id:any){
+	agendaPaciente($id:any):Observable<any>{
 		return this.http.get(`${this.URL}/api/pacientes/agenda/${$id}`);
 	}
 
-	agendaMedico($id:any){
+	agendaMedico($id:any):Observable<any>{
 		return this.http.get(`${this.URL}/api/medicos/agenda/${$id}`);
 	}
-	agendaDisponibleMedico($id:any){
+	agendaDisponibleMedico($id:any):Observable<any>{
 		return this.http.get(`${this.URL}/api/medicos/agendaDisponible/${$id}`);
 	}
 
