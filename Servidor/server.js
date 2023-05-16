@@ -6,9 +6,6 @@ const HTMLtoPDF = require('html-pdf-node');
 const mailSystem = require('nodemailer');
 
 const routes = require('./routes')
-const medicoRoutes = require('./src/routes/medicoRoutes')
-const pacienteRoutes = require('./src/routes/pacienteRoutes')
-const citaRoutes = require('./src/routes/citaRoutes')
 
 const app = express()
 app.set('port', process.env.PORT|| 8080)
@@ -48,7 +45,6 @@ app.get('/', (req, res)=>{
 })
 
 app.use('/api', routes)
-app.use('/api', citaRoutes)
 
 app.get('/QRtest', (req, res) =>{
     QRCodeGenerator.toDataURL('Texto a transformar', {

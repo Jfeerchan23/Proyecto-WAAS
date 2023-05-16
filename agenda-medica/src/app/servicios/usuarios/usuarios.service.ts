@@ -66,10 +66,13 @@ export class UsuariosService {
 		return this.http.delete(`${this.URL}/api/eliminar/${$id}`);
 	}
 
-	/* Especialidades REVIZAR */
 	obtenerEspecialidades(): Observable<any> {
 	 	return this.http.get(`${this.URL}/api/medicos/especialidades`);
 	 }
+
+	citasProgramadasMedico($id:any): Observable<any> {
+		return this.http.get(`${this.URL}/api/medicos/citasProgramadas/${$id}`);
+	}
 
 
 	/* Pacientes */
@@ -96,6 +99,10 @@ export class UsuariosService {
 		return this.http.delete(`${this.URL}/api/pacientes/eliminar/${$id}`);
 	}
 
+	obtenerHistorialClinico($id:any):Observable<any>{
+		return this.http.get(`${this.URL}/api/pacientes/historialClinico/${$id}`);
+	}
+
 
 	/*Citas */
 	crearCitas($id: any, $datos: any): Observable<any> {
@@ -103,10 +110,11 @@ export class UsuariosService {
 		console.log(data);
 		return this.http.post(`${this.URL}/api/citas/crear/${$id}`, data);
 	}
-	editarCita($datos: any, $id: any): Observable<any> {
+
+	reservarCita($datos: any, $id: any): Observable<any> {
 		let data = Object.assign({}, $datos);
 		console.log(data);
-		return this.http.put(`${this.URL}/api/citas/${$id}`, data);
+		return this.http.put(`${this.URL}/api/citas/reservar/${$id}`, data);
 	}
 
 	citasDisponibles($datos: any): Observable<any> {
@@ -117,16 +125,6 @@ export class UsuariosService {
 
 	citasProgramadas(): Observable<any> {
 		return this.http.get(`${this.URL}/api/citasProgramadas`);
-	}
-	citasProgramadasMedico($id:any): Observable<any> {
-		return this.http.get(`${this.URL}/api/medicos/citasProgramadas/${$id}`);
-	}
-
-
-	/* Historial clínico */
-
-	obtenerHistorialClinico($id:any):Observable<any>{
-		return this.http.get(`${this.URL}/api/pacientes/historialClinico/${$id}`);
 	}
 
 	/* Agenda */
@@ -140,6 +138,7 @@ export class UsuariosService {
 	agendaDisponibleMedico($id:any):Observable<any>{
 		return this.http.get(`${this.URL}/api/medicos/agendaDisponible/${$id}`);
 	}
+
 
 	/* login */
 	login(data: any): Observable<any> {

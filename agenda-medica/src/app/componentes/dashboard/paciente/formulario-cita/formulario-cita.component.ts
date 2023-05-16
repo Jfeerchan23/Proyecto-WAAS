@@ -133,7 +133,7 @@ export class FormularioCitaComponent {
         modalidad: this.cita.modalidad
       }
   
-      this.usuariosService.editarCita(cita,this.cita.hora).subscribe(
+      this.usuariosService.reservarCita(cita,this.cita.hora).subscribe(
         
       );
       this._snackBar.open('Cita guardada', '', {

@@ -118,7 +118,7 @@ export class CitasProgramadasComponent {
     }
 
 
-    this.usuariosService.editarCita(cita, this.idCita).subscribe(
+    this.usuariosService.reservarCita(cita, this.idCita).subscribe(
 
     )
 

@@ -1,55 +1,14 @@
 const citaController = {}
 
-citaController.obtenerTodos = (req, res) => {
-    req.getConnection((err, conn) => {
-        if (err) return res.send(err)
-
-        conn.query('SELECT * FROM citas', (err, rows) => {
-            if (err) return res.send(err)
-            res.json(rows)
-        })
-    })
-}
-
-citaController.obtener = (req, res) => {
-    const id = req.params.id;
-
-    req.getConnection((err, conn) => {
-        if (err) return res.send(err);
-
-        conn.query('SELECT * FROM citas WHERE idCita = ?', [id], (err, rows) => {
-            if (err) return res.send(err);
-
-            const elemento = rows[0];
-
-            res.json(elemento);
-        });
-    });
-}
-
-citaController.reservar = (req, res) => {
-    const id = req.params.id;
-    const updated = req.body;
-
-    req.getConnection((err, conn) => {
-        if (err) return res.send(err);
-
-        conn.query('UPDATE citas SET ? WHERE idCita = ?', [updated, id], (err, result) => {
-            if (err) return res.send(err);
-
-            res.send(`Cita con id ${id} actualizado.`);
-        });
-    });
-}
-
 /**
  * Crea las citas del medico para un rango de fechas
  * @param {*} req Contiene la petición del usuario
  * @param {*} res Contiene la respuesta que se enviara a la peticion
  */
 citaController.crearCitas = (req, res) => {
-    const { idMedico, fechaInicio, fechaFin, duracionCitas, horaInicio, horaFin, inicioAlmuerzo, finAlmuerzo } = req.body;
-    if (!idMedico || !fechaInicio || !fechaFin || !duracionCitas || !horaInicio || !horaFin || !inicioAlmuerzo || !finAlmuerzo) return res.status(400).send("Datos incompletos");
+    const idMedico = req.params.idMedico;
+    const {fechaInicio, fechaFin, duracionCitas, horaInicio, horaFin, inicioAlmuerzo, finAlmuerzo } = req.body;
+    if (!fechaInicio || !fechaFin || !duracionCitas || !horaInicio || !horaFin || !inicioAlmuerzo || !finAlmuerzo) return res.status(400).send("Datos incompletos");
 
     let diasAProgramar = obtenerDiasEntreFechas(fechaInicio,fechaFin);
     let citas = [];
@@ -179,6 +138,31 @@ function obtenerDiasEntreFechas(fechaInicio, fechaFin) {
     return dias;
 }
 
+/**
+ * Cambia el id del paciente de una cita en la base de datos
+ * @param {*} req Contiene la petición del usuario
+ * @param {*} res Contiene la respuesta que se enviara a la peticion
+ */
+citaController.reservar = (req, res) => {
+    const id = req.params.id;
+    const updated = req.body;
+
+    req.getConnection((err, conn) => {
+        if (err) return res.send(err);
+
+        conn.query('UPDATE citas SET ? WHERE idCita = ?', [updated, id], (err, result) => {
+            if (err) return res.send(err);
+
+            res.send(`Cita con id ${id} reservada.`);
+        });
+    });
+}
+
+/**
+ * Devuelve todas las citas disponibles a partir del id del medico y una fecha
+ * @param {*} req Contiene la petición del usuario
+ * @param {*} res Contiene la respuesta que se enviara a la peticion
+ */
 citaController.citasDisponibles = (req, res) => {
     const id = req.body.idMedico;
     req.getConnection((err, conn) => {
@@ -190,7 +174,12 @@ citaController.citasDisponibles = (req, res) => {
         });
     });
 }
-  
+
+/**
+ * Regresa todas la información de las citas ya programadas con un paciente y que aun no han sucedido
+ * @param {*} req Contiene la petición del usuario
+ * @param {*} res Contiene la respuesta que se enviara a la peticion
+ */
 citaController.citasProgramadas = (req, res)=>{
    
     req.getConnection((err, conn) => {
