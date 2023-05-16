@@ -2,26 +2,14 @@ const express = require('express')
 const citaRoutes = express.Router()
 const citaController = require('../controllers/citaController');
 
-/* Obtener todas las citas */
-citaRoutes.get('/citas', citaController.obtenerTodos)
-
-/* Insertar una cita */
-citaRoutes.post('/citas',citaController.insertar)
-
-
-/* Obtener una cita */
-citaRoutes.get('/citas/:id',citaController.obtener);
+citaRoutes.get('/', citaController.obtenerTodos)
+citaRoutes.get('/obtener/:id',citaController.obtener);
 
 /* Actualizar una cita */
-citaRoutes.put('/citas/:id', citaController.actualizar);
-
-/* Eliminar una cita */
-citaRoutes.delete('/citas/:id',citaController.eliminar);
-
-/*Crear serie de citas*/
+citaRoutes.put('/citas/:id', citaController.reservar);
 citaRoutes.post('/citas/crear/',citaController.crearCitas);
 
 /* Obtener todas las citas */
-citaRoutes.post('/citasDisponibles', citaController.citasDisponibles);
+citaRoutes.get('/citasDisponibles', citaController.citasDisponibles);
 
 module.exports = citaRoutes;

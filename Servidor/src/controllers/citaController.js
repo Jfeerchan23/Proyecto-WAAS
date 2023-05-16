@@ -26,7 +26,8 @@ citaController.obtener = (req, res) => {
         });
     });
 }
-citaController.actualizar = (req, res) => {
+
+citaController.reservar = (req, res) => {
     const id = req.params.id;
     const updated = req.body;
 
@@ -39,39 +40,6 @@ citaController.actualizar = (req, res) => {
             res.send(`Cita con id ${id} actualizado.`);
         });
     });
-}
-citaController.eliminar = (req, res) => {
-    const id = req.params.id;
-
-    req.getConnection((err, conn) => {
-        if (err) return res.send(err);
-
-        conn.query('DELETE FROM citas WHERE idCita = ?', [id], (err, rows) => {
-            if (err) return res.send(err);
-            res.send('cita eliminada!')
-        });
-    });
-}
-
-
-citaController.insertar = (req, res) => {
-    req.getConnection((err, conn) => {
-        if (err) return res.send(err)
-
-        console.log(req.body.fecha)
-        console.log(new Date());
-        let dia = new Date().getDate();
-        console.log(dia);
-        let mes = new Date().getMonth() + 1;
-        let formatoFecha = new Date().getFullYear() + "-" + mes + "-" + dia
-        console.log(formatoFecha)
-        req.body.fecha = formatoFecha
-        conn.query('INSERT INTO citas set ?', [req.body], (err, rows) => {
-            if (err) return res.send(err)
-
-            res.send('nueva cita!')
-        })
-    })
 }
 
 /**
