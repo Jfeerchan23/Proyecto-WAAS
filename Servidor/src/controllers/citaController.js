@@ -1,3 +1,19 @@
+const HTMLtoPDF = require('html-pdf-node');
+const mailSystem = require('nodemailer');
+
+const mailTransporter = mailSystem.createTransport({
+    host: "smtp-mail.outlook.com", // hostname
+    secureConnection: false, // TLS requires secureConnection to be false
+    port: 587, // port for secure SMTP
+    tls: {
+        ciphers: 'SSLv3'
+    },
+    auth: {
+        user: 'NimboApi@outlook.com',
+        pass: 'contrasenasegura123'
+    }
+});
+
 const citaController = {}
 
 /**
@@ -7,10 +23,10 @@ const citaController = {}
  */
 citaController.crearCitas = (req, res) => {
     const idMedico = req.params.idMedico;
-    const {fechaInicio, fechaFin, duracionCitas, horaInicio, horaFin, inicioAlmuerzo, finAlmuerzo } = req.body;
+    const { fechaInicio, fechaFin, duracionCitas, horaInicio, horaFin, inicioAlmuerzo, finAlmuerzo } = req.body;
     if (!fechaInicio || !fechaFin || !duracionCitas || !horaInicio || !horaFin || !inicioAlmuerzo || !finAlmuerzo) return res.status(400).send("Datos incompletos");
 
-    let diasAProgramar = obtenerDiasEntreFechas(fechaInicio,fechaFin);
+    let diasAProgramar = obtenerDiasEntreFechas(fechaInicio, fechaFin);
     let citas = [];
     let primerPeriodo = obtenerSeccionesEntreHoras(horaInicio, inicioAlmuerzo, duracionCitas);
     primerPeriodo.forEach(seccion => {
@@ -37,7 +53,7 @@ citaController.crearCitas = (req, res) => {
         })
     })
 
-    setTimeout(()=> {
+    setTimeout(() => {
         if (fechasProgramadas.length == 0) {
             diasAProgramar.forEach(diaAProgramar => {
                 citas.forEach(cita => {
@@ -47,10 +63,10 @@ citaController.crearCitas = (req, res) => {
                         horaInicio: cita.horaInicio,
                         horaTermino: cita.horaFin
                     }
-    
+
                     req.getConnection((err, conn) => {
                         if (err) return res.send(err)
-    
+
                         conn.query('INSERT INTO citas set ?', [datosCita], (err, rows) => {
                             if (err) return res.send(err)
                         })
@@ -62,7 +78,7 @@ citaController.crearCitas = (req, res) => {
             res.send("El/Los dia(s) " + fechasProgramadas.toString() + " ya se encuentra(n) programado(s)")
         }
     }, 1000);
-    
+
 }
 
 /**
@@ -112,19 +128,19 @@ function obtenerSeccionesEntreHoras(horaInicio, horaFin, tiempoSeccion) {
  */
 function obtenerDiasEntreFechas(fechaInicio, fechaFin) {
     const dias = [];
-    
+
     //Corregimos los problemas de la conversion de fecha
     let fechaActual = new Date();
     const [anioFechaInicio, mesFechaInicio, diaFechaInicio] = fechaInicio.split('-');
     fechaActual.setFullYear(anioFechaInicio);
-    fechaActual.setMonth(parseInt(mesFechaInicio) -1);
+    fechaActual.setMonth(parseInt(mesFechaInicio) - 1);
     fechaActual.setDate(diaFechaInicio);
 
     //Corregimos los problemas de la conversion de fecha
     let fechaLimite = new Date();
     const [anioFechaFin, mesFechaFin, diaFechaFin] = fechaInicio.split('-');
     fechaLimite.setFullYear(anioFechaFin);
-    fechaLimite.setMonth(parseInt(mesFechaFin) -1);
+    fechaLimite.setMonth(parseInt(mesFechaFin) - 1);
     fechaLimite.setDate(diaFechaFin);
 
     while (fechaActual <= fechaLimite) {
@@ -153,9 +169,114 @@ citaController.reservar = (req, res) => {
         conn.query('UPDATE citas SET ? WHERE idCita = ?', [updated, id], (err, result) => {
             if (err) return res.send(err);
 
+            notificarPorCorreo(updated.idPaciente, conn)
             res.send(`Cita con id ${id} reservada.`);
         });
     });
+}
+
+citaController.notificar = async (req, res) => {
+    req.getConnection(async (err, conn) => {
+        if (err) return res.send(err);
+        let correoPaciente = await obtenerCorreoPaciente(7, conn)
+        let datosMedico = await obtenerDatosCorreoMedico(1, conn)
+        let datosCita = await obtenerDatosCorreoCita(1, conn);
+
+        if (correoPaciente && datosMedico && datosCita) {
+
+            datosCita.fecha = new Date(datosCita.fecha).toISOString().slice(0, 10);
+
+            let conexionSistemaCorreos = await mailTransporter.verify();
+            if (conexionSistemaCorreos) {
+                let htmlTemplate = `<body> <h1 class="text-center" style="text-align: center;">Datos de reservación de cita</h1> <table class="center" style="border: 1px solid black;border-radius: 10px;text-align: center;margin-left: auto;margin-right: auto;"> <tr> <th style="border: 1px solid black;border-radius: 10px;text-align: center;padding: 0.5rem;">Fecha</th> <th style="border: 1px solid black;border-radius: 10px;text-align: center;padding: 0.5rem;">Hora de inicio</th> <th style="border: 1px solid black;border-radius: 10px;text-align: center;padding: 0.5rem;">Hora de fin</th> <th style="border: 1px solid black;border-radius: 10px;text-align: center;padding: 0.5rem;">Nombre del medico</th> <th style="border: 1px solid black;border-radius: 10px;text-align: center;padding: 0.5rem;">Especialidad</th> <th style="border: 1px solid black;border-radius: 10px;text-align: center;padding: 0.5rem;">Consultorio del medico</th> <th style="border: 1px solid black;border-radius: 10px;text-align: center;padding: 0.5rem;">Modalidad</th> </tr><tr> <td style="border: 1px solid black;border-radius: 10px;text-align: center;">${datosCita.fecha}</td><td style="border: 1px solid black;border-radius: 10px;text-align: center;">${datosCita.horaInicio}</td><td style="border: 1px solid black;border-radius: 10px;text-align: center;">${datosCita.horaTermino}</td><td style="border: 1px solid black;border-radius: 10px;text-align: center;">${datosMedico.nombreMedico}</td><td style="border: 1px solid black;border-radius: 10px;text-align: center;">${datosMedico.nombreEspecialidad}</td><td style="border: 1px solid black;border-radius: 10px;text-align: center;">${datosMedico.consultorioMedico}</td><td style="border: 1px solid black;border-radius: 10px;text-align: center;">${datosCita.modalidad}</td></tr></table></body>`
+
+                let options = { format: 'A4' };
+                let file = { content: htmlTemplate };
+                let PDF = await HTMLtoPDF.generatePdf(file, options);
+
+                var message = {
+                    from: "NimboApi@outlook.com",
+                    to: correoPaciente,
+                    subject: "Message test",
+                    html: htmlTemplate,
+                    attachments: [
+                        {
+                            filename: 'datos_cita.pdf',
+                            content: PDF
+                        }
+                    ]
+                };
+                mailTransporter.sendMail(message, (err, info) => {
+                    console.info("err: " + err);
+                    console.info("info: " + info.response);
+                })
+            }
+        }
+        res.send("TST");
+    });
+}
+
+/**
+ * Devuelve el correo del paciente de la base de datos
+ * @param {*} idPaciente id del paciente a buscar el correo
+ * @param {*} BDconnection conexion a la base de datos
+ * @return el correo del paciente dentro de la base de datos o null si no lo encuentra
+ */
+function obtenerCorreoPaciente(idPaciente, BDconnection) {
+    let resultado = new Promise((resolve, reject) => {
+        BDconnection.query('SELECT correoPaciente FROM `pacientes` WHERE idPaciente = ?', [idPaciente], (err, rows) => {
+            if (err) return null;
+            if (rows.length > 0) {
+                resolve(rows[0].correoPaciente)
+            } else {
+                resolve(null)
+            }
+        });
+    });
+
+    return resultado
+}
+
+/**
+ * Devuelve el nombre, especialidad y consultorio del medico de la base de datos
+ * @param {*} idMedico id del medico a buscar la información
+ * @param {*} BDconnection conexion a la base de datos
+ * @return nombre, especialidad y consultorio  del medico dentro de la base de datos o null si no lo encuentra
+ */
+function obtenerDatosCorreoMedico(idMedico, BDconnection) {
+    let resultado = new Promise((resolve, reject) => {
+        BDconnection.query('SELECT medicos.nombreMedico, medicos.consultorioMedico, especialidades.nombreEspecialidad FROM medicos JOIN especialidades WHERE medicos.especialidadMedico = especialidades.idEspecialidad AND medicos.idMedico =  ?', [idMedico], (err, rows) => {
+            if (err) return null;
+            if (rows.length > 0) {
+                resolve(rows[0])
+            } else {
+                resolve(null)
+            }
+        });
+    });
+
+    return resultado
+}
+
+/**
+ * Devuelve la fecha, hora de inicio, hora de fin de una cita en la base de datos
+ * @param {*} idCita id de la cita a buscar la fecha
+ * @param {*} BDconnection conexion a la base de datos
+ * @return fecha, hora de inicio, hora de fin de una cita dentro de la base de datos o null si no lo encuentra
+ */
+function obtenerDatosCorreoCita(idCita, BDconnection) {
+    let resultado = new Promise((resolve, reject) => {
+        BDconnection.query('SELECT fecha, horaInicio, horaTermino, modalidad FROM `citas` WHERE idCita  = ?', [idCita], (err, rows) => {
+            if (err) return null;
+            if (rows.length > 0) {
+                resolve(rows[0])
+            } else {
+                resolve(null)
+            }
+        });
+    });
+
+    return resultado
 }
 
 /**
@@ -168,7 +289,7 @@ citaController.citasDisponibles = (req, res) => {
     req.getConnection((err, conn) => {
         if (err) return res.send(err);
 
-        conn.query("SELECT * FROM citas WHERE idMedico= ? AND fecha=? AND idPaciente IS NULL AND CONCAT(citas.fecha, ' ', citas.horaInicio) >= NOW()", [req.body.idMedico,req.body.fechaCita], (err, rows) => {
+        conn.query("SELECT * FROM citas WHERE idMedico= ? AND fecha=? AND idPaciente IS NULL AND CONCAT(citas.fecha, ' ', citas.horaInicio) >= NOW()", [req.body.idMedico, req.body.fechaCita], (err, rows) => {
             if (err) return res.send(err)
             res.json(rows)
         });
@@ -180,22 +301,22 @@ citaController.citasDisponibles = (req, res) => {
  * @param {*} req Contiene la petición del usuario
  * @param {*} res Contiene la respuesta que se enviara a la peticion
  */
-citaController.citasProgramadas = (req, res)=>{
-   
+citaController.citasProgramadas = (req, res) => {
+
     req.getConnection((err, conn) => {
-      if (err) return res.send(err);
-  
-      conn.query("SELECT citas.fecha, medicos.idMedico, pacientes.idPaciente, citas.horaInicio, citas.modalidad, medicos.nombreMedico, medicos.consultorioMedico, citas.idCita, pacientes.nombrePaciente, pacientes.CURPPaciente FROM medicos JOIN citas JOIN pacientes WHERE citas.idPaciente=pacientes.idPaciente AND medicos.idMedico=citas.idMedico AND citas.notasConsultas IS NULL AND CONCAT(citas.fecha, ' ', citas.horaInicio) >= NOW()", (err, rows) => {
         if (err) return res.send(err);
-  
-        for (let i = 0; i < rows.length; i++) {
-          const fecha = new Date(rows[i].fecha);
-          rows[i].fecha = fecha.toISOString().slice(0, 10);
-        }
-        res.json(rows)
-       
-      });
+
+        conn.query("SELECT citas.fecha, medicos.idMedico, pacientes.idPaciente, citas.horaInicio, citas.modalidad, medicos.nombreMedico, medicos.consultorioMedico, citas.idCita, pacientes.nombrePaciente, pacientes.CURPPaciente FROM medicos JOIN citas JOIN pacientes WHERE citas.idPaciente=pacientes.idPaciente AND medicos.idMedico=citas.idMedico AND citas.notasConsultas IS NULL AND CONCAT(citas.fecha, ' ', citas.horaInicio) >= NOW()", (err, rows) => {
+            if (err) return res.send(err);
+
+            for (let i = 0; i < rows.length; i++) {
+                const fecha = new Date(rows[i].fecha);
+                rows[i].fecha = fecha.toISOString().slice(0, 10);
+            }
+            res.json(rows)
+
+        });
     });
-  }
+}
 
 module.exports = citaController
