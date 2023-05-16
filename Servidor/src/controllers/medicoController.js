@@ -101,15 +101,76 @@ medicoController.insertar = (req, res) => {
   })
 }
 
-//   medicoController.obtenerEspecialidades = (req, res) =>{
-//     req.getConnection((err, conn) =>{
-//         if(err) return res.send(err)
+ medicoController.obtenerEspecialidades = (req, res) =>{
+    req.getConnection((err, conn) =>{
+         if(err) return res.send(err)
 
-//         conn.query('SELECT * FROM especialidades', (err, rows) =>{
-//             if(err) return res.send(err)
-//             res.json(rows)
-//         })
-//     })
-// }
+         conn.query('SELECT * FROM especialidades', (err, rows) =>{
+             if(err) return res.send(err)
+             res.json(rows)
+        })
+   })
+}
+
+medicoController.agenda = (req, res)=>{
+  const id = req.params.id;
+
+  req.getConnection((err, conn) => {
+    if (err) return res.send(err);
+
+    conn.query('SELECT citas.idCita, pacientes.nombrePaciente, citas.fecha, citas.horaInicio, citas.horaTermino FROM medicos JOIN citas join pacientes WHERE medicos.idMedico = citas.idMedico AND pacientes.idPaciente = citas.idPaciente AND medicos.idMedico= ?', [id], (err, rows) => {
+      if (err) return res.send(err);
+      for(let i=0; i<rows.length;i++){
+        const fecha = rows[i].fecha;
+        const fechaFormateada = fecha.toISOString().substring(0, 10); // "2023-05-07"
+        const start = fechaFormateada.concat("T", rows[i].horaInicio); // "2023-05-07T12:36:00"
+        const end = fechaFormateada.concat("T", rows[i].horaTermino); // "2023-05-07T12:36:00"
+        rows[i].start= start;
+        rows[i].end= end;
+      }
+      res.json(rows)
+     
+    });
+  });
+}
+
+medicoController.agendaDisponible= (req, res)=>{
+  const id = req.params.id;
+
+  req.getConnection((err, conn) => {
+    if (err) return res.send(err);
+
+    conn.query("SELECT citas.idCita, citas.fecha, citas.horaInicio, citas.horaTermino FROM medicos JOIN citas WHERE medicos.idMedico = citas.idMedico AND citas.idMedico=? AND citas.idPaciente IS NULL AND CONCAT(citas.fecha, ' ', citas.horaInicio) >= NOW()", [id], (err, rows) => {
+      if (err) return res.send(err);
+      for(let i=0; i<rows.length;i++){
+        const fecha = rows[i].fecha;
+        const fechaFormateada = fecha.toISOString().substring(0, 10); // "2023-05-07"
+        const start = fechaFormateada.concat("T", rows[i].horaInicio); // "2023-05-07T12:36:00"
+        const end = fechaFormateada.concat("T", rows[i].horaTermino); // "2023-05-07T12:36:00"
+        rows[i].start= start;
+        rows[i].end= end;
+      }
+      res.json(rows)
+     
+    });
+  });
+}
+medicoController.citasProgramadas = (req, res)=>{
+  const id = req.params.id;
+  req.getConnection((err, conn) => {
+    if (err) return res.send(err);
+
+    conn.query("SELECT citas.fecha, medicos.idMedico, pacientes.idPaciente, citas.horaInicio, citas.horaTermino, citas.modalidad, medicos.nombreMedico, medicos.consultorioMedico, citas.idCita, pacientes.nombrePaciente, pacientes.CURPPaciente FROM medicos JOIN citas JOIN pacientes WHERE citas.idPaciente=pacientes.idPaciente AND medicos.idMedico=citas.idMedico AND citas.notasConsultas IS NULL AND CONCAT(citas.fecha, ' ', citas.horaInicio) >= NOW() AND medicos.idMedico=?", [id], (err, rows) => {
+      if (err) return res.send(err);
+
+      for (let i = 0; i < rows.length; i++) {
+        const fecha = new Date(rows[i].fecha);
+        rows[i].fecha = fecha.toISOString().slice(0, 10);
+      }
+      res.json(rows)
+     
+    });
+  });
+}
 
 module.exports = medicoController

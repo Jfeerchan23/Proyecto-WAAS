@@ -9,16 +9,15 @@
             aria-label="Number"
             matInput
             formControlName="medico"
-            [matAutocomplete]="auto2"
+            [(ngModel)]="nombreMedico"
+            [matAutocomplete]="auto3"
             class="form-control"
+
             required
           />
-          <mat-autocomplete #auto2="matAutocomplete">
-            <mat-option
-              *ngFor="let option of filteredMedicos| async"
-              [value]="option"
-            >
-              {{ option }}
+          <mat-autocomplete autoActiveFirstOption #auto3="matAutocomplete" (optionSelected)="onSelectionChange($event)">
+            <mat-option *ngFor="let option of filteredMedicos | async" [value]="option">
+              {{ option.nombreMedico}}
             </mat-option>
           </mat-autocomplete>
         </div>
@@ -26,6 +25,6 @@
 </div>
 </div>
 </form>
-<div class="contenedor" *ngIf="form.get('medico')?.value">
+<div class="contenedor" *ngIf="idMedico">
     <full-calendar [options]="calendarOptions" class="rounded" class="elemento"></full-calendar>
  </div>

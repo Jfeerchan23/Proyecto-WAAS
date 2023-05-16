@@ -10,6 +10,7 @@ import {
 import esLocale from '@fullcalendar/core/locales/es';
 import { Observable } from 'rxjs';
 import { UsuariosService } from 'src/app/servicios/usuarios/usuarios.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-agenda-paciente',
@@ -17,30 +18,51 @@ import { UsuariosService } from 'src/app/servicios/usuarios/usuarios.service';
   styleUrls: ['./agenda-paciente.component.css'],
 })
 export class AgendaPacienteComponent implements OnInit {
+  idPaciente:any;
+  eventos:any=[];
+  arreglo:any=[];
   constructor(
     private dashboardService: DashboardService,
-    private usuariosService: UsuariosService
+    private usuariosService: UsuariosService,
+    private route: ActivatedRoute,
+    private router: Router,
   ) {
     dashboardService.dashboardObservableData = {
       menuActivo: 'agenda',
     };
   }
   ngOnInit(): void {
-    this.usuariosService.obtenerRecepcionistas().subscribe(
-      (response) => {
-        console.log(response);
-      },
-      (error) => {
-        console.log(error);
+    //CUANDO SE ENCUENTRA EN EL PERFIL DE UN PACIENTE
+    this.route.params.subscribe((params) => {
+      if (params['idPaciente']) {
+        this.idPaciente = params['idPaciente'];
+        this.usuariosService.agendaPaciente(7).subscribe(
+          (response)=>{
+            this.eventos=response;
+           for(let i=0; i<this.eventos.length;i++){
+            const evento={
+              title:this.eventos[i].nombreMedico,
+              start: new Date(this.eventos[i].start),
+              end: new Date(this.eventos[i].end),
+            }
+           this.arreglo.push(evento);
+           }
+           this.calendarOptions.events=this.arreglo;
+          }
+        )
+   
       }
-    );
+    });
+
+
+ 
   }
   //Configuración del calendario
-  calendarOptions: CalendarOptions = {
+ calendarOptions: CalendarOptions = {
     plugins: [dayGridPlugin, interactionPlugin, timeGridPlugin],
     height: 500,
     locale: esLocale,
-    themeSystem: 'bootstrap5',
+    themeSystem: 'standard',
     headerToolbar: {
       left: 'prev,next today',
       center: 'title',
@@ -48,16 +70,7 @@ export class AgendaPacienteComponent implements OnInit {
     },
     initialView: 'dayGridMonth',
     eventClick: this.handleEventClick.bind(this), // MUST ensure `this` context is maintained
-    events: [
-      {
-        title: 'Fernando Chimal',
-        start: new Date('2023-04-02T10:30:00'),
-        end: new Date('2023-04-02T12:00:00'),
-      },
-      { title: 'event 2', date: '2023-04-10', color: 'black' },
-      { title: 'event 3', date: '2023-04-15', colo: 'green' },
-      { title: 'event 4', date: '2023-04-18', color: 'yellow' },
-    ],
+    events: [],
   };
 
   handleEventClick(eventInfo: any) {

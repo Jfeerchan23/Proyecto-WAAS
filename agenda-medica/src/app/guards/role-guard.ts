@@ -1,19 +1,50 @@
-import { ActivatedRouteSnapshot, CanActivate, CanLoad, Route, Router, RouterStateSnapshot, UrlSegment, UrlTree } from "@angular/router";
-import { Observable } from "rxjs";
+import { Injectable } from '@angular/core';
+import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { Observable } from 'rxjs';
 
-export class RoleGuard implements CanActivate {
-    canActivate(): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
-      /*   if(this.hasUser()){
-            return true;
-        }
-        alert('No tienes permisos')
-        return false; */
-        return true;
-    }
-    
-
-
-    hasUser():boolean{
-        return false;
-    }
+interface RouteData {
+  requiredRoles?: string[];
 }
+
+@Injectable({
+  providedIn: 'root'
+})
+export class RoleGuard implements CanActivate {
+
+  constructor(private router: Router) {}
+
+  canActivate(
+    next: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot): boolean | UrlTree {
+    let userRole = sessionStorage.getItem('rol');
+    switch(userRole){
+
+        case '1': 
+        userRole='paciente';
+        break;
+        case '2': 
+        userRole='medico';
+        break;
+        case '3': 
+        userRole='recepcion';
+        break;
+        case '4': 
+        userRole='admin';
+        break;
+
+        default:
+        userRole='medico';
+
+    }
+    const requiredRoles = (next.data as RouteData).requiredRoles;    
+    if (requiredRoles && userRole && requiredRoles.includes(userRole)) {
+      return true;
+    } else {
+        sessionStorage.removeItem('rol');
+        sessionStorage.removeItem('id');
+      return this.router.parseUrl('/login');
+    }
+  }
+  
+}
+

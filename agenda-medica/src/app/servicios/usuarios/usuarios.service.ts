@@ -68,8 +68,8 @@ export class UsuariosService {
 
 	/* Especialidades REVIZAR */
 	obtenerEspecialidades(): Observable<any> {
-		return this.http.get(`${this.URL}/api/especialidades`);
-	}
+	 	return this.http.get(`${this.URL}/api/medicos/especialidades`);
+	 }
 
 
 	/* Pacientes */
@@ -115,7 +115,36 @@ export class UsuariosService {
 		return this.http.post(`${this.URL}/api/citasDisponibles`, data);
 	}
 
+	citasProgramadas(): Observable<any> {
+		return this.http.get(`${this.URL}/api/citasProgramadas`);
+	}
+	citasProgramadasMedico($id:any): Observable<any> {
+		return this.http.get(`${this.URL}/api/medicos/citasProgramadas/${$id}`);
+	}
 
-	
+
+	/* Historial clínico */
+
+	obtenerHistorialClinico($id:any):Observable<any>{
+		return this.http.get(`${this.URL}/api/pacientes/historialClinico/${$id}`);
+	}
+
+	/* Agenda */
+	agendaPaciente($id:any):Observable<any>{
+		return this.http.get(`${this.URL}/api/pacientes/agenda/${$id}`);
+	}
+
+	agendaMedico($id:any):Observable<any>{
+		return this.http.get(`${this.URL}/api/medicos/agenda/${$id}`);
+	}
+	agendaDisponibleMedico($id:any):Observable<any>{
+		return this.http.get(`${this.URL}/api/medicos/agendaDisponible/${$id}`);
+	}
+
+	/* login */
+	login(data: any): Observable<any> {
+		return this.http.post(`${this.URL}/api/login/auth`, data);
+	}
+
 
 }

@@ -5,7 +5,7 @@
       <img src="/assets/img/dr-login.svg" alt="Nimbo" class="_image_ul4pwa" />
     </div>
     <div>
-      <form [formGroup]="form" class="example-form">
+      <form [formGroup]="form" class="example-form" (ngSubmit)="onSubmitLogin()">
         <mat-form-field class="example-full-width">
           <mat-label>Usuario</mat-label>
           <input type="text" matInput  autocomplete="off" formControlName="usuario"/>
@@ -14,7 +14,7 @@
           <mat-label>Contraseña</mat-label>
           <input  type="password" matInput autocomplete="off" formControlName="password" />
         </mat-form-field>
-        <button type="submit" class="button" mat-raised-button [disabled]="form.invalid" (click)="ingresar()">INICIAR SESIÓN</button>
+        <button type="submit" class="button" mat-raised-button [disabled]="form.invalid">INICIAR SESIÓN</button>
       </form>
     </div>
   </div>

@@ -60,12 +60,12 @@ export class CrearAgendaComponent {
       horaFin: new FormControl(this.agenda.horaFin, Validators.required),
       duracion: new FormControl(this.agenda.duracion, Validators.required),
     });
-
+    this.idMedico= sessionStorage.getItem('id');
   }
 
   formSubmit(){
    
-     // this.usuariosService.crearCitas(1, this.agenda).subscribe()
+      this.usuariosService.crearCitas(this.idMedico, this.agenda).subscribe()
   
   
   }

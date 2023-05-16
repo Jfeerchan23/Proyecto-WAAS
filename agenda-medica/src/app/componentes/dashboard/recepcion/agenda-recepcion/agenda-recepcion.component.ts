@@ -16,31 +16,40 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { UsuariosService } from 'src/app/servicios/usuarios/usuarios.service';
 @Component({
   selector: 'app-agenda-recepcion',
   templateUrl: './agenda-recepcion.component.html',
   styleUrls: ['./agenda-recepcion.component.css'],
 })
-export class AgendaRecepcionComponent {
+export class AgendaRecepcionComponent{
   form: FormGroup;
   /* Valorez inicializados */
-  medicos: string[] = ['José López', 'Arturo Ramirez', 'Jesús Hernández'];
-  filteredMedicos!: Observable<string[]>;
+  filteredMedicos!: Observable<any>;
+  optionsMedicos: any = [];
+  nombreMedico:any;
+  idMedico:any;
+  eventos:any=[];
+  arreglo:any=[];
 
-  constructor(dashboardService: DashboardService, private fb: FormBuilder) {
+  constructor(dashboardService: DashboardService, 
+    private fb: FormBuilder,
+    private usuariosService: UsuariosService,) {
     dashboardService.dashboardObservableData = {
       menuActivo: 'agenda-recepcion',
     };
     this.form = this.fb.group({
-      medico: new FormControl('', Validators.required),
+      medico: new FormControl(this.nombreMedico, Validators.required),
     });
   }
+
+
   //Configuración del calendario
   calendarOptions: CalendarOptions = {
     plugins: [dayGridPlugin, interactionPlugin, timeGridPlugin],
     height: 440,
     locale: esLocale,
-    themeSystem: 'bootstrap5',
+    themeSystem: 'standard',
     headerToolbar: {
       left: 'prev,next today',
       center: 'title',
@@ -48,41 +57,39 @@ export class AgendaRecepcionComponent {
     },
     initialView: 'dayGridMonth',
     eventClick: this.handleEventClick.bind(this),
-    events: [
-      {
-        title: 'Fernando Chimal',
-        start: new Date('2023-04-02T10:30:00'),
-        end: new Date('2023-04-02T12:00:00'),
-      },
-      { title: 'event 2', date: '2023-04-10', color: 'black' },
-      { title: 'event 3', date: '2023-04-15', colo: 'green' },
-      { title: 'event 4', date: '2023-04-18', color: 'yellow' },
-    ],
+    events: []
   };
   ngOnInit() {
     //Autocompletado del campo médico
+    
+   this.usuariosService.obtenerMedicos().subscribe(
+    (response)=>{
+      this.optionsMedicos = response.map((item:any)=> item);
+      this.filteredMedicos =  this._setupFilterObservable(
+        this.form.controls['medico'], 
+        this.optionsMedicos,
+         'nombreMedico');
+    }
+   )
 
-    this.filteredMedicos = this._setupFilterObservable(
-      this.form.controls['medico'],
-      this.medicos
-    );
+  
   }
 
-  //Filtrado del autocompletado
   private _setupFilterObservable(
     control: AbstractControl,
-    options: string[]
-  ): Observable<string[]> {
+    options: any,
+    property: string
+  ): Observable<any> {
     return control.valueChanges.pipe(
       startWith(''),
-      map((value) => this._filter(options, value))
+      map((value) => this._filter(options, value, property))
     );
   }
-
-  private _filter(options: string[], value: string): string[] {
-    const filterValue = value.toLowerCase();
-    return options.filter((option) =>
-      option.toLowerCase().includes(filterValue)
+  
+  private _filter(options: any, value: string, property: string): any {
+    const filterValue = String(value).toLowerCase();
+    return options.filter((option:any) =>
+      option[property].toLowerCase().includes(filterValue)
     );
   }
 
@@ -90,4 +97,45 @@ export class AgendaRecepcionComponent {
     console.log('Evento clickeado:', eventInfo.event);
     // Agrega aquí la lógica que deseas ejecutar cuando se hace clic en un evento
   }
+
+
+  onSelectionChange(event: any){
+    console.log('funcion onSelectionChange')
+    this.eventos=[];
+    this.arreglo=[];
+   
+    this.idMedico=event.option.value.idMedico;
+    this.usuariosService.agendaMedico(this.idMedico).subscribe(
+      (response)=>{
+        this.eventos=response;
+       for(let i=0; i<this.eventos.length;i++){
+        const evento={
+          title:this.eventos[i].nombrePaciente,
+          start: new Date(this.eventos[i].start),
+          end: new Date(this.eventos[i].end),
+          color:'red'
+        }
+       this.arreglo.push(evento);
+       }
+       this.nombreMedico=event.option.value.nombreMedico;
+      }
+    )
+    this.usuariosService.agendaDisponibleMedico(this.idMedico).subscribe(
+      (response)=>{
+        this.eventos=response;
+        for(let i=0; i<this.eventos.length;i++){
+         const evento={
+           title:"DISPONIBLE",
+           start: new Date(this.eventos[i].start),
+           end: new Date(this.eventos[i].end),
+           color:'green',
+         }
+        this.arreglo.push(evento);
+        }
+        this.calendarOptions.events=this.arreglo;
+      }
+    )
+   
+
+   }
 }

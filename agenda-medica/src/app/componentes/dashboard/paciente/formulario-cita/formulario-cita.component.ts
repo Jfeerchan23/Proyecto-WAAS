@@ -24,6 +24,7 @@ export class FormularioCitaComponent {
   form: FormGroup;
   cita: any = {};
   medicos:any={};
+  medicosFiltrados:any={};
   idPaciente :any;
   isReadOnly = false;
   idEspecialidad:any;
@@ -32,11 +33,11 @@ export class FormularioCitaComponent {
   pacientes:any={};
   autocompletadoPaciente=false;
   isReadOnlyNombre = false;
-
+  especialidades:any={};
+  perfil:any;
   constructor(
     dashboardService: DashboardService,
     private usuariosService: UsuariosService,
-    private fb: FormBuilder,
     private _snackBar: MatSnackBar,
     private route: ActivatedRoute,
     private router: Router,
@@ -53,7 +54,7 @@ export class FormularioCitaComponent {
       telefonoPaciente: new FormControl(this.cita.telefonoPaciente, Validators.required),
       direccionPaciente: new FormControl(this.cita.direccionPaciente, Validators.required),
       especialidadMedico: new FormControl(this.cita.especialidadMedico, Validators.required),
-      medico: new FormControl(this.cita.medico, Validators.required),
+      medico: new FormControl(this.cita.idMedico, Validators.required),
       modalidad: new FormControl(this.cita.modalidad, Validators.required),
       fecha: new FormControl(this.cita.fecha, Validators.required),
       hora: new FormControl(this.cita.hora, Validators.required),
@@ -62,11 +63,8 @@ export class FormularioCitaComponent {
 
 
 
- /* Valores inicializados */
- optionsEspecialidades: any = [];
  optionsMedicos: any = [];
  optionsPacientes: any = [];
- filteredEspecialidades!: Observable<any>;
  filteredMedicos!: Observable<any>;
  filteredPacientes!: Observable<any>;
   ngOnInit() {
@@ -75,11 +73,12 @@ export class FormularioCitaComponent {
     this.route.params.subscribe((params) => {
       if (params['idPaciente']) {
         this.idPaciente = params['idPaciente'];
-        this.obtenerPaciente(this.idPaciente);
-        
+        this.obtenerPaciente(this.idPaciente,null);
+        this.perfil=1;
         this.isReadOnlyNombre=true;
       }else{
         //CUANDO SE ENCUENTRA EN EL PERFIL DEL RECEPCIONISTA
+        this.perfil=2;
         this.usuariosService.obtenerPacientes().subscribe(
           (response)=>{
             this.autocompletadoPaciente=true;
@@ -94,30 +93,29 @@ export class FormularioCitaComponent {
     });
     this.usuariosService.obtenerEspecialidades().subscribe(
       (response)=>{
-
-        this.optionsEspecialidades = response.map((item:any)=> item);
-
-        this.filteredEspecialidades =  this._setupFilterObservable(
-          this.form.controls['especialidadMedico'], 
-          this.optionsEspecialidades,
-           'nombreEspecialidad');
+        this.especialidades=response;
 
       }
     )
     this.usuariosService.obtenerMedicos().subscribe(
 
       (response)=>{
-        this.medicos = response.map((item:any)=> item);
+        this.medicosFiltrados=response;
+        this.medicos = response;
       }
     )
   
 
   }
 
-  obtenerPaciente(id:any){
+  obtenerPaciente(id:any, event:any){
     this.usuariosService.obtenerPaciente(id).subscribe(
       (response)=>{
         this.cita=response;
+        if(event!=null){
+          this.cita.nombrePaciente=event.option.value.nombrePaciente;
+        }
+       
       }
     )
 
@@ -126,12 +124,13 @@ export class FormularioCitaComponent {
 
   formSubmit() {
     /*  Se deberán guardar los datos del formulario */
-    console.log(this.idMedico);
-    if(this.idMedico!==undefined && this.cita.hora!==undefined){
+    if(this.cita.idMedico!==undefined && this.cita.hora!==undefined){
     
       const cita = {
         idCita:this.cita.hora,
-        idPaciente : this.cita.idPaciente,
+        idPaciente: this.cita.idPaciente,
+        idMedico: this.cita.idMedico,
+        modalidad: this.cita.modalidad
       }
   
       this.usuariosService.editarCita(cita,this.cita.hora).subscribe(
@@ -142,9 +141,13 @@ export class FormularioCitaComponent {
         horizontalPosition: 'center',
         verticalPosition: 'bottom',
       });
-
-      this.form.reset();
-      this.router.navigate(['/dashboard/paciente']);
+    
+     if(this.perfil==1){
+      this.router.navigate(['/dashboard/paciente/agenda',this.idPaciente]);
+     }else{
+      this.router.navigate(['/dashboard/recepcion/agenda-recepcion']);
+     }
+     
     }else{
       this._snackBar.open('Verifica el nombre del medico', '', {
         duration: 1000,
@@ -176,47 +179,56 @@ export class FormularioCitaComponent {
   }
 
 
-
-  onSelectionChange(event: any){
-    this.cita.especialidadMedico=event.option.value.nombreEspecialidad;
-    this.idEspecialidad=event.option.value.idEspecialidad;
-    this.cita.medico=null;
-    this.cita.fecha=null;
-    this.cita.hora=null;
-    this.optionsMedicos= this.medicos.filter((item:any) => item.especialidadMedico === this.idEspecialidad);
-    this.filteredMedicos = this._setupFilterObservable(
-      this.form.controls['medico'],
-      this.optionsMedicos,
-      'nombreMedico'
-    )
-   }
-
-   onSelectionChangeMedico(event: any){
-    this.cita.fecha=null;
-    this.cita.hora=null;
-    this.cita.medico=event.option.value.nombreMedico;
-    this.idMedico = event.option.value.idMedico
-   }
-
    onSelectionChangePaciente(event: any){
-    this.cita.nombrePaciente=event.option.value.nombrePaciente;
+    
     this.idPaciente = event.option.value.idPaciente;
-    this.obtenerPaciente(this.idPaciente);
+    this.obtenerPaciente(this.idPaciente,event);
     this.isReadOnly=true;
+    
+   }
+
+   changeEspecialidad(){
+
+    this.medicosFiltrados = this.medicos.filter((medico:any) => medico.especialidadMedico == this.cita.especialidadMedico);
+    this.cita.idMedico=null;
+    this.cita.fecha=null;
+    this.cita.hora=null;
+    if(this.medicosFiltrados.length==0){
+      this._snackBar.open('No hay médicos con esa especialidad', '', {
+        duration: 1000,
+        horizontalPosition: 'center',
+        verticalPosition: 'bottom',
+      });
+    }
+  
+   }
+
+   changeMedico(){
+    this.cita.fecha=null;
+    this.cita.hora=null;
    }
 
    onFechaChange(event: any){
-    if(this.idMedico!==undefined){
+    console.log(this.cita.idMedico);
+    if(this.cita.idMedico!==undefined){
       const datos ={
         fechaCita :event,
-        idMedico : this.idMedico
+        idMedico : this.cita.idMedico
       }
       this.usuariosService.citasDisponibles(datos).subscribe(
         (response)=>{
           this.citasDisponibles=response;
-      
+          if(this.citasDisponibles.length==0 &&this.cita.fecha!=null){
+            this._snackBar.open('No hay citas disponibles en ese horario', '', {
+              duration: 1000,
+              horizontalPosition: 'center',
+              verticalPosition: 'bottom',
+            });
+          }
+        
         }
       );
+   
     }
    }
 

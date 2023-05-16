@@ -12,4 +12,7 @@ citaRoutes.post('/citas/crear/',citaController.crearCitas);
 /* Obtener todas las citas */
 citaRoutes.get('/citasDisponibles', citaController.citasDisponibles);
 
+/* Obtener todas las citas */
+citaRoutes.get('/citasProgramadas', citaController.citasProgramadas);
+
 module.exports = citaRoutes;

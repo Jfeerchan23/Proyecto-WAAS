@@ -56,6 +56,7 @@ export class AdmipacienteComponent {
           telefonoPaciente: new FormControl(this.paciente.telefonoPaciente, Validators.required),
           direccionPaciente: new FormControl(this.paciente.direccionPaciente, Validators.required),
           bloqueadoPaciente: new FormControl(this.paciente.bloqueadoPaciente),
+          contrasenaPaciente: new FormControl(this.paciente.contrasenaPaciente,Validators.required),
         });
       }
 

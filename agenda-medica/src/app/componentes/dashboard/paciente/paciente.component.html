@@ -7,17 +7,17 @@
       <tr>
          <td >
             <a [ngClass]="(dataDashboard$ | async)?.menuActivo == 'agenda' ? 'active' : ''"
-            routerLink="/dashboard/paciente/agenda" >Agenda</a>
+            routerLink="/dashboard/paciente/agenda/{{id}}" >Agenda</a>
           
          </td>
          <td>
             <a  [ngClass]="(dataDashboard$ | async)?.menuActivo == 'nueva-cita' ? 'active' : ''"
-            routerLink="/dashboard/paciente/nueva-cita" >Nueva cita</a>
+            routerLink="/dashboard/paciente/nueva-cita/{{id}}" >Nueva cita</a>
             
          </td>
          <td>
             <a  [ngClass]="(dataDashboard$ | async)?.menuActivo == 'historial-clinico' ? 'active' : ''"
-            routerLink="/dashboard/paciente/historial-clinico" 
+            routerLink="/dashboard/paciente/historial-clinico/{{id}}" 
             
             >Historial clínico</a>
          </td>
