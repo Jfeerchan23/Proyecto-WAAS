@@ -160,60 +160,63 @@ function obtenerDiasEntreFechas(fechaInicio, fechaFin) {
  * @param {*} res Contiene la respuesta que se enviara a la peticion
  */
 citaController.reservar = (req, res) => {
-    const id = req.params.id;
+    const idCita = req.params.id;
     const updated = req.body;
 
     req.getConnection((err, conn) => {
         if (err) return res.send(err);
 
-        conn.query('UPDATE citas SET ? WHERE idCita = ?', [updated, id], (err, result) => {
+        conn.query('UPDATE citas SET ? WHERE idCita = ?', [updated, idCita], (err, result) => {
             if (err) return res.send(err);
 
-            notificarPorCorreo(updated.idPaciente, conn)
-            res.send(`Cita con id ${id} reservada.`);
+            notificarPorCorreo(conn, updated.idPaciente, updated.idMedico, idCita)
+            res.send(`Cita con id ${idCita} reservada.`);
         });
     });
 }
 
-citaController.notificar = async (req, res) => {
-    req.getConnection(async (err, conn) => {
-        if (err) return res.send(err);
-        let correoPaciente = await obtenerCorreoPaciente(7, conn)
-        let datosMedico = await obtenerDatosCorreoMedico(1, conn)
-        let datosCita = await obtenerDatosCorreoCita(1, conn);
+/**
+ * Envia un correo con la información de la cita reservada
+ * @param {*} BDconnection conexion a la base de datos
+ * @param {*} idPaciente id del paciente a buscar el correo
+ * @param {*} idMedico id del medico a buscar la información
+ * @param {*} idCita id de la cita  a buscar la información
+ */
+async function notificarPorCorreo(BDconnection, idPaciente, idMedico, idCita){
+    let correoPaciente = await obtenerCorreoPaciente(idPaciente, BDconnection)
+    let datosMedico = await obtenerDatosCorreoMedico(idMedico, BDconnection)
+    let datosCita = await obtenerDatosCorreoCita(idCita, BDconnection);
 
-        if (correoPaciente && datosMedico && datosCita) {
+    if (correoPaciente && datosMedico && datosCita) {
 
-            datosCita.fecha = new Date(datosCita.fecha).toISOString().slice(0, 10);
+        datosCita.fecha = new Date(datosCita.fecha).toISOString().slice(0, 10);
 
-            let conexionSistemaCorreos = await mailTransporter.verify();
-            if (conexionSistemaCorreos) {
-                let htmlTemplate = `<body> <h1 class="text-center" style="text-align: center;">Datos de reservación de cita</h1> <table class="center" style="border: 1px solid black;border-radius: 10px;text-align: center;margin-left: auto;margin-right: auto;"> <tr> <th style="border: 1px solid black;border-radius: 10px;text-align: center;padding: 0.5rem;">Fecha</th> <th style="border: 1px solid black;border-radius: 10px;text-align: center;padding: 0.5rem;">Hora de inicio</th> <th style="border: 1px solid black;border-radius: 10px;text-align: center;padding: 0.5rem;">Hora de fin</th> <th style="border: 1px solid black;border-radius: 10px;text-align: center;padding: 0.5rem;">Nombre del medico</th> <th style="border: 1px solid black;border-radius: 10px;text-align: center;padding: 0.5rem;">Especialidad</th> <th style="border: 1px solid black;border-radius: 10px;text-align: center;padding: 0.5rem;">Consultorio del medico</th> <th style="border: 1px solid black;border-radius: 10px;text-align: center;padding: 0.5rem;">Modalidad</th> </tr><tr> <td style="border: 1px solid black;border-radius: 10px;text-align: center;">${datosCita.fecha}</td><td style="border: 1px solid black;border-radius: 10px;text-align: center;">${datosCita.horaInicio}</td><td style="border: 1px solid black;border-radius: 10px;text-align: center;">${datosCita.horaTermino}</td><td style="border: 1px solid black;border-radius: 10px;text-align: center;">${datosMedico.nombreMedico}</td><td style="border: 1px solid black;border-radius: 10px;text-align: center;">${datosMedico.nombreEspecialidad}</td><td style="border: 1px solid black;border-radius: 10px;text-align: center;">${datosMedico.consultorioMedico}</td><td style="border: 1px solid black;border-radius: 10px;text-align: center;">${datosCita.modalidad}</td></tr></table></body>`
+        let conexionSistemaCorreos = await mailTransporter.verify();
+        if (conexionSistemaCorreos) {
+            let htmlTemplate = `<body> <h1 class="text-center" style="text-align: center;">Datos de reservación de cita</h1> <table class="center" style="border: 1px solid black;border-radius: 10px;text-align: center;margin-left: auto;margin-right: auto;"> <tr> <th style="border: 1px solid black;border-radius: 10px;text-align: center;padding: 0.5rem;">Fecha</th> <th style="border: 1px solid black;border-radius: 10px;text-align: center;padding: 0.5rem;">Hora de inicio</th> <th style="border: 1px solid black;border-radius: 10px;text-align: center;padding: 0.5rem;">Hora de fin</th> <th style="border: 1px solid black;border-radius: 10px;text-align: center;padding: 0.5rem;">Nombre del medico</th> <th style="border: 1px solid black;border-radius: 10px;text-align: center;padding: 0.5rem;">Especialidad</th> <th style="border: 1px solid black;border-radius: 10px;text-align: center;padding: 0.5rem;">Consultorio del medico</th> <th style="border: 1px solid black;border-radius: 10px;text-align: center;padding: 0.5rem;">Modalidad</th> </tr><tr> <td style="border: 1px solid black;border-radius: 10px;text-align: center;">${datosCita.fecha}</td><td style="border: 1px solid black;border-radius: 10px;text-align: center;">${datosCita.horaInicio}</td><td style="border: 1px solid black;border-radius: 10px;text-align: center;">${datosCita.horaTermino}</td><td style="border: 1px solid black;border-radius: 10px;text-align: center;">${datosMedico.nombreMedico}</td><td style="border: 1px solid black;border-radius: 10px;text-align: center;">${datosMedico.nombreEspecialidad}</td><td style="border: 1px solid black;border-radius: 10px;text-align: center;">${datosMedico.consultorioMedico}</td><td style="border: 1px solid black;border-radius: 10px;text-align: center;">${datosCita.modalidad}</td></tr></table></body>`
 
-                let options = { format: 'A4' };
-                let file = { content: htmlTemplate };
-                let PDF = await HTMLtoPDF.generatePdf(file, options);
+            let options = { format: 'A4' };
+            let file = { content: htmlTemplate };
+            let PDF = await HTMLtoPDF.generatePdf(file, options);
 
-                var message = {
-                    from: "NimboApi@outlook.com",
-                    to: correoPaciente,
-                    subject: "Message test",
-                    html: htmlTemplate,
-                    attachments: [
-                        {
-                            filename: 'datos_cita.pdf',
-                            content: PDF
-                        }
-                    ]
-                };
-                mailTransporter.sendMail(message, (err, info) => {
-                    console.info("err: " + err);
-                    console.info("info: " + info.response);
-                })
-            }
+            var message = {
+                from: "NimboApi@outlook.com",
+                to: correoPaciente,
+                subject: "Message test",
+                html: htmlTemplate,
+                attachments: [
+                    {
+                        filename: 'datos_cita.pdf',
+                        content: PDF
+                    }
+                ]
+            };
+            mailTransporter.sendMail(message, (err, info) => {
+                console.info("info: " + info.response);
+                console.info("err: " + err);
+            })
         }
-        res.send("TST");
-    });
+    }
 }
 
 /**
