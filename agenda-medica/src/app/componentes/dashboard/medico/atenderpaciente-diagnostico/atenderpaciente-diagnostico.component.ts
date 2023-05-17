@@ -54,7 +54,7 @@ export class AtenderpacienteDiagnosticoComponent {
     const cita = {
       notasConsultas:this.notasConsulta
     }
-    this.usuariosService.reservarCita(cita, this.idCita).subscribe(
+    this.usuariosService.actualizarCita(cita, this.idCita).subscribe(
       )
       this.router.navigate(['/dashboard/medico/lista-pacientes',sessionStorage.getItem('id')]);
       

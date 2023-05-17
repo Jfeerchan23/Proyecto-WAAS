@@ -78,7 +78,7 @@ export class ListadepacientesComponent {
     }
    
   
-    this.usuariosService.reservarCita(cita, this.idCita).subscribe(
+    this.usuariosService.actualizarCita(cita, this.idCita).subscribe(
 
     )
 
