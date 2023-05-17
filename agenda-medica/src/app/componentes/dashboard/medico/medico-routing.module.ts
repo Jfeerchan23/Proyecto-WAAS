@@ -16,8 +16,9 @@ const routes: Routes = [
     { path: 'lista-pacientes/:idMedico', component: ListadepacientesComponent},
 /*     { path: 'editar-agenda', component: EditarAgendaComponent}, */
     { path: 'crear-agenda/:idMedico', component: CrearAgendaComponent},
-    { path: 'paciente-datos/:idPaciente', component: AtenderpacientedatosComponent},
+    { path: 'paciente-datos/:idPaciente/:idCita', component: AtenderpacientedatosComponent},
     { path: 'paciente-diagnostico', component: AtenderpacienteDiagnosticoComponent},
+    { path: 'paciente-diagnostico/:idPaciente/:idCita', component: AtenderpacienteDiagnosticoComponent},
     { path: 'historial-clinico/:idPaciente', component: HistorialClinicoComponent}
   ]
 }

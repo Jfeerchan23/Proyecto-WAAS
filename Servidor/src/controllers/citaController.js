@@ -175,6 +175,20 @@ citaController.reservar = (req, res) => {
     });
 }
 
+citaController.actualizar = (req, res) => {
+    const id = req.params.id;
+    const updated = req.body;
+
+    req.getConnection((err, conn) => {
+        if (err) return res.send(err);
+
+        conn.query('UPDATE citas SET ? WHERE idCita = ?', [updated, id], (err, result) => {
+            if (err) return res.send(err);
+            res.send(`Cita con id ${id} actualizada.`);
+        });
+    });
+}
+
 citaController.notificar = async (req, res) => {
     req.getConnection(async (err, conn) => {
         if (err) return res.send(err);

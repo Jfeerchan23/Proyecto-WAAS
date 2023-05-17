@@ -84,8 +84,8 @@ export class ListadepacientesComponent {
 
 
     }
-    verInformacionPaciente(id:any){
-      this.router.navigate(['dashboard/medico/paciente-datos',id]);
+    verInformacionPaciente(idPaciente:any, idCita:any){
+      this.router.navigate(['dashboard/medico/paciente-datos',idPaciente, idCita]);
       
     }
  

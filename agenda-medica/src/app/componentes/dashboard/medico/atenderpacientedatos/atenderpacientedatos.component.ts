@@ -14,6 +14,7 @@ export class AtenderpacientedatosComponent {
   public dataDashboard$!: Observable<Dashboard>;
  idPaciente:any;
  paciente:any={};
+ idCita:any;
   constructor(
     private dashboardService: DashboardService,
     private usuariosService: UsuariosService,
@@ -40,6 +41,10 @@ export class AtenderpacientedatosComponent {
             )
        
           }
+          if(params['idCita']){
+            this.idCita=params['idCita'];
+
+          }
         });
   }
 
@@ -49,6 +54,10 @@ export class AtenderpacientedatosComponent {
 
   historialClinicoPaciente(){
     this.router.navigate(['dashboard/medico/historial-clinico',this.idPaciente]);
+    
+  }
+  atenderPaciente(){
+    this.router.navigate(['dashboard/medico/paciente-diagnostico',this.idPaciente, this.idCita]);
     
   }
 }

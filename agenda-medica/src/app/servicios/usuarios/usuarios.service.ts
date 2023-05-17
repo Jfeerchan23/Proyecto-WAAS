@@ -114,7 +114,7 @@ export class UsuariosService {
 	reservarCita($datos: any, $id: any): Observable<any> {
 		let data = Object.assign({}, $datos);
 		console.log(data);
-		return this.http.put(`${this.URL}/api/citas/reservar/${$id}`, data);
+		return this.http.put(`${this.URL}/api/citas/actualizar/${$id}`, data);
 	}
 
 	citasDisponibles($datos: any): Observable<any> {
