@@ -36,7 +36,7 @@ export class ListadepacientesComponent {
     dataSource :any;
 
   ngOnInit():void{
-     //CUANDO SE ENCUENTRA EN EL PERFIL DE UN PACIENTE
+     //CUANDO SE ENCUENTRA EN EL PERFIL DE UN MEDICO
      this.route.params.subscribe((params) => {
       if (params['idMedico']) {
         this.idMedico= params['idMedico'];
@@ -81,5 +81,12 @@ export class ListadepacientesComponent {
     this.usuariosService.reservarCita(cita, this.idCita).subscribe(
 
     )
+
+
     }
+    verInformacionPaciente(id:any){
+      this.router.navigate(['dashboard/medico/paciente-datos',id]);
+      
+    }
+ 
 }

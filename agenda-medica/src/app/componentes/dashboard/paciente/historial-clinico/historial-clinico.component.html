@@ -1,5 +1,9 @@
 <div class="contenedor_padre">
+ 
   <div class="contenedor_hijo">
+    <ng-container *ngIf="rol==2">
+      <div class="titulo">  <h1>Historial Clínico del Paciente{{nombrePaciente}}</h1><button class="btn btn-secondary" type="button" (click)="regresar()">Regresar</button></div>
+     </ng-container>
     <div class="mat-elevation-z8 ">
       <!-- Tabla de citas -->
       <table mat-table [dataSource]="dataSource" >
@@ -38,10 +42,10 @@
           <td mat-cell *matCellDef="let element"> {{element.notasConsultas}} </td>
         </ng-container>
 
-         <ng-container matColumnDef="opciones">
+         <ng-container matColumnDef="opciones" *ngIf="rol!=2">
           <th mat-header-cell *matHeaderCellDef>Opciones</th>
           <td mat-cell *matCellDef="let element" class="opciones"> 
-            <ng-container *ngIf="element.notasConsultas===null  && element.fecha>fechaHoy">
+            <ng-container *ngIf="element.notasConsultas===null  && element.fecha>=fechaHoy">
               <button type="button" class="btn btn-danger"  #tooltip="matTooltip"matTooltip="Cancelar cita"data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="seleccionarCita(element.idCita)"><mat-icon>cancel</mat-icon></button>
             </ng-container>
           </td>

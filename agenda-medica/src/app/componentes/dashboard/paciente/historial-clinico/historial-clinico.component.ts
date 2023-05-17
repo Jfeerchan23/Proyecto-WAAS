@@ -4,6 +4,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { UsuariosService } from 'src/app/servicios/usuarios/usuarios.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Location } from '@angular/common';
 @Component({
   selector: 'app-historial-clinico',
   templateUrl: './historial-clinico.component.html',
@@ -16,15 +17,19 @@ export class HistorialClinicoComponent {
   indice: any;
   fechaHoy:any;
   horaActual:any;
+  rol:any;
+  nombrePaciente:any="";
   constructor(
     dashboardService: DashboardService,
     private usuariosService: UsuariosService,
     private route: ActivatedRoute,
+    private location: Location,
     private router: Router,
     ) {
     dashboardService.dashboardObservableData = {
       menuActivo: 'historial-clinico'
     };
+
   }
   /* Columnas de la tabla */
   displayedColumns: string[] = ['fecha', 'hora', 'medico', 'consultorio','modalidad','informacion','opciones'];
@@ -41,6 +46,9 @@ export class HistorialClinicoComponent {
          this.usuariosService.obtenerHistorialClinico(this.idPaciente).subscribe(
           (response)=>{
            this.citas = response;
+           if(this.citas.length!=0){
+            this.nombrePaciente=" : "+this.citas[0].nombrePaciente;
+           }
        
            this.dataSource = new MatTableDataSource(this.citas);
            this.dataSource.paginator = this.paginator;
@@ -56,6 +64,12 @@ export class HistorialClinicoComponent {
         }
        
       });
+      this.rol=sessionStorage.getItem('rol');
+      if(this.rol==2){
+        this.displayedColumns = ['fecha', 'hora', 'medico', 'consultorio','modalidad','informacion'];
+
+      }
+     
      
   }
 
@@ -82,6 +96,9 @@ export class HistorialClinicoComponent {
 
     )
     
+  }
+  regresar(): void {
+    this.location.back();
   }
 
 

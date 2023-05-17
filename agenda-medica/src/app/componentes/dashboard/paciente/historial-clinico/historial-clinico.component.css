@@ -55,3 +55,9 @@ th{
 mat-icon{
   display: flex;
 }
+.titulo{
+  display: flex;
+}
+.titulo button{
+margin: auto;
+}
