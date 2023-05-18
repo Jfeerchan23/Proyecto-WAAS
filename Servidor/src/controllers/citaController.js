@@ -167,10 +167,10 @@ citaController.reservar = (req, res) => {
     req.getConnection((err, conn) => {
         if (err) return res.send(err);
 
-        conn.query('UPDATE citas SET ? WHERE idCita = ?', [updated, idCita], (err, result) => {
+        conn.query('UPDATE citas SET ? WHERE idCita = ?', [updated, idCita], async (err, result) => {
             if (err) return res.send(err);
 
-            notificarPorCorreo(conn, updated.idPaciente, updated.idMedico, idCita)
+            await notificarPorCorreo(conn, updated.idPaciente, updated.idMedico, idCita)
             res.send(`Cita con id ${idCita} reservada.`);
         });
     });
