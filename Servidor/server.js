@@ -1,8 +1,6 @@
 const express = require('express')
 const mysql = require('mysql')
 const myconn = require('express-myconnection')
-
-
 const routes = require('./routes')
 
 const app = express()
@@ -15,7 +13,7 @@ const dbConfig = {
     database: 'nimbo'
 }
 
-//Middleware
+//Middlewares
 app.use(myconn(mysql, dbConfig, 'single'))
 app.use(express.json())
 
@@ -25,10 +23,6 @@ app.use(cors());
 
 
 // Rutas
-app.get('/', (req, res)=>{
-    res.send('Welcome')
-})
-
 app.use('/api', routes)
 
 //Ejecucion de servidor
