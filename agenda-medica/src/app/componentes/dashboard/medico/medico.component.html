@@ -16,10 +16,11 @@
               
            </td>
            <td>
-              <a  [ngClass]="(dataDashboard$ | async)?.menuActivo == 'lista-pacientes' ? 'active' : ''"
-              routerLink="/dashboard/medico/lista-pacientes/{{id}}" 
-              
-              >Citas programadas</a>
+              <a  [ngClass]="(dataDashboard$ | async)?.menuActivo === 'lista-pacientes' || (dataDashboard$ | async)?.menuActivo === 'historial-clinico' ? 'active' : ''"
+              routerLink="/dashboard/medico/lista-pacientes/{{id}}"      
+              >   
+              Citas programadas
+            </a>
            </td>
         </tr>
      </table>

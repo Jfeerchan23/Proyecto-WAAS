@@ -36,7 +36,7 @@ export class ListadepacientesComponent {
     dataSource :any;
 
   ngOnInit():void{
-     //CUANDO SE ENCUENTRA EN EL PERFIL DE UN PACIENTE
+     //CUANDO SE ENCUENTRA EN EL PERFIL DE UN MEDICO
      this.route.params.subscribe((params) => {
       if (params['idMedico']) {
         this.idMedico= params['idMedico'];
@@ -58,28 +58,10 @@ export class ListadepacientesComponent {
  /*  Paginación de la tabla */
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  seleccionarCita(idCita:any){
-    this.idCita=idCita;
-  }
-  cancelarCita(){
-    const cita = {
-      idPaciente: null,
-      modalidad:null
-    }
-    this.indice = this.citas.findIndex(
-      (cita: any) => cita.idCita === this.idCita
-    );
 
-    if (this.indice !== -1) {
-      this.citas.splice(this.indice, 1);
-      this.dataSource = new MatTableDataSource(this.citas);
-      this.dataSource.paginator = this.paginator;
-      this.paginator.firstPage();
+    verInformacionPaciente(idPaciente:any, idCita:any){
+      this.router.navigate(['dashboard/medico/paciente-datos',idPaciente, idCita]);
+      
     }
-   
-  
-    this.usuariosService.actualizarCita(cita, this.idCita).subscribe(
-
-    )
-    }
+ 
 }

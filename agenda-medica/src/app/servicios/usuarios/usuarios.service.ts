@@ -116,7 +116,6 @@ export class UsuariosService {
 		console.log(data);
 		return this.http.put(`${this.URL}/api/citas/reservar/${$id}`, data);
 	}
-
 	actualizarCita($datos: any, $id: any): Observable<any> {
 		let data = Object.assign({}, $datos);
 		console.log(data);
@@ -126,11 +125,11 @@ export class UsuariosService {
 	citasDisponibles($datos: any): Observable<any> {
 		let data = Object.assign({}, $datos);
 		console.log(data);
-		return this.http.post(`${this.URL}/api/citasDisponibles`, data);
+		return this.http.post(`${this.URL}/api/citas/citasDisponibles`, data);
 	}
 
 	citasProgramadas(): Observable<any> {
-		return this.http.get(`${this.URL}/api/citasProgramadas`);
+		return this.http.get(`${this.URL}/api/citas/citasProgramadas`);
 	}
 
 	/* Agenda */
