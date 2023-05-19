@@ -53,19 +53,28 @@ export class CrearAgendaComponent {
 
   ngOnInit():void {
     this.form = new FormGroup({
-      fecha: new FormControl(this.agenda.fecha, Validators.required),
+      fechaInicio: new FormControl(this.agenda.fechaInicio, Validators.required),
+      fechaFin: new FormControl(this.agenda.fechaFin, Validators.required),
       horaInicio: new FormControl(this.agenda.horaInicio, Validators.required),
-      descansoInicio: new FormControl(this.agenda.descansoInicio, Validators.required),
-      descansoFin: new FormControl(this.agenda.descansoFin, Validators.required),
+      inicioAlmuerzo: new FormControl(this.agenda.inicioAlmuerzo, Validators.required),
+      finAlmuerzo: new FormControl(this.agenda.finAlmuerzo, Validators.required),
       horaFin: new FormControl(this.agenda.horaFin, Validators.required),
-      duracion: new FormControl(this.agenda.duracion, Validators.required),
+      duracionCitas: new FormControl(this.agenda.duracionCitas, Validators.required),
     });
     this.idMedico= sessionStorage.getItem('id');
   }
 
   formSubmit(){
+
    
-      this.usuariosService.crearCitas(this.idMedico, this.agenda).subscribe()
+      this.usuariosService.crearCitas(this.idMedico, this.agenda).subscribe(
+        (response)=>{
+          console.log(response);
+        },
+        (error)=>{
+          console.log(error);
+        }
+      )
   
   
   }

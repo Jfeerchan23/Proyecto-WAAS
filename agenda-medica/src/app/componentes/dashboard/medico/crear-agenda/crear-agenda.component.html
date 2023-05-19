@@ -1,57 +1,97 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Bootstrap 5 Form Example</title>
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet">
-  </head>
-  <body>
-    <div class="container my-4">
+<div class="contenedor">
+  <div class="container">
+    <form class="row g-3" [formGroup]="form" (ngSubmit)="formSubmit()">
+      <div class="col-12 titulo">
+        <h2>Cree sus citas</h2>
+      </div>
       <div class="row">
-        <div class="col-md-3">
-          <form [formGroup]="form" (ngSubmit)="formSubmit()">
-            <div class="mb-3">
-              <label for="dia" class="form-label">Agenda valida hasta el día:</label>
-              <input type="date"  class="form-control" formControlName="fecha" [(ngModel)]="agenda.fecha">
-            </div>
-            <div class="mb-3">
-              <label for="inicio" class="form-label">Hora de inicio:</label>
-              <input type="time" class="form-control" formControlName="horaInicio" [(ngModel)]="agenda.horaInicio">
-            </div>
-            <div class="mb-3">
-              <label for="fin" class="form-label">Hora de fin:</label>
-              <input type="time" class="form-control" formControlName="horaFin" [(ngModel)]="agenda.horaFin">
-            </div>
-            <div class="mb-3">
-              <label for="periodo" class="form-label">Periodo de tiempo por consulta:</label>
-              <input type="text" class="form-control" placeholder="Ej: 30 minutos" formControlName="duracion" [(ngModel)]="agenda.duracion">
-            </div>
-            <div class="mb-3">
-              <label for="almuerzo" class="form-label">Hora de almuerzo:</label>
-              <div class="input-group">
-                <input type="time" class="form-control"  placeholder="Ej: 12:00" formControlName="descansoInicio" [(ngModel)]="agenda.descansoInicio">
-                <span class="input-group-text">a</span>
-                <input type="time"class="form-control" placeholder="Ej: 14:00" formControlName="descansoFin" [(ngModel)]="agenda.descansoFin">
-              </div>
-            </div>
-            <button type="submit" class="btn btn-success"  [disabled]="form.invalid">Guardar</button>
-            <button type="reset" class="btn btn-secondary mx-2">Editar</button>
-          </form>
+        <div class="form-group col-6">
+          <label class="form-label">Fecha inicio</label>
+          <input
+            type="date"
+            form
+            class="form-control"
+            autocomplete="off"
+            formControlName="fechaInicio"
+            [(ngModel)]="agenda.fechaInicio"
+            required
+          />
         </div>
-        <div class="col-md-8">
-          <div style=" 
-          margin: 0 auto;
-          width: 1200px autp;
-          height: 400px;">
-            <full-calendar [options]="calendarOptions" class="rounded calendario"></full-calendar>
+        <div class="form-group col-6">
+          <label class="form-label">Fecha fin</label>
+          <input
+            type="date"
+            form
+            class="form-control"
+            autocomplete="off"
+            formControlName="fechaFin"
+            [(ngModel)]="agenda.fechaFin"
+            required
+          />
+        </div>
+        <div class="form-group col-6">
+          <label class="form-label">Hora inicio</label>
+          <input
+            type="time"
+            form
+            class="form-control"
+            formControlName="horaInicio"
+            [(ngModel)]="agenda.horaInicio"
+            autocomplete="off"
+            required
+          />
+        </div>
+        <div class="form-group col-6">
+          <label for="fin" class="form-label">Hora de fin:</label>
+          <input
+            type="time"
+            class="form-control"
+            formControlName="horaFin"
+            [(ngModel)]="agenda.horaFin"
+          />
+        </div>
+        <div class="form-group col-12">
+          <label for="periodo" class="form-label"
+            >Periodo de tiempo por consulta (en min):</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            placeholder="Ej: 30 minutos"
+            formControlName="duracionCitas"
+            [(ngModel)]="agenda.duracionCitas"
+          />
+        </div>
+        <div class="form-group col-12">
+          <label for="almuerzo" class="form-label">Hora de almuerzo:</label>
+          <div class="input-group">
+            <input
+              type="time"
+              class="form-control"
+              placeholder="Ej: 12:00"
+              formControlName="inicioAlmuerzo"
+              [(ngModel)]="agenda.inicioAlmuerzo"
+            />
+            <span class="input-group-text">a</span>
+            <input
+              type="time"
+              class="form-control"
+              placeholder="Ej: 14:00"
+              formControlName="finAlmuerzo"
+              [(ngModel)]="agenda.finAlmuerzo"
+            />
           </div>
         </div>
+        <div class="form-group col-12 mt-3">
+          <button
+            type="submit"
+            class="btn btn-primary "
+            [disabled]="form.invalid"
+          >
+            Guardar
+          </button>
+        </div>
       </div>
-      <div class="mt-8">
-        <div id="calendar"></div>
-      </div>
-    </div>
-    <!-- Bootstrap 5 JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"></script>
-  </body>
-</html>
+    </form>
+  </div>
+</div>
