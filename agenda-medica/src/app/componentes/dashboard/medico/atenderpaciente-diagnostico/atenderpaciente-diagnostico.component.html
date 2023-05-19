@@ -8,6 +8,7 @@
   <body>
     <div class="container my-5">
       <h1>Diagnóstico del Paciente: {{paciente.nombrePaciente}}</h1>
+      <p> <b>Duración de la cita:</b> {{ minutes }} minutos {{ seconds }} segundos</p>
       <form action="guardar.php" method="post">
         <div class="mb-3">
           <label for="txtConsulta" class="form-label">En el siguiente espacio describa el padecimiento del paciente y su tratamiento:</label>

@@ -15,6 +15,9 @@ export class AtenderpacienteDiagnosticoComponent {
  paciente:any;
  notasConsulta:any;
  idCita:any;
+ hours: number = 0;
+  minutes: number = 0;
+  seconds: number = 0;
   constructor(
     private dashboardService: DashboardService,
     private location: Location,
@@ -44,6 +47,9 @@ export class AtenderpacienteDiagnosticoComponent {
             this.idCita= params['idCita'];
           }
         });
+        setInterval(() => {
+          this.increment();
+        }, 1000); // Incrementa cada 1 segundo
   }
 
   regresar(): void {
@@ -59,4 +65,17 @@ export class AtenderpacienteDiagnosticoComponent {
       this.router.navigate(['/dashboard/medico/lista-pacientes',sessionStorage.getItem('id')]);
       
   }
+  increment() {
+    this.seconds++;
+    if (this.seconds === 60) {
+      this.seconds = 0;
+      this.minutes++;
+      if (this.minutes === 60) {
+        this.minutes = 0;
+        this.hours++;
+      }
+    }
+  }
+
+
 }

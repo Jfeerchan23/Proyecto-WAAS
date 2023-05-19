@@ -9,8 +9,8 @@ loginController.login = (req, res) => {
         recepcion-3
         admin-4 */
          const datos ={
-            id:8,
-            rol:3
+            id:1,
+            rol:2
          }
        res.json(datos);
       })
