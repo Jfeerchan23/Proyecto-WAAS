@@ -1,7 +1,6 @@
 const express = require('express')
 const mysql = require('mysql')
 const myconn = require('express-myconnection')
-const QRCodeGenerator = require('qrcode');
 
 
 const routes = require('./routes')
@@ -31,42 +30,6 @@ app.get('/', (req, res)=>{
 })
 
 app.use('/api', routes)
-
-app.get('/QRtest', (req, res) =>{
-    QRCodeGenerator.toDataURL('Texto a transformar', {
-        errorCorrectionLevel: 'H',
-      }, function(err, data) {
-        if (err)  return res.send(err)
-        res.send(`<img src=\"${data}\" >`)
-      });
-})
-
-app.get('/HTMLPDFTest', async (req, res) =>{
-    let options = { format: 'A4' };
-    let file = { content: "<h1>Welcome to html-pdf-node</h1>" };
-    let PDF = await HTMLtoPDF.generatePdf(file, options);
-    res.write(PDF,'binary');
-    res.send()
-})
-
-app.get('/CorreosTest', async (req, res) =>{
-    let conexionSistemaCorreos = await mailTransporter.verify();
-
-    if(conexionSistemaCorreos){
-        var message = {
-            from: "NimboApi@outlook.com",
-            to: "a16003059@alumnos.uady.mx",
-            subject: "Message test",
-            html: "Prueba del sistema de correos de nimbo"
-          };
-          mailTransporter.sendMail(message, (err, info) =>{
-            console.info("err: " + err);
-            console.info("info: " + info.response);
-          })
-    }
-    res.send()
-})
-
 
 //Ejecucion de servidor
 app.listen(app.get('port'), ()=> {
