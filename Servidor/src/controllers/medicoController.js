@@ -9,7 +9,7 @@ medicoController.obtenerTodos = (req, res) => {
   req.getConnection((err, conn) => {
     if (err) return res.send(err)
 
-    conn.query('SELECT * FROM medicos', (err, rows) => {
+    conn.query('SELECT idMedico,nombreMedico,CURPMedico,fechaNacimientoMedico,correoMedico,telefonoMedico,direccionMedico,especialidadMedico,consultorioMedico,cedulaProfesionalMedico,bloqueadoMedico FROM medicos WHERE bloqueadoMedico=0 ', (err, rows) => {
       if (err) return res.send(err)
       res.json(rows)
     })
@@ -28,7 +28,7 @@ medicoController.obtener = (req, res) => {
   req.getConnection((err, conn) => {
     if (err) return res.send(err);
 
-    conn.query('SELECT * FROM medicos WHERE idMedico = ?', [id], (err, rows) => {
+    conn.query('SELECT idMedico,nombreMedico,CURPMedico,fechaNacimientoMedico,correoMedico,telefonoMedico,direccionMedico,especialidadMedico,consultorioMedico,cedulaProfesionalMedico,bloqueadoMedico FROM medicos WHERE idMedico = ?', [id], (err, rows) => {
       if (err) return res.send(err);
 
       if (rows.length > 0) {
@@ -58,11 +58,22 @@ medicoController.actualizar = (req, res) => {
 
     conn.query('UPDATE medicos SET ? WHERE idMedico = ?', [updatedMedico, id], (err, result) => {
       if (err) return res.send(err);
+      if(updatedMedico.bloqueadoMedico){  
+        conn.query("UPDATE citas JOIN medicos ON citas.idMedico= medicos.idMedico SET citas.idPaciente = null,citas.modalidad = null WHERE medicos.bloqueadoMedico=1 AND medicos.idMedico=? AND CONCAT(citas.fecha, ' ', citas.horaInicio) >= NOW();", [id], (err, result) => {
+          if (err) return res.send(err);
+        
+        });
+      }
+    
 
       res.send(`Medico con id ${id} actualizado.`);
     });
+
+
   });
 }
+
+
 
 /**
  * Elimina la información de un medico de la base de datos

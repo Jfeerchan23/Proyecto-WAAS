@@ -11,7 +11,7 @@ pacienteController.obtenerTodos = (req, res) => {
   req.getConnection((err, conn) => {
     if (err) return res.send(err)
 
-    conn.query('SELECT * FROM pacientes', (err, rows) => {
+    conn.query('SELECT idPaciente,nombrePaciente,CURPPaciente,fechaNacimientoPaciente,correoPaciente,telefonoPaciente,direccionPaciente,generoPaciente,bloqueadoPaciente FROM pacientes WHERE bloqueadoPaciente=0', (err, rows) => {
       if (err) return res.send(err)
       res.json(rows)
     })
@@ -31,7 +31,7 @@ pacienteController.obtener = (req, res) => {
   req.getConnection((err, conn) => {
     if (err) return res.send(err);
 
-    conn.query('SELECT * FROM pacientes WHERE idPaciente = ?', [id], (err, rows) => {
+    conn.query('SELECT idPaciente,nombrePaciente,CURPPaciente,fechaNacimientoPaciente,correoPaciente,telefonoPaciente,direccionPaciente,edadPaciente,generoPaciente,bloqueadoPaciente FROM pacientes WHERE idPaciente = ?', [id], (err, rows) => {
       if (err) return res.send(err);
 
       if (rows.length > 0) {
@@ -61,6 +61,12 @@ pacienteController.actualizar = (req, res) => {
 
     conn.query('UPDATE pacientes SET ? WHERE idPaciente = ?', [updatedPaciente, id], (err, result) => {
       if (err) return res.send(err);
+      if(updatedPaciente.bloqueadoPaciente){  
+        conn.query("UPDATE citas JOIN pacientes ON citas.idPaciente = pacientes.idPaciente SET citas.idPaciente = null,citas.modalidad = null WHERE pacientes.bloqueadoPaciente=1 AND pacientes.idPaciente=? AND CONCAT(citas.fecha, ' ', citas.horaInicio) >= NOW();", [id], (err, result) => {
+          if (err) return res.send(err);
+        
+        });
+      }
 
       res.send(`paciente con id ${id} actualizado.`);
     });
@@ -116,7 +122,7 @@ pacienteController.historialClinico = (req, res) => {
   req.getConnection((err, conn) => {
     if (err) return res.send(err);
 
-    conn.query('SELECT citas.fecha, citas.horaInicio, citas.modalidad, citas.notasConsultas, medicos.nombreMedico, pacientes.nombrePaciente, medicos.consultorioMedico,citas.idCita FROM medicos JOIN citas JOIN pacientes WHERE citas.idPaciente=pacientes.idPaciente AND medicos.idMedico=citas.idMedico AND pacientes.idPaciente= ? ORDER BY citas.idCita DESC', [id], (err, rows) => {
+    conn.query('SELECT citas.fecha, citas.horaInicio, citas.modalidad, citas.notasConsultas, medicos.nombreMedico, pacientes.nombrePaciente, medicos.consultorioMedico,citas.idCita FROM medicos JOIN citas JOIN pacientes WHERE citas.idPaciente=pacientes.idPaciente AND medicos.idMedico=citas.idMedico AND pacientes.idPaciente= ? ORDER BY citas.fecha DESC', [id], (err, rows) => {
       if (err) return res.send(err);
 
       for (let i = 0; i < rows.length; i++) {

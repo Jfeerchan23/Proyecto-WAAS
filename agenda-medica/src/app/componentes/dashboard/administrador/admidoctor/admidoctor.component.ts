@@ -23,9 +23,10 @@ import { UsuariosService } from 'src/app/servicios/usuarios/usuarios.service';
 export class AdmidoctorComponent {
   medico: any = {};
   idMedico:any;
-  form: FormGroup;
+  form!: FormGroup;
   titulo:any = "Agregar Medico";
   idEspecialidad:any;
+  show:any;
   public dataDashboard$!: Observable<Dashboard>;
   constructor(
     dashboardService: DashboardService,
@@ -38,19 +39,7 @@ export class AdmidoctorComponent {
       menuActivo: 'medico',
     };
 
-    this.form = new FormGroup({
-      nombreMedico: new FormControl(this.medico.nombreMedico, Validators.required),
-      CURPMedico: new FormControl(this.medico.CURPMedico, Validators.required),
-      fechaNacimientoMedico: new FormControl(this.medico.fechaNacimientoMedico, Validators.required),
-      correoMedico: new FormControl(this.medico.correoMedico, Validators.required),
-      telefonoMedico: new FormControl(this.medico.telefonoMedico, Validators.required),
-      direccionMedico: new FormControl(this.medico.direccionMedico, Validators.required),
-      consultorioMedico: new FormControl(this.medico.consultorioMedico, Validators.required),
-      especialidadMedico: new FormControl(this.medico.especialidadMedico, Validators.required),
-      cedulaProfesionalMedico: new FormControl(this.medico.cedulaProfesionalMedico, Validators.required),
-      contrasenaMedico: new FormControl(this.medico.constrasenaMedico, Validators.required),
-      bloqueadoMedico: new FormControl(this.medico.bloqueadoMedico),
-    });
+  
 
   }
 
@@ -76,6 +65,34 @@ export class AdmidoctorComponent {
         this.idMedico = params['idMedico'];
         this.obtenerMedico(this.idMedico);
         this.titulo = 'Editar Medico';
+        this.show=false;
+        this.form = new FormGroup({
+          nombreMedico: new FormControl(this.medico.nombreMedico, Validators.required),
+          CURPMedico: new FormControl(this.medico.CURPMedico, Validators.required),
+          fechaNacimientoMedico: new FormControl(this.medico.fechaNacimientoMedico, Validators.required),
+          correoMedico: new FormControl(this.medico.correoMedico, Validators.required),
+          telefonoMedico: new FormControl(this.medico.telefonoMedico, Validators.required),
+          direccionMedico: new FormControl(this.medico.direccionMedico, Validators.required),
+          consultorioMedico: new FormControl(this.medico.consultorioMedico, Validators.required),
+          especialidadMedico: new FormControl(this.medico.especialidadMedico, Validators.required),
+          cedulaProfesionalMedico: new FormControl(this.medico.cedulaProfesionalMedico, Validators.required),
+          bloqueadoMedico: new FormControl(this.medico.bloqueadoMedico),
+        });
+      }else{
+        this.show=true;
+        this.form = new FormGroup({
+          nombreMedico: new FormControl(this.medico.nombreMedico, Validators.required),
+          CURPMedico: new FormControl(this.medico.CURPMedico, Validators.required),
+          fechaNacimientoMedico: new FormControl(this.medico.fechaNacimientoMedico, Validators.required),
+          correoMedico: new FormControl(this.medico.correoMedico, Validators.required),
+          telefonoMedico: new FormControl(this.medico.telefonoMedico, Validators.required),
+          direccionMedico: new FormControl(this.medico.direccionMedico, Validators.required),
+          consultorioMedico: new FormControl(this.medico.consultorioMedico, Validators.required),
+          especialidadMedico: new FormControl(this.medico.especialidadMedico, Validators.required),
+          cedulaProfesionalMedico: new FormControl(this.medico.cedulaProfesionalMedico, Validators.required),
+          contrasenaMedico: new FormControl(this.medico.contrasenaMedico, Validators.required),
+          bloqueadoMedico: new FormControl(this.medico.bloqueadoMedico),
+        });
       }
   
     });

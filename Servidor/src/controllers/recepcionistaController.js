@@ -9,7 +9,7 @@ recepcionistaController.obtenerTodos = (req, res) => {
   req.getConnection((err, conn) => {
     if (err) return res.send(err)
 
-    conn.query('SELECT * FROM recepcionistas', (err, rows) => {
+    conn.query('SELECT idRecepcionista,nombreRecepcionista,	CURPRecepcionista,fechaNacimientoRecepcionista,correoRecepcionista,	telefonoRecepcionista,direccionRecepcionista,bloqueadoRecepcionista FROM recepcionistas WHERE bloqueadoRecepcionista=0 ', (err, rows) => {
       if (err) return res.send(err)
       res.json(rows)
     })
@@ -27,7 +27,7 @@ recepcionistaController.obtener = (req, res) => {
   req.getConnection((err, conn) => {
     if (err) return res.send(err);
 
-    conn.query('SELECT * FROM recepcionistas WHERE idRecepcionista = ?', [id], (err, rows) => {
+    conn.query('SELECT idRecepcionista,nombreRecepcionista,	CURPRecepcionista,fechaNacimientoRecepcionista,correoRecepcionista,	telefonoRecepcionista,direccionRecepcionista,bloqueadoRecepcionista FROM recepcionistas WHERE idRecepcionista = ?', [id], (err, rows) => {
       if (err) return res.send(err);
 
       if (rows.length > 0) {

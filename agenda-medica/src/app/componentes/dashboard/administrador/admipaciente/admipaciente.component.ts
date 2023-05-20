@@ -23,7 +23,7 @@ export class AdmipacienteComponent {
   paciente: any = {};
   idPaciente:any;
   form!: FormGroup;
-
+  show:any=true;
   titulo:any = "Agregar Paciente";
 
   public dataDashboard$!: Observable<Dashboard>;
@@ -42,22 +42,39 @@ export class AdmipacienteComponent {
   ngOnInit():void{
     this.route.params.subscribe(
       params => {
-
+        this.show=true;
         if (params['idPaciente']) {
           this.idPaciente=params['idPaciente'];
          this.obtenerPaciente(this.idPaciente);
          this.titulo="Editar Paciente";
-				}
-        this.form = new FormGroup({
+         this.show=false;
+         this.form = new FormGroup({
           nombrePaciente: new FormControl(this.paciente.nombrePaciente, Validators.required),
           CURPPaciente: new FormControl(this.paciente.CURPPaciente, Validators.required),
           fechaNacimientoPaciente: new FormControl(this.paciente.fechaNacimientoPaciente, Validators.required),
+          edadPaciente: new FormControl(this.paciente.edadPaciente, Validators.required),
+          generoPaciente: new FormControl(this.paciente.generoPaciente, Validators.required),
           correoPaciente: new FormControl(this.paciente.correoPaciente, Validators.required),
           telefonoPaciente: new FormControl(this.paciente.telefonoPaciente, Validators.required),
           direccionPaciente: new FormControl(this.paciente.direccionPaciente, Validators.required),
           bloqueadoPaciente: new FormControl(this.paciente.bloqueadoPaciente),
-          contrasenaPaciente: new FormControl(this.paciente.contrasenaPaciente,Validators.required),
+          contrasenaPaciente: new FormControl(this.paciente.contrasenaPaciente),
         });
+				}else{
+          this.form = new FormGroup({
+            nombrePaciente: new FormControl(this.paciente.nombrePaciente, Validators.required),
+            CURPPaciente: new FormControl(this.paciente.CURPPaciente, Validators.required),
+            fechaNacimientoPaciente: new FormControl(this.paciente.fechaNacimientoPaciente, Validators.required),
+            edadPaciente: new FormControl(this.paciente.edadPaciente, Validators.required),
+            generoPaciente: new FormControl(this.paciente.generoPaciente, Validators.required),
+            correoPaciente: new FormControl(this.paciente.correoPaciente, Validators.required),
+            telefonoPaciente: new FormControl(this.paciente.telefonoPaciente, Validators.required),
+            direccionPaciente: new FormControl(this.paciente.direccionPaciente, Validators.required),
+            bloqueadoPaciente: new FormControl(this.paciente.bloqueadoPaciente),
+            contrasenaPaciente: new FormControl(this.paciente.contrasenaPaciente,Validators.required),
+          });
+        }
+        
       }
 
     );

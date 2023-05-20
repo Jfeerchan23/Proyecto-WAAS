@@ -13,9 +13,9 @@ informacionGeneralController.obtenerUsuarios = (req, res) => {
         const listaUsuarios = {};
 
         const peticiones = {
-            recepcionistas: 'SELECT * FROM recepcionistas',
-            medicos: 'SELECT * FROM medicos',
-            pacientes: 'SELECT * FROM pacientes'
+            recepcionistas: 'SELECT idRecepcionista,nombreRecepcionista,	CURPRecepcionista,fechaNacimientoRecepcionista,correoRecepcionista,	telefonoRecepcionista,direccionRecepcionista,bloqueadoRecepcionista FROM recepcionistas',
+            medicos: 'SELECT idMedico,nombreMedico,CURPMedico,fechaNacimientoMedico,correoMedico,telefonoMedico,direccionMedico,especialidadMedico,consultorioMedico,cedulaProfesionalMedico,bloqueadoMedico FROM medicos',
+            pacientes: 'SELECT idPaciente,nombrePaciente,CURPPaciente,fechaNacimientoPaciente,correoPaciente,telefonoPaciente,direccionPaciente,generoPaciente,bloqueadoPaciente FROM pacientes'
         };
     
         for (const llavePeticion in peticiones) {

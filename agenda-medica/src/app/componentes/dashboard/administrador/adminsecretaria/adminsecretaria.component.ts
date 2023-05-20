@@ -23,7 +23,7 @@ export class AdminsecretariaComponent {
   recepcionista: any = {};
   idRecepcionista: any;
   form!: FormGroup;
-
+  show:any;
   titulo: any = 'Agregar Recepcionista';
 
   public dataDashboard$!: Observable<Dashboard>;
@@ -45,17 +45,30 @@ export class AdminsecretariaComponent {
         this.idRecepcionista = params['idRecepcionista'];
         this.obtenerRecepcionista(this.idRecepcionista);
         this.titulo = 'Editar Recepcionista';
+        this.show=false;
+        this.form = new FormGroup({
+          nombreRecepcionista: new FormControl(this.recepcionista.nombreRecepcionista,Validators.required),
+          CURPRecepcionista: new FormControl(this.recepcionista.CURPRecepcionista,Validators.required),
+          fechaNacimientoRecepcionista: new FormControl(this.recepcionista.fechaNacimientoRecepcionista,Validators.required),
+          correoRecepcionista: new FormControl(this.recepcionista.correoRecepcionista,Validators.required),
+          telefonoRecepcionista: new FormControl(this.recepcionista.telefonoRecepcionista,Validators.required),
+          direccionRecepcionista: new FormControl(this.recepcionista.direccionRecepcionista,Validators.required),
+          bloqueadoRecepcionista: new FormControl(this.recepcionista.bloqueadoRecepcionista),
+        });
+      }else{
+        this.show=true;
+        this.form = new FormGroup({
+          nombreRecepcionista: new FormControl(this.recepcionista.nombreRecepcionista,Validators.required),
+          CURPRecepcionista: new FormControl(this.recepcionista.CURPRecepcionista,Validators.required),
+          fechaNacimientoRecepcionista: new FormControl(this.recepcionista.fechaNacimientoRecepcionista,Validators.required),
+          correoRecepcionista: new FormControl(this.recepcionista.correoRecepcionista,Validators.required),
+          telefonoRecepcionista: new FormControl(this.recepcionista.telefonoRecepcionista,Validators.required),
+          direccionRecepcionista: new FormControl(this.recepcionista.direccionRecepcionista,Validators.required),
+          contrasenaRecepcionista: new FormControl(this.recepcionista.contrasenaRecepcionista,Validators.required),
+          bloqueadoRecepcionista: new FormControl(this.recepcionista.bloqueadoRecepcionista),
+        });
       }
-      this.form = new FormGroup({
-        nombreRecepcionista: new FormControl(this.recepcionista.nombreRecepcionista,Validators.required),
-        CURPRecepcionista: new FormControl(this.recepcionista.CURPRecepcionista,Validators.required),
-        fechaNacimientoRecepcionista: new FormControl(this.recepcionista.fechaNacimientoRecepcionista,Validators.required),
-        correoRecepcionista: new FormControl(this.recepcionista.correoRecepcionista,Validators.required),
-        telefonoRecepcionista: new FormControl(this.recepcionista.telefonoRecepcionista,Validators.required),
-        direccionRecepcionista: new FormControl(this.recepcionista.direccionRecepcionista,Validators.required),
-        contrasenaRecepcionista: new FormControl(this.recepcionista.contrasenaRecepcionista,Validators.required),
-        bloqueadoRecepcionista: new FormControl(this.recepcionista.bloqueadoRecepcionista),
-      });
+
     });
   }
   formSubmit() {
