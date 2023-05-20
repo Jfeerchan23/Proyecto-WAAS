@@ -113,7 +113,7 @@
               <label>Especialidad</label>
               <select   [(ngModel)]="cita.especialidadMedico" class="form-select"    class="form-control"   formControlName="especialidadMedico" required  (ngModelChange)="changeEspecialidad()">
                 <option *ngFor="let opcion of especialidades" [value]="opcion.idEspecialidad">
-                  {{opcion.nombreEspecialidad}}
+                  {{opcion.siglaEspecialidad}} - {{opcion.nombreEspecialidad}}
                 </option>
               </select>
             
