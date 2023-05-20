@@ -108,24 +108,32 @@ export class AdmidoctorComponent {
     if (this.idMedico) {
       this.usuariosService
         .editarMedico(this.medico, this.idMedico)
-        .subscribe();
-      this._snackBar.open('Medico actualizado', '', {
-        duration: 1000,
-        horizontalPosition: 'center',
-        verticalPosition: 'bottom',
-      });
-      this.router.navigate(['/dashboard/administracion']);
+        .subscribe(
+        );
+        this._snackBar.open('Medico actualizado', '', {
+          duration: 1000,
+          horizontalPosition: 'center',
+          verticalPosition: 'bottom',
+        });
+        this.form.reset();
+        this.router.navigate(['/dashboard/administracion']);
+      
     } else {
-      this.usuariosService.guardarMedico(this.medico).subscribe();
-      this._snackBar.open('Medico creado', '', {
-        duration: 1000,
-        horizontalPosition: 'center',
-        verticalPosition: 'bottom',
-      });
+      this.usuariosService.guardarMedico(this.medico).subscribe(
+        (response)=>{
+          this._snackBar.open(response, '', {
+            duration: 1000,
+            horizontalPosition: 'center',
+            verticalPosition: 'bottom',
+          });
+          this.form.reset();
+        }
+      );
+     
 
     }
 
-    this.form.reset();
+   
 
   }
 

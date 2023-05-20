@@ -10,7 +10,7 @@ loginController.login = (req, res) => {
         admin-4 */
          const datos ={
             id:8,
-            rol:3
+            rol:4
          }
        res.json(datos);
       })
