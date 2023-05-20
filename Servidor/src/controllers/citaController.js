@@ -75,9 +75,9 @@ citaController.crearCitas = (req, res) => {
                     })
                 });
             });
-            res.send("Citas generadas")
+            res.json("Citas generadas")
         } else {
-            res.send("El/Los dia(s) " + fechasProgramadas.toString() + " ya se encuentra(n) programado(s)")
+            res.json("El/Los dia(s) " + fechasProgramadas.toString() + " ya se encuentra(n) programado(s)")
         }
     }, 1000);
 

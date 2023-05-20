@@ -9,6 +9,7 @@ import esLocale from '@fullcalendar/core/locales/es';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { UsuariosService } from 'src/app/servicios/usuarios/usuarios.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { error } from 'jquery';
 
 @Component({
   selector: 'app-crear-agenda',
@@ -69,13 +70,19 @@ export class CrearAgendaComponent {
    
       this.usuariosService.crearCitas(this.idMedico, this.agenda).subscribe(
         (response)=>{
-          console.log(response);
+          this._snackBar.open(response, '', {
+            duration: 2000,
+            horizontalPosition: 'center',
+            verticalPosition: 'bottom',
+          });
+           this.form.reset();
         },
         (error)=>{
-          console.log(error);
+         
+          this.form.reset();
         }
       )
-  
+     
   
   }
 

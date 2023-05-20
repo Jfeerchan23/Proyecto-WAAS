@@ -36,7 +36,7 @@ export class AgendaPacienteComponent implements OnInit {
     this.route.params.subscribe((params) => {
       if (params['idPaciente']) {
         this.idPaciente = params['idPaciente'];
-        this.usuariosService.agendaPaciente(7).subscribe(
+        this.usuariosService.agendaPaciente(params['idPaciente']).subscribe(
           (response)=>{
             this.eventos=response;
            for(let i=0; i<this.eventos.length;i++){
