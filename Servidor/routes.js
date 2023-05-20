@@ -11,7 +11,7 @@ const citaRoutes = require('./src/routes/citaRoutes')
 const cors = require('cors');
 routes.use(cors());
 
-//Colocación de controladores de rutas
+//Colocación de controladores de subrutas
 routes.use('/informacion', informacionGeneralRoutes)
 routes.use('/recepcionistas', recepcionistaRoutes)
 routes.use('/medicos', medicoRoutes)
