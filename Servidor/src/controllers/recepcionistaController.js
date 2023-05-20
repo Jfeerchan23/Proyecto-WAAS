@@ -88,16 +88,42 @@ recepcionistaController.eliminar = (req, res) => {
  */
 recepcionistaController.insertar = (req, res) => {
   req.getConnection(async (err, conn) => {
-    if (err) return res.send(err)
-    req.body.contrasenaRecepcionista=  await generarHashContraseña(req.body.contrasenaRecepcionista, 10); 
+    if (err) return res.send(err);
 
-    conn.query('INSERT INTO recepcionistas set ?', [req.body], (err, rows) => {
-      if (err) return res.send(err)
+    const correoRecepcionista = req.body.correoRecepcionista; // Correo del paciente a crear
 
-      res.send('recepcionista agregado!')
-    })
-  })
-}
+    // Verificar si el correo ya existe en otros usuarios
+    conn.query(
+      'SELECT COUNT(*) AS count FROM (SELECT correoRecepcionista FROM recepcionistas UNION SELECT correoPaciente FROM pacientes UNION SELECT correoMedico FROM medicos) AS usuarios WHERE correoRecepcionista = ?',
+      [correoRecepcionista],
+      async (err, result) => {
+        if (err) return res.send(err);
+
+        const count = result[0].count;
+
+        if (count > 0) {
+          // El correo ya existe en otro usuario, enviar una respuesta indicando el problema
+          return res.json('Correo inválido. El correo ya está registrado en otro usuario.');
+        }else{
+          try {
+            req.body.contrasenaRecepcionista=  await generarHashContraseña(req.body.contrasenaRecepcionista, 10); 
+
+            conn.query('INSERT INTO recepcionistas set ?', [req.body], (err, rows) => {
+              if (err) return res.send(err)
+        
+              res.json('recepcionista agregado!')
+            })
+          } catch (error) {
+            return res.send(error);
+          }
+        }
+
+       
+      }
+    );
+  });
+};
+
 
 function generarHashContraseña(password, saltRounds) {
   return new Promise((resolve, reject) => {

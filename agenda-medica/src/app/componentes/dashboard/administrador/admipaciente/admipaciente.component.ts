@@ -104,11 +104,13 @@ export class AdmipacienteComponent {
             horizontalPosition: 'center',
             verticalPosition: 'bottom',
           });
+          this.form.reset();
+          this.paciente.bloqueadoPaciente=false;
         }
       );
      
     }
-    this.form.reset();
+    
   }
 
   obtenerPaciente(id:any){

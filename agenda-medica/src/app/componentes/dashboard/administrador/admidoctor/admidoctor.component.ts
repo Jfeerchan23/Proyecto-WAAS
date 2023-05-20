@@ -131,6 +131,7 @@ export class AdmidoctorComponent {
             verticalPosition: 'bottom',
           });
           this.form.reset();
+          this.medico.bloqueadoMedico=false;
         }
       );
      
