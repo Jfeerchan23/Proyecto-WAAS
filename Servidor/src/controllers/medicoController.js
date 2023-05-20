@@ -1,5 +1,5 @@
 const medicoController = {}
-
+const bcrypt = require('bcrypt');
 /**
  * Devuelve la información de todos los medicos en la base de datos
  * @param {*} req Contiene la petición del usuario
@@ -89,10 +89,11 @@ medicoController.eliminar = (req, res) => {
  * @param {*} res Contiene la respuesta que se enviara a la peticion
  */
 medicoController.insertar = (req, res) => {
-  req.getConnection((err, conn) => {
+  req.getConnection(async (err, conn) => {
     if (err) return res.send(err)
 
-    console.log(req.body)
+    req.body.contrasenaMedico=  await generarHashContraseña(req.body.contrasenaMedico, 10); 
+
     conn.query('INSERT INTO medicos set ?', [req.body], (err, rows) => {
       if (err) return res.send(err)
 
@@ -169,6 +170,20 @@ medicoController.citasProgramadas = (req, res)=>{
       }
       res.json(rows)
      
+    });
+  });
+}
+
+function generarHashContraseña(password, saltRounds) {
+  return new Promise((resolve, reject) => {
+    bcrypt.hash(password, saltRounds, (err, hash) => {
+      if (err) {
+        // Manejo del error
+        reject(err);
+      } else {
+        // El hash de la contraseña encriptada
+        resolve(hash);
+      }
     });
   });
 }

@@ -1,5 +1,5 @@
 const recepcionistaController = {}
-
+const bcrypt = require('bcrypt');
 /**
  * Devuelve la información de todos los recepcionistas en la base de datos
  * @param {*} req Contiene la petición del usuario
@@ -87,8 +87,9 @@ recepcionistaController.eliminar = (req, res) => {
  * @param {*} res Contiene la respuesta que se enviara a la peticion
  */
 recepcionistaController.insertar = (req, res) => {
-  req.getConnection((err, conn) => {
+  req.getConnection(async (err, conn) => {
     if (err) return res.send(err)
+    req.body.contrasenaRecepcionista=  await generarHashContraseña(req.body.contrasenaRecepcionista, 10); 
 
     conn.query('INSERT INTO recepcionistas set ?', [req.body], (err, rows) => {
       if (err) return res.send(err)
@@ -96,6 +97,20 @@ recepcionistaController.insertar = (req, res) => {
       res.send('recepcionista agregado!')
     })
   })
+}
+
+function generarHashContraseña(password, saltRounds) {
+  return new Promise((resolve, reject) => {
+    bcrypt.hash(password, saltRounds, (err, hash) => {
+      if (err) {
+        // Manejo del error
+        reject(err);
+      } else {
+        // El hash de la contraseña encriptada
+        resolve(hash);
+      }
+    });
+  });
 }
 
 module.exports = recepcionistaController

@@ -102,6 +102,10 @@ export class UsuariosService {
 	obtenerHistorialClinico($id:any):Observable<any>{
 		return this.http.get(`${this.URL}/api/pacientes/historialClinico/${$id}`);
 	}
+	descargarHistorialClinico($id:any):Observable<any>{
+		return this.http.get(`${this.URL}/api/pacientes/historialClinico/${$id}/descargar`);
+	}
+
 
 
 	/*Citas */

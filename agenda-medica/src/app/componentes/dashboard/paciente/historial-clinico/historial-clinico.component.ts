@@ -101,5 +101,9 @@ export class HistorialClinicoComponent {
     this.location.back();
   }
 
+  descargar():void{
+    const enlace = 'http://localhost:8080/api/pacientes/historialClinico/'+this.idPaciente+'/descargar';
+    window.open(enlace, '_blank');
+  }
 
 }

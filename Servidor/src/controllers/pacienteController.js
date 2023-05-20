@@ -1,5 +1,6 @@
 const pacienteController = {}
 const ExcelJS = require('exceljs');
+const bcrypt = require('bcrypt');
 
 /**
  * Devuelve la información de todos los pacientes en la base de datos
@@ -91,10 +92,10 @@ pacienteController.eliminar = (req, res) => {
  * @param {*} res Contiene la respuesta que se enviara a la peticion
  */
 pacienteController.insertar = (req, res) => {
-  req.getConnection((err, conn) => {
+  req.getConnection(async (err, conn) => {
     if (err) return res.send(err)
 
-    console.log(req.body)
+    req.body.contrasenaPaciente=  await generarHashContraseña(req.body.contrasenaPaciente, 10); 
     conn.query('INSERT INTO pacientes set ?', [req.body], (err, rows) => {
       if (err) return res.send(err)
 
@@ -198,6 +199,22 @@ pacienteController.agenda = (req, res) => {
       }
       res.json(rows)
 
+    });
+  });
+}
+
+
+
+function generarHashContraseña(password, saltRounds) {
+  return new Promise((resolve, reject) => {
+    bcrypt.hash(password, saltRounds, (err, hash) => {
+      if (err) {
+        // Manejo del error
+        reject(err);
+      } else {
+        // El hash de la contraseña encriptada
+        resolve(hash);
+      }
     });
   });
 }
