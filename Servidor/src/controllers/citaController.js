@@ -70,7 +70,6 @@ citaController.crearCitas = (req, res) => {
 
                         conn.query('INSERT INTO citas set ?', [datosCita], (err, rows) => {
                             if (err) return res.send(err)
-                            //! PON UN CONSOLE LOG AQUI CON ALGO
                         })
                     })
                 });
