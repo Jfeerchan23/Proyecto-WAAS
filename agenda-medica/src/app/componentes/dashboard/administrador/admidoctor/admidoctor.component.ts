@@ -109,12 +109,16 @@ export class AdmidoctorComponent {
       this.usuariosService
         .editarMedico(this.medico, this.idMedico)
         .subscribe(
+          (response)=>{
+            this._snackBar.open(response, '', {
+              duration: 1000,
+              horizontalPosition: 'center',
+              verticalPosition: 'bottom',
+            });
+          }
+         
         );
-        this._snackBar.open('Medico actualizado', '', {
-          duration: 1000,
-          horizontalPosition: 'center',
-          verticalPosition: 'bottom',
-        });
+     
         this.form.reset();
         this.router.navigate(['/dashboard/administracion']);
       

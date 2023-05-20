@@ -53,25 +53,46 @@ medicoController.actualizar = (req, res) => {
   const id = req.params.id;
   const updatedMedico = req.body;
 
-  req.getConnection((err, conn) => {
+  req.getConnection(async (err, conn) => {
     if (err) return res.send(err);
 
-    conn.query('UPDATE medicos SET ? WHERE idMedico = ?', [updatedMedico, id], (err, result) => {
-      if (err) return res.send(err);
-      if(updatedMedico.bloqueadoMedico){  
-        conn.query("UPDATE citas JOIN medicos ON citas.idMedico= medicos.idMedico SET citas.idPaciente = null,citas.modalidad = null WHERE medicos.bloqueadoMedico=1 AND medicos.idMedico=? AND CONCAT(citas.fecha, ' ', citas.horaInicio) >= NOW();", [id], (err, result) => {
+    const correoMedico = updatedMedico.correoMedico; // Nuevo correo del médico a actualizar
+
+    // Verificar si el correo ya existe en otros usuarios
+    conn.query(
+      'SELECT COUNT(*) AS count FROM (SELECT correoMedico FROM medicos UNION SELECT correoRecepcionista FROM recepcionistas UNION SELECT correoPaciente FROM pacientes) AS usuarios WHERE correoMedico = ?',
+      [correoMedico],
+      async (err, result) => {
+        if (err) return res.send(err);
+
+        const count = result[0].count;
+
+        if (count > 0) {
+          // El correo ya existe en otro usuario, enviar una respuesta indicando el problema
+          return res.json('Correo inválido. El correo ya está registrado en otro usuario.');
+        }
+
+        // Si el correo no existe en otros usuarios, continuar con la actualización del médico
+        if (updatedMedico.contrasenaMedico) {
+          updatedMedico.contrasenaMedico = await generarHashContraseña(updatedMedico.contrasenaMedico, 10);
+        }
+
+        conn.query('UPDATE medicos SET ? WHERE idMedico = ?', [updatedMedico, id], (err, result) => {
           if (err) return res.send(err);
-        
+
+          if (updatedMedico.bloqueadoMedico) {
+            conn.query("UPDATE citas JOIN medicos ON citas.idMedico = medicos.idMedico SET citas.idPaciente = null, citas.modalidad = null WHERE medicos.bloqueadoMedico = 1 AND medicos.idMedico = ? AND CONCAT(citas.fecha, ' ', citas.horaInicio) >= NOW();", [id], (err, result) => {
+              if (err) return res.send(err);
+            });
+          }
+
+          res.json(`Médico actualizado.`);
         });
       }
-    
-
-      res.json(`Medico con id ${id} actualizado.`);
-    });
-
-
+    );
   });
-}
+};
+
 
 
 
@@ -106,27 +127,32 @@ medicoController.insertar = (req, res) => {
     const correoMedico = req.body.correoMedico; // Correo del médico a crear
 
     // Verificar si el correo ya existe en otros usuarios
-    conn.query('SELECT COUNT(*) AS count FROM medicos WHERE correoMedico = ?', [correoMedico], async (err, result) => {
-      if (err) return res.send(err)
-
-      const count = result[0].count;
-      
-      if (count > 0) {
-        // El correo ya existe en otro usuario, enviar una respuesta indicando el problema
-        return res.json('Correo inválido. El correo ya está registrado en usuario.');
-      }
-
-      // Si el correo no existe en otros usuarios, continuar con la inserción del médico
-      req.body.contrasenaMedico = await generarHashContraseña(req.body.contrasenaMedico, 10); 
-
-      conn.query('INSERT INTO medicos SET ?', [req.body], (err, rows) => {
+    conn.query(
+      'SELECT COUNT(*) AS count FROM (SELECT correoMedico FROM medicos UNION SELECT correoRecepcionista FROM recepcionistas UNION SELECT correoPaciente FROM pacientes) AS usuarios WHERE correoMedico = ?',
+      [correoMedico],
+      async (err, result) => {
         if (err) return res.send(err)
 
-        res.json('¡Médico agregado!');
-      });
-    });
+        const count = result[0].count;
+        
+        if (count > 0) {
+          // El correo ya existe en otro usuario, enviar una respuesta indicando el problema
+          return res.json('Correo inválido. El correo ya está registrado en otro usuario.');
+        }
+
+        // Si el correo no existe en otros usuarios, continuar con la inserción del médico
+        req.body.contrasenaMedico = await generarHashContraseña(req.body.contrasenaMedico, 10); 
+
+        conn.query('INSERT INTO medicos SET ?', [req.body], (err, rows) => {
+          if (err) return res.send(err)
+
+          res.json('¡Médico agregado!');
+        });
+      }
+    );
   });
-}
+};
+
 
 
  medicoController.obtenerEspecialidades = (req, res) =>{

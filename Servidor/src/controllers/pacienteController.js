@@ -52,26 +52,55 @@ pacienteController.obtener = (req, res) => {
  * @param {*} req Contiene la petición del usuario
  * @param {*} res Contiene la respuesta que se enviara a la peticion
  */
+
 pacienteController.actualizar = (req, res) => {
   const id = req.params.id;
   const updatedPaciente = req.body;
 
-  req.getConnection((err, conn) => {
+  req.getConnection(async (err, conn) => {
     if (err) return res.send(err);
 
-    conn.query('UPDATE pacientes SET ? WHERE idPaciente = ?', [updatedPaciente, id], (err, result) => {
-      if (err) return res.send(err);
-      if(updatedPaciente.bloqueadoPaciente){  
-        conn.query("UPDATE citas JOIN pacientes ON citas.idPaciente = pacientes.idPaciente SET citas.idPaciente = null,citas.modalidad = null WHERE pacientes.bloqueadoPaciente=1 AND pacientes.idPaciente=? AND CONCAT(citas.fecha, ' ', citas.horaInicio) >= NOW();", [id], (err, result) => {
-          if (err) return res.send(err);
-        
-        });
-      }
+    const correoPaciente = updatedPaciente.correoPaciente; // Nuevo correo del paciente a actualizar
 
-      res.send(`paciente con id ${id} actualizado.`);
-    });
+    // Verificar si el correo ya existe en otros usuarios
+    conn.query(
+      'SELECT COUNT(*) AS count FROM ( SELECT correoPaciente FROM pacientes UNION SELECT correoMedico FROM medicos UNION SELECT correoRecepcionista FROM recepcionistas) AS usuarios WHERE correoPaciente = ?',
+      [correoPaciente],
+      async (err, result) => {
+        if (err) return res.send(err);
+
+        const count = result[0].count;
+
+        if (count > 0) {
+          // El correo ya existe en otro usuario, enviar una respuesta indicando el problema
+          return res.json('Correo inválido. El correo ya está registrado en otro usuario.');
+        }else{
+              // Si el correo no existe en otros usuarios, continuar con la actualización del paciente
+        if (updatedPaciente.contrasenaPaciente) {
+          updatedPaciente.contrasenaPaciente = await generarHashContraseña(updatedPaciente.contrasenaPaciente, 10);
+        }
+
+        conn.query('UPDATE pacientes SET ? WHERE idPaciente = ?', [updatedPaciente, id], (err, result) => {
+          if (err) return res.send(err);
+
+          if(updatedPaciente.bloqueadoPaciente){  
+            conn.query("UPDATE citas JOIN pacientes ON citas.idPaciente = pacientes.idPaciente SET citas.idPaciente = null,citas.modalidad = null WHERE pacientes.bloqueadoPaciente=1 AND pacientes.idPaciente=? AND CONCAT(citas.fecha, ' ', citas.horaInicio) >= NOW();", [id], (err, result) => {
+              if (err) return res.send(err);
+            
+            });
+          }
+
+          res.json(`Paciente actualizado.`);
+        });
+        }
+
+    
+      }
+    );
   });
-}
+};
+
+
 
 /**
  * Elimina la información de un paciente de la base de datos
@@ -99,16 +128,42 @@ pacienteController.eliminar = (req, res) => {
  */
 pacienteController.insertar = (req, res) => {
   req.getConnection(async (err, conn) => {
-    if (err) return res.send(err)
+    if (err) return res.send(err);
 
-    req.body.contrasenaPaciente=  await generarHashContraseña(req.body.contrasenaPaciente, 10); 
-    conn.query('INSERT INTO pacientes set ?', [req.body], (err, rows) => {
-      if (err) return res.send(err)
+    const correoPaciente = req.body.correoPaciente; // Correo del paciente a crear
 
-      res.send('paciente agregado!')
-    })
-  })
-}
+    // Verificar si el correo ya existe en otros usuarios
+    conn.query(
+      'SELECT COUNT(*) AS count FROM ( SELECT correoPaciente FROM pacientes UNION SELECT correoMedico FROM medicos UNION SELECT correoRecepcionista FROM recepcionistas) AS usuarios WHERE correoPaciente = ?',
+      [correoPaciente],
+      async (err, result) => {
+        if (err) return res.send(err);
+
+        const count = result[0].count;
+
+        if (count > 0) {
+          // El correo ya existe en otro usuario, enviar una respuesta indicando el problema
+          return res.json('Correo inválido. El correo ya está registrado en otro usuario.');
+        }else{
+          try {
+            req.body.contrasenaPaciente = await generarHashContraseña(req.body.contrasenaPaciente, 10);
+  
+            conn.query('INSERT INTO pacientes SET ?', [req.body], (err, rows) => {
+              if (err) return res.send(err);
+  
+              res.json('¡Paciente agregado!');
+            });
+          } catch (error) {
+            return res.send(error);
+          }
+        }
+
+       
+      }
+    );
+  });
+};
+
 
 /**
  * Obtiene el historial clínico del paciente

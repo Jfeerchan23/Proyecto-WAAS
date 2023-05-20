@@ -85,20 +85,28 @@ export class AdmipacienteComponent {
     if (this.idPaciente) {
       this.usuariosService
         .editarPaciente(this.paciente, this.idPaciente)
-        .subscribe();
-      this._snackBar.open('Paciente actualizado', '', {
-        duration: 1000,
-        horizontalPosition: 'center',
-        verticalPosition: 'bottom',
-      });
+        .subscribe(
+          (response)=>{
+            this._snackBar.open(response, '', {
+              duration: 1000,
+              horizontalPosition: 'center',
+              verticalPosition: 'bottom',
+            });
+          }
+         
+        );
       this.router.navigate(['/dashboard/administracion']);
     } else {
-      this.usuariosService.guardarPaciente(this.paciente).subscribe();
-      this._snackBar.open('Paciente creado', '', {
-        duration: 1000,
-        horizontalPosition: 'center',
-        verticalPosition: 'bottom',
-      });
+      this.usuariosService.guardarPaciente(this.paciente).subscribe(
+        (response)=>{
+          this._snackBar.open(response, '', {
+            duration: 1000,
+            horizontalPosition: 'center',
+            verticalPosition: 'bottom',
+          });
+        }
+      );
+     
     }
     this.form.reset();
   }
