@@ -70,6 +70,7 @@ citaController.crearCitas = (req, res) => {
 
                         conn.query('INSERT INTO citas set ?', [datosCita], (err, rows) => {
                             if (err) return res.send(err)
+                            //! PON UN CONSOLE LOG AQUI CON ALGO
                         })
                     })
                 });
@@ -93,10 +94,9 @@ function obtenerSeccionesEntreHoras(horaInicio, horaFin, tiempoSeccion) {
     let secciones = [];
 
     while (horaInicioSeccion < horaFin) {
-        const [horasString, minutosString, segundosString] = horaInicioSeccion.split(':');
+        const [horasString, minutosString] = horaInicioSeccion.split(':');
         let horas = parseInt(horasString);
         let minutos = parseInt(minutosString);
-        let segundos = parseInt(segundosString);
 
         minutos += parseInt(tiempoSeccion);
         if (minutos >= 60) {
@@ -107,8 +107,7 @@ function obtenerSeccionesEntreHoras(horaInicio, horaFin, tiempoSeccion) {
         //Formateamos la hora para poder compararlas
         const horasStringFinSeccion = horas.toString().padStart(2, '0');
         const minutosStringFinSeccion = minutos.toString().padStart(2, '0');
-        const segundosStringFinSeccion = segundos.toString().padStart(2, '0');
-        const horaFinSeccion = `${horasStringFinSeccion}:${minutosStringFinSeccion}:${segundosStringFinSeccion}`;
+        const horaFinSeccion = `${horasStringFinSeccion}:${minutosStringFinSeccion}`;
 
         if (horaFinSeccion <= horaFin) {
             const seccion = {
@@ -139,7 +138,7 @@ function obtenerDiasEntreFechas(fechaInicio, fechaFin) {
 
     //Corregimos los problemas de la conversion de fecha
     let fechaLimite = new Date();
-    const [anioFechaFin, mesFechaFin, diaFechaFin] = fechaInicio.split('-');
+    const [anioFechaFin, mesFechaFin, diaFechaFin] = fechaFin.split('-');
     fechaLimite.setFullYear(anioFechaFin);
     fechaLimite.setMonth(parseInt(mesFechaFin) - 1);
     fechaLimite.setDate(diaFechaFin);
