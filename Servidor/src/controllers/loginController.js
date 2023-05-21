@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const loginController = {}
 const mysql = require('mysql')
+const bcrypt = require('bcrypt');
 
 loginController.login = (req, res) => {
 
@@ -18,119 +19,149 @@ const password=req.body.password_usuario;
     conection.connect( (err) => {})
 
     //Se realizan las consultas para obtener datos y saber el tipo de usuario - Tipo Paciente//
-    conection.query('SELECT correoPaciente, contrasenaPaciente, idPaciente FROM `pacientes` WHERE correoPaciente="'+correo+'" AND contrasenaPaciente="'+password+'"',(err, rows) =>{
+    conection.query('SELECT correoPaciente, contrasenaPaciente, idPaciente FROM `pacientes` WHERE correoPaciente=?',[correo],(err, rows) =>{
       if(rows[0]!=null){
         const usuario=rows[0];
-        console.log(usuario.idPaciente);
-        
-        req.getConnection((err, conn) => {
+        bcrypt.compare(password, usuario.contrasenaPaciente, (err, coinciden) => {
+          if (err) {
+           
+          } else {
+            req.getConnection((err, conn) => {
 
-          console.log('paso');
-              const payload = {
-                check:true
-            };
-            //Aqui se indica en cuanto tiempo expira el token
-            const token = jwt.sign(payload, "clavesupermegasecreta",{
-              expiresIn: '7d'
-            });
-      
-            if (err) return res.send(err)
-            const datos ={
-              id:usuario.idPaciente,
-              rol:1,
-              token:token
-            }
-            res.json(datos);
-        })
+              console.log('paso');
+                  const payload = {
+                    check:true
+                };
+                //Aqui se indica en cuanto tiempo expira el token
+                const token = jwt.sign(payload, "clavesupermegasecreta",{
+                  expiresIn: '7d'
+                });
+          
+                if (err) return res.send(err)
+                const datos ={
+                  id:usuario.idPaciente,
+                  rol:1,
+                  token:token
+                }
+                res.json(datos);
+            })
+          
+          }
+        });
+       
+        
+       
       }
     })
     
     //Se realizan las consultas para obtener datos y saber el tipo de usuario - Tipo Medico//
-    conection.query('SELECT correoMedico, contrasenaMedico, idMedico FROM `medicos` WHERE correoMedico="'+correo+'" AND contrasenaMedico="'+password+'"',(err, rows) =>{
+    conection.query('SELECT correoMedico, contrasenaMedico, idMedico FROM `medicos` WHERE correoMedico=?',[correo],(err, rows) =>{
       if(rows[0]!=null){
         const usuario=rows[0];
-        console.log(usuario.correoMedico);
-        
-        req.getConnection((err, conn) => {
+        bcrypt.compare(password, usuario.contrasenaMedico, (err, coinciden) => {
+          if (err) {
+           
+          } else {
+            req.getConnection((err, conn) => {
 
-          console.log('paso');
-              const payload = {
-                check:true
-            };
-            //Aqui se indica en cuanto tiempo expira el token
-            const token = jwt.sign(payload, "clavesupermegasecreta",{
-              expiresIn: '7d'
-            });
-      
-            if (err) return res.send(err)
-            const datos ={
-              id:usuario.idMedico,
-              rol:2,
-              token:token
-            }
-            res.json(datos);
-        })
+              console.log('paso');
+                  const payload = {
+                    check:true
+                };
+                //Aqui se indica en cuanto tiempo expira el token
+                const token = jwt.sign(payload, "clavesupermegasecreta",{
+                  expiresIn: '7d'
+                });
+          
+                if (err) return res.send(err)
+                const datos ={
+                  id:usuario.idMedico,
+                  rol:2,
+                  token:token
+                }
+                res.json(datos);
+            })
+          }
+        });
+        
+  
       }
     })
 
     //Se realizan las consultas para obtener datos y saber el tipo de usuario - Tipo Recepcionista//
-    conection.query('SELECT correoRecepcionista, contrasenaRecepcionista, idRecepcionista FROM `recepcionistas` WHERE correoRecepcionista="'+correo+'" AND contrasenaRecepcionista="'+password+'"',(err, rows) =>{
+    conection.query('SELECT correoRecepcionista, contrasenaRecepcionista, idRecepcionista FROM `recepcionistas` WHERE correoRecepcionista=?',[correo],(err, rows) =>{
       if(rows[0]!=null){
         const usuario=rows[0];
-        console.log(usuario.correoRecepcionista);
-        
-        req.getConnection((err, conn) => {
+        bcrypt.compare(password, usuario.contrasenaRecepcionista, (err, coinciden) => {
+          if (err) {
+           
+          } else {
+            req.getConnection((err, conn) => {
 
-          console.log('paso');
-              const payload = {
-                check:true
-            };
-            //Aqui se indica en cuanto tiempo expira el token
-            const token = jwt.sign(payload, "clavesupermegasecreta",{
-              expiresIn: '7d'
-            });
-      
-            if (err) return res.send(err)
-            const datos ={
-              id:usuario.idRecepcionista,
-              rol:3,
-              token:token
-            }
-            res.json(datos);
-        })
+              console.log('paso');
+                  const payload = {
+                    check:true
+                };
+                //Aqui se indica en cuanto tiempo expira el token
+                const token = jwt.sign(payload, "clavesupermegasecreta",{
+                  expiresIn: '7d'
+                });
+          
+                if (err) return res.send(err)
+                const datos ={
+                  id:usuario.idRecepcionista,
+                  rol:3,
+                  token:token
+                }
+                res.json(datos);
+            })
+          }
+        });
+        
+
+        
+     
       }
     })
     
     //Se realizan las consultas para obtener datos y saber el tipo de usuario - Tipo Administrador//
-    conection.query('SELECT correoAdministrador, contrasenaAdministrador, idAdministrador FROM `Administradores` WHERE correoAdministrador="'+correo+'" AND contrasenaAdministrador="'+password+'"',(err, rows) =>{
+    conection.query('SELECT correoAdministrador, contrasenaAdministrador, idAdministrador FROM `Administradores` WHERE correoAdministrador=?',[correo],(err, rows) =>{
       if(rows[0]!=null){
         const usuario=rows[0];
         console.log(usuario.correoAdministrador);
-        
-        req.getConnection((err, conn) => {
+        bcrypt.compare(password, usuario.contrasenaAdministrador, (err, coinciden) => {
+          if (err) {
+           
+          } else {
+            req.getConnection((err, conn) => {
 
-          console.log('paso');
-              const payload = {
-                check:true
-            };
-            //Aqui se indica en cuanto tiempo expira el token
-            const token = jwt.sign(payload, "clavesupermegasecreta",{
-              expiresIn: '7d'
-            });
-      
-            if (err) return res.send(err)
-            const datos ={
-              id:usuario.idAdministrador,
-              rol:4,
-              token:token
-            }
-            res.json(datos);
-        })
+              console.log('paso');
+                  const payload = {
+                    check:true
+                };
+                //Aqui se indica en cuanto tiempo expira el token
+                const token = jwt.sign(payload, "clavesupermegasecreta",{
+                  expiresIn: '7d'
+                });
+          
+                if (err) return res.send(err)
+                const datos ={
+                  id:usuario.idAdministrador,
+                  rol:4,
+                  token:token
+                }
+                res.json(datos);
+            })
+          }
+        });
+        
+     
       }
     })
    
    
 };
+
 
 
 module.exports = loginController;

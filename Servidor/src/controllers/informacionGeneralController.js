@@ -8,7 +8,6 @@ const informacionGeneralController = {}
  */
 informacionGeneralController.obtenerUsuarios = (req, res) => {
     const headers = req.headers;
-    console.log(headers);
     req.getConnection((err, conn) => {
         if (err) return res.status(500).send(err);
 
