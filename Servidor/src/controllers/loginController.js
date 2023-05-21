@@ -102,6 +102,33 @@ console.log(correo, password);
       }
     })
     
+  //Se realizan las consultas para obtener datos y saber el tipo de usuario - Tipo Administrador//
+    conection.query('SELECT correoAdministrador, contrasenaAdministrador, idAdministrador FROM `Administradores` WHERE correoAdministrador="'+correo+'" AND contrasenaAdministrador="'+password+'"',(err, rows) =>{
+      if(rows[0]!=null){
+        const usuario=rows[0];
+        console.log(usuario.correoAdministrador);
+        
+        req.getConnection((err, conn) => {
+
+          console.log('paso');
+              const payload = {
+                check:true
+            };
+            //Aqui se indica en cuanto tiempo expira el token
+            const token = jwt.sign(payload, "clavesupermegasecreta",{
+              expiresIn: '7d'
+            });
+      
+            if (err) return res.send(err)
+            const datos ={
+              id:usuario.idAdministrador,
+              rol:4,
+              token:token
+            }
+            res.json(datos);
+        })
+      }
+    })
    
 };
 
