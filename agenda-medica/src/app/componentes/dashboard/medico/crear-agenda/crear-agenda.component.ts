@@ -4,7 +4,6 @@ import { Dashboard, DashboardService } from 'src/app/servicios/dashboard.service
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { UsuariosService } from 'src/app/servicios/usuarios/usuarios.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { error } from 'jquery';
 
 @Component({
   selector: 'app-crear-agenda',
