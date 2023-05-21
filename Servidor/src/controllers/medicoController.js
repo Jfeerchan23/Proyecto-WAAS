@@ -6,6 +6,7 @@ const bcrypt = require('bcrypt');
  * @param {*} res Contiene la respuesta que se enviara a la peticion
  */
 medicoController.obtenerTodos = (req, res) => {
+ 
   req.getConnection((err, conn) => {
     if (err) return res.send(err)
 
@@ -50,6 +51,7 @@ medicoController.obtener = (req, res) => {
  * @param {*} res Contiene la respuesta que se enviara a la peticion
  */
 medicoController.actualizar = (req, res) => {
+  
   const id = req.params.id;
   const updatedMedico = req.body;
 

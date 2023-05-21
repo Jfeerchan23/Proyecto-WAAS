@@ -7,6 +7,8 @@ const informacionGeneralController = {}
  * @param {*} res Contiene la respuesta que se enviara a la peticion
  */
 informacionGeneralController.obtenerUsuarios = (req, res) => {
+    const headers = req.headers;
+    console.log(headers);
     req.getConnection((err, conn) => {
         if (err) return res.status(500).send(err);
 

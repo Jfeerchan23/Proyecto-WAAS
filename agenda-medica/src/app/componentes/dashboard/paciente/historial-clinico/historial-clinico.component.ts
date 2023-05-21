@@ -5,6 +5,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { UsuariosService } from 'src/app/servicios/usuarios/usuarios.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+
 @Component({
   selector: 'app-historial-clinico',
   templateUrl: './historial-clinico.component.html',
@@ -25,6 +27,7 @@ export class HistorialClinicoComponent {
     private route: ActivatedRoute,
     private location: Location,
     private router: Router,
+    private http: HttpClient
     ) {
     dashboardService.dashboardObservableData = {
       menuActivo: 'historial-clinico'
@@ -102,8 +105,21 @@ export class HistorialClinicoComponent {
   }
 
   descargar():void{
-    const enlace = 'http://localhost:8080/api/pacientes/historialClinico/'+this.idPaciente+'/descargar';
-    window.open(enlace, '_blank');
+    const enlace = `http://localhost:8080/api/pacientes/historialClinico/${this.idPaciente}/descargar`;
+
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+    });
+    
+    this.http.get(enlace, { headers: headers, responseType: 'blob' })
+      .subscribe(blob => {
+        const url = URL.createObjectURL(blob);
+        window.open(url, '_blank');
+      }, error => {
+        console.error('Error al descargar el archivo:', error);
+      });
+
+  
   }
 
 }
