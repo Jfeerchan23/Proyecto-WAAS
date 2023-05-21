@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 21-05-2023 a las 08:37:15
+-- Tiempo de generación: 22-05-2023 a las 00:37:59
 -- Versión del servidor: 10.4.21-MariaDB-log
 -- Versión de PHP: 8.2.4
 
@@ -70,7 +70,7 @@ INSERT INTO `citas` (`idCita`, `idPaciente`, `idMedico`, `modalidad`, `fecha`, `
 (1875, NULL, 1, NULL, '2023-06-07', '07:00:00', '07:30:00', NULL),
 (1874, NULL, 1, NULL, '2023-06-06', '11:30:00', '12:00:00', NULL),
 (1873, NULL, 1, NULL, '2023-06-06', '11:00:00', '11:30:00', NULL),
-(1872, NULL, 1, NULL, '2023-06-06', '08:30:00', '09:00:00', NULL),
+(1872, 16, 4, '2', '2023-06-06', '08:30:00', '09:00:00', NULL),
 (1871, NULL, 1, NULL, '2023-06-06', '08:00:00', '08:30:00', NULL),
 (1870, NULL, 1, NULL, '2023-06-06', '07:30:00', '08:00:00', NULL),
 (1869, NULL, 1, NULL, '2023-06-06', '07:00:00', '07:30:00', NULL),
@@ -93,22 +93,22 @@ INSERT INTO `citas` (`idCita`, `idPaciente`, `idMedico`, `modalidad`, `fecha`, `
 (1831, NULL, 1, NULL, '2023-05-21', '11:00:00', '11:30:00', NULL),
 (1832, NULL, 1, NULL, '2023-05-21', '11:30:00', '12:00:00', NULL),
 (1833, NULL, 1, NULL, '2023-05-22', '07:00:00', '07:30:00', NULL),
-(1834, 9, 1, '2', '2023-05-22', '07:30:00', '08:00:00', NULL),
-(1835, 8, 1, '3', '2023-05-22', '08:00:00', '08:30:00', NULL),
-(1836, 7, 1, '1', '2023-05-22', '08:30:00', '09:00:00', NULL),
-(1837, NULL, 1, NULL, '2023-05-22', '11:00:00', '11:30:00', NULL),
+(1834, NULL, 1, '2', '2023-05-22', '07:30:00', '08:00:00', NULL),
+(1835, 8, 1, '3', '2023-05-22', '08:00:00', '08:30:00', 'uisdodskds'),
+(1836, 7, 1, '1', '2023-05-22', '08:30:00', '09:00:00', 'bdshjsdhkds'),
+(1837, NULL, 3, NULL, '2023-05-22', '11:00:00', '11:30:00', NULL),
 (1838, NULL, 1, NULL, '2023-05-22', '11:30:00', '12:00:00', NULL),
-(1839, NULL, 1, NULL, '2023-05-23', '07:00:00', '07:30:00', NULL),
-(1840, NULL, 1, NULL, '2023-05-23', '07:30:00', '08:00:00', NULL),
-(1841, 14, 1, '2', '2023-05-23', '08:00:00', '08:30:00', NULL),
-(1842, 16, 1, '1', '2023-05-23', '08:30:00', '09:00:00', NULL),
+(1839, 16, 1, '2', '2023-05-23', '07:00:00', '07:30:00', NULL),
+(1840, 16, 1, '3', '2023-05-23', '07:30:00', '08:00:00', 'sdbdsn'),
+(1841, NULL, 4, '2', '2023-05-23', '08:00:00', '08:30:00', NULL),
+(1842, 16, 1, '1', '2023-05-23', '08:30:00', '09:00:00', 'Tiene fiebre. Se recomienda paracetamol.'),
 (1843, NULL, 1, NULL, '2023-05-23', '11:00:00', '11:30:00', NULL),
 (1844, NULL, 1, NULL, '2023-05-23', '11:30:00', '12:00:00', NULL),
-(1845, NULL, 1, NULL, '2023-05-24', '07:00:00', '07:30:00', NULL),
-(1846, NULL, 1, NULL, '2023-05-24', '07:30:00', '08:00:00', NULL),
+(1845, 16, 1, '1', '2023-05-24', '07:00:00', '07:30:00', NULL),
+(1846, 16, 3, '2', '2023-05-24', '07:30:00', '08:00:00', NULL),
 (1847, NULL, 1, NULL, '2023-05-24', '08:00:00', '08:30:00', NULL),
-(1848, NULL, 1, NULL, '2023-05-24', '08:30:00', '09:00:00', NULL),
-(1849, NULL, 1, NULL, '2023-05-24', '11:00:00', '11:30:00', NULL),
+(1848, 16, 1, '1', '2023-05-24', '08:30:00', '09:00:00', 'sbnsdnbdsnb'),
+(1849, 16, 1, '1', '2023-05-24', '11:00:00', '11:30:00', NULL),
 (1850, NULL, 1, NULL, '2023-05-24', '11:30:00', '12:00:00', NULL),
 (1851, NULL, 1, NULL, '2023-05-30', '07:00:00', '07:30:00', NULL),
 (1852, NULL, 1, NULL, '2023-05-30', '07:30:00', '08:00:00', NULL),
@@ -124,30 +124,30 @@ INSERT INTO `citas` (`idCita`, `idPaciente`, `idMedico`, `modalidad`, `fecha`, `
 (1862, NULL, 1, NULL, '2023-05-31', '11:30:00', '12:00:00', NULL),
 (1880, NULL, 1, NULL, '2023-06-07', '11:30:00', '12:00:00', NULL),
 (1881, NULL, 1, NULL, '2023-05-25', '07:00:00', '07:30:00', NULL),
-(1882, NULL, 1, NULL, '2023-05-25', '07:30:00', '08:00:00', NULL),
+(1882, NULL, 4, NULL, '2023-05-25', '07:30:00', '08:00:00', NULL),
 (1883, NULL, 1, NULL, '2023-05-25', '08:00:00', '08:30:00', NULL),
-(1884, NULL, 1, NULL, '2023-05-25', '08:30:00', '09:00:00', NULL),
+(1884, 16, 1, '2', '2023-05-25', '08:30:00', '09:00:00', NULL),
 (1885, NULL, 1, NULL, '2023-05-25', '11:00:00', '11:30:00', NULL),
 (1886, NULL, 1, NULL, '2023-05-25', '11:30:00', '12:00:00', NULL),
 (1887, NULL, 1, NULL, '2023-05-26', '07:00:00', '07:30:00', NULL),
 (1888, NULL, 1, NULL, '2023-05-26', '07:30:00', '08:00:00', NULL),
-(1889, NULL, 1, NULL, '2023-05-26', '08:00:00', '08:30:00', NULL),
+(1889, 16, 1, '2', '2023-05-26', '08:00:00', '08:30:00', NULL),
 (1890, NULL, 1, NULL, '2023-05-26', '08:30:00', '09:00:00', NULL),
 (1891, NULL, 1, NULL, '2023-05-26', '11:00:00', '11:30:00', NULL),
-(1892, NULL, 1, NULL, '2023-05-26', '11:30:00', '12:00:00', NULL),
+(1892, NULL, 3, NULL, '2023-05-26', '11:30:00', '12:00:00', NULL),
 (1893, NULL, 1, NULL, '2023-05-27', '07:00:00', '07:30:00', NULL),
 (1894, NULL, 1, NULL, '2023-05-27', '07:30:00', '08:00:00', NULL),
 (1895, NULL, 1, NULL, '2023-05-27', '08:00:00', '08:30:00', NULL),
 (1896, NULL, 1, NULL, '2023-05-27', '08:30:00', '09:00:00', NULL),
 (1897, NULL, 1, NULL, '2023-05-27', '11:00:00', '11:30:00', NULL),
-(1898, NULL, 1, NULL, '2023-05-27', '11:30:00', '12:00:00', NULL),
+(1898, NULL, 4, NULL, '2023-05-27', '11:30:00', '12:00:00', NULL),
 (1899, NULL, 1, NULL, '2023-06-12', '07:00:00', '07:30:00', NULL),
 (1900, NULL, 1, NULL, '2023-06-12', '07:30:00', '08:00:00', NULL),
 (1901, NULL, 1, NULL, '2023-06-12', '11:00:00', '11:30:00', NULL),
 (1902, NULL, 1, NULL, '2023-06-12', '11:30:00', '12:00:00', NULL),
 (1903, NULL, 1, NULL, '2023-06-13', '07:00:00', '07:30:00', NULL),
 (1904, NULL, 1, NULL, '2023-06-13', '07:30:00', '08:00:00', NULL),
-(1905, NULL, 1, NULL, '2023-06-13', '11:00:00', '11:30:00', NULL),
+(1905, NULL, 3, NULL, '2023-06-13', '11:00:00', '11:30:00', NULL),
 (1906, NULL, 1, NULL, '2023-06-13', '11:30:00', '12:00:00', NULL),
 (1907, NULL, 1, NULL, '2023-06-14', '07:00:00', '07:30:00', NULL),
 (1908, NULL, 1, NULL, '2023-06-14', '07:30:00', '08:00:00', NULL),
@@ -201,7 +201,7 @@ INSERT INTO `citas` (`idCita`, `idPaciente`, `idMedico`, `modalidad`, `fecha`, `
 (1956, NULL, 1, NULL, '2023-06-02', '11:30:00', '12:00:00', NULL),
 (1957, NULL, 1, NULL, '2023-06-03', '07:00:00', '07:30:00', NULL),
 (1958, NULL, 1, NULL, '2023-06-03', '07:30:00', '08:00:00', NULL),
-(1959, NULL, 1, NULL, '2023-06-03', '10:00:00', '10:30:00', NULL),
+(1959, NULL, 3, NULL, '2023-06-03', '10:00:00', '10:30:00', NULL),
 (1960, NULL, 1, NULL, '2023-06-03', '10:30:00', '11:00:00', NULL),
 (1961, NULL, 1, NULL, '2023-06-03', '11:00:00', '11:30:00', NULL),
 (1962, NULL, 1, NULL, '2023-06-03', '11:30:00', '12:00:00', NULL),
@@ -264,7 +264,31 @@ INSERT INTO `citas` (`idCita`, `idPaciente`, `idMedico`, `modalidad`, `fecha`, `
 (2019, NULL, 13, NULL, '2023-09-13', '10:00:00', '10:30:00', NULL),
 (2020, NULL, 13, NULL, '2023-09-13', '10:30:00', '11:00:00', NULL),
 (2021, NULL, 13, NULL, '2023-09-13', '11:00:00', '11:30:00', NULL),
-(2022, NULL, 13, NULL, '2023-09-13', '11:30:00', '12:00:00', NULL);
+(2022, NULL, 13, NULL, '2023-09-13', '11:30:00', '12:00:00', NULL),
+(2023, NULL, 1, NULL, '2024-02-01', '07:00:00', '07:30:00', NULL),
+(2024, NULL, 1, NULL, '2024-02-01', '07:30:00', '08:00:00', NULL),
+(2025, NULL, 1, NULL, '2024-02-01', '08:00:00', '08:30:00', NULL),
+(2026, NULL, 1, NULL, '2024-02-01', '08:30:00', '09:00:00', NULL),
+(2027, NULL, 1, NULL, '2024-02-01', '09:00:00', '09:30:00', NULL),
+(2028, NULL, 1, NULL, '2024-02-01', '09:30:00', '10:00:00', NULL),
+(2029, NULL, 1, NULL, '2024-02-01', '11:00:00', '11:30:00', NULL),
+(2030, NULL, 1, NULL, '2024-02-01', '11:30:00', '12:00:00', NULL),
+(2031, NULL, 1, NULL, '2024-02-02', '07:00:00', '07:30:00', NULL),
+(2032, NULL, 1, NULL, '2024-02-02', '07:30:00', '08:00:00', NULL),
+(2033, NULL, 1, NULL, '2024-02-02', '08:00:00', '08:30:00', NULL),
+(2034, NULL, 1, NULL, '2024-02-02', '08:30:00', '09:00:00', NULL),
+(2035, NULL, 1, NULL, '2024-02-02', '09:00:00', '09:30:00', NULL),
+(2036, NULL, 1, NULL, '2024-02-02', '09:30:00', '10:00:00', NULL),
+(2037, NULL, 1, NULL, '2024-02-02', '11:00:00', '11:30:00', NULL),
+(2038, NULL, 1, NULL, '2024-02-02', '11:30:00', '12:00:00', NULL),
+(2039, NULL, 1, NULL, '2024-02-03', '07:00:00', '07:30:00', NULL),
+(2040, NULL, 1, NULL, '2024-02-03', '07:30:00', '08:00:00', NULL),
+(2041, NULL, 1, NULL, '2024-02-03', '08:00:00', '08:30:00', NULL),
+(2042, NULL, 1, NULL, '2024-02-03', '08:30:00', '09:00:00', NULL),
+(2043, NULL, 1, NULL, '2024-02-03', '09:00:00', '09:30:00', NULL),
+(2044, NULL, 1, NULL, '2024-02-03', '09:30:00', '10:00:00', NULL),
+(2045, NULL, 1, NULL, '2024-02-03', '11:00:00', '11:30:00', NULL),
+(2046, NULL, 1, NULL, '2024-02-03', '11:30:00', '12:00:00', NULL);
 
 -- --------------------------------------------------------
 
@@ -314,18 +338,10 @@ CREATE TABLE `medicos` (
 --
 
 INSERT INTO `medicos` (`idMedico`, `nombreMedico`, `CURPMedico`, `fechaNacimientoMedico`, `correoMedico`, `telefonoMedico`, `direccionMedico`, `especialidadMedico`, `consultorioMedico`, `cedulaProfesionalMedico`, `contrasenaMedico`, `bloqueadoMedico`) VALUES
-(1, 'Jesús Vázquez', '2323', '2023-05-25', 'xxx2', 112, 'sdsd', 1, 'H1', 13224, '12345', 0),
-(3, 'Julio Díaz', 'sfds', '2023-05-25', 'sfds', 2323, 'sfds', 1, 'CC3', 0, '', 0),
+(3, 'Julio Díaz', 'sfds', '2023-05-25', 'sfds', 2324, 'sfds', 1, 'CC3', 0, '', 0),
 (4, 'Erick Puc', 'sdjdsm', '2023-05-18', 'njsdmnds', 23783, 'jsjmd', 3, 'H4', 0, '', 0),
-(5, 'Mario Villanueva', 'fdsdfs', '2023-05-24', 'sfdsfd', 0, 'sdf', 1, 'D1', 0, '', 0),
-(6, 'jajaj', 'hola', '2023-05-18', 'shjdsahs', 2333, 'dshjd', 3, 'djjs', 0, '$2b$10$C3jXHtEm5R6mmhNDso0Gqe6', 0),
-(7, 'jsdjd', 'sjdjs', '2023-05-19', 'hola', 123, 'sds', 3, 'h5', 0, '$2b$10$s6lJiDQx.iMjz73aJDpAaOS', 0),
-(8, 'shgjasjk', 'ashkas', '2023-05-13', 'ashasaskl', 12, '217hwhjas', 3, 'h7', 26, '$2b$10$oiIpjUUhvk9Va6/d9RrP5.f', 0),
-(9, 'sahas', 'shajas', '2023-05-12', 'yabhsabnasnmnmas', 0, 'jhasnmasnmasn', 2, 'ayusba', 0, '$2b$10$uHYTTIVAusgx/qSqTuF9d.K', NULL),
-(10, 'wquhwqhbjqw', 'qwhjwqjbnqw', '2023-05-26', 'sagas', 0, 'asbhsaba', 1, 'asbasbn', 0, '$2b$10$pkfOhzVjpvEDoY.E/T2p3.R', 0),
-(11, 'asbsab', 'asbnbas', '2023-05-18', 'asbsban', 0, 'jasnsa', 4, 'asghbas', 0, '$2b$10$aoNErWsOsIxcNyJU74cX3.i', NULL),
-(12, 'medico de ejemplo', 'sdfg', '2023-05-18', 'medico', 738923, 'merida', 1, 'H2', 0, '$2b$10$jiG.YqzrNcif9Fx3oj7gF.h', 0),
-(13, 'medicoEjemplo', 'medicoEjemplo', '2023-05-12', 'medicoEjemplo', 0, 'medicoEjemplo', 2, 'medicoEjemplo', 0, 'aa5454cc13f650a09a51c09e0c7d1ca9f1ecf087a2740ab6e85fa53353ce531f', 0);
+(13, 'Mario Villanueva', 'fdsdfs', '2023-05-24', 'sfdsfd', 0, 'sdf', 1, 'D1', 0, '', 0),
+(1, 'Jesús Vázquez', 'medicoEjemplo', '2023-05-12', 'medicoEjemplo', 0, 'medicoEjemplo', 1, 'medicoEjemplo', 0, 'aa5454cc13f650a09a51c09e0c7d1ca9f1ecf087a2740ab6e85fa53353ce531f', 0);
 
 -- --------------------------------------------------------
 
@@ -354,11 +370,7 @@ CREATE TABLE `pacientes` (
 INSERT INTO `pacientes` (`idPaciente`, `nombrePaciente`, `CURPPaciente`, `fechaNacimientoPaciente`, `correoPaciente`, `telefonoPaciente`, `direccionPaciente`, `edadPaciente`, `generoPaciente`, `contrasenaPaciente`, `bloqueadoPaciente`) VALUES
 (7, 'Alexis Ake', 'hola', '2023-05-11', 'comoss', 300, 'sdaff', 22, 1, '12345', 0),
 (8, 'Fernando Chan', 'como', '2023-05-10', 'sdjjhds', 376, 'sdmmds', 19, 1, '', 1),
-(9, 'Fernando Chimal', 'estas', '2023-05-27', 'jaja', 988191, 'colonia centro', 18, 1, '$2b$10$jbZG5A2I1IGSwtpj1p4mIeCimt68K.U0tzd.umtXLf5', 0),
-(10, 'HOLA', 'asjja', '2023-05-18', 'asnhasaso', 7389, 'sjaj', 21, 1, '$2b$10$1T5FLhxdjLVuG4EWBWVbXOzRfiwIG4vHWM1DfFrv6/4', 0),
-(11, 'saghsa', 'asbnas', '2023-05-19', 'dsgdahakj', 217882, 'dahaj', 21, 2, '$2b$10$XQxDImNmwnUdmUEfE3xdauAZfLFbITA3zLzdLrYHZgC', 0),
-(15, 'sdnhjsdkjkds', 'sdnkjsd', '2023-05-04', 'sdnhjsdkjkds', 2187218, 'sdnhjsdkjkds', 17, 1, '560fd1395513423ff719281b9a6ec5286d0c2e1929bc9125abf327f7e579b0df', 0),
-(16, 'pacienteEjemplo', 'pacienteEjemplo', '2023-05-17', 'a19216297@alumnos.uady.mx', 435, 'pacienteEjemplo', 22, 1, '236e844308b204ee56957024f5c331cc4eedf69a4f7e24e2a43ea9894db87fb6', 0);
+(16, 'pacienteEjemplo', 'curpEjemplo', '2023-05-17', 'a19216297@alumnos.uady.mx', 435, 'pacienteEjemplo', 22, 1, '236e844308b204ee56957024f5c331cc4eedf69a4f7e24e2a43ea9894db87fb6', 0);
 
 -- --------------------------------------------------------
 
@@ -383,40 +395,6 @@ CREATE TABLE `recepcionistas` (
 --
 
 INSERT INTO `recepcionistas` (`idRecepcionista`, `nombreRecepcionista`, `CURPRecepcionista`, `fechaNacimientoRecepcionista`, `correoRecepcionista`, `telefonoRecepcionista`, `direccionRecepcionista`, `contrasenaRecepcionista`, `bloqueadoRecepcionista`) VALUES
-(3, 'Fernando', 'CURPPrueba2', '2023-05-11', '123', 11111, 'Enrique Segoviano', '123', 0),
-(5, 'Fernando', 'CURPPrueba', '2001-01-02', 'fernando@recepcionistas.com', 999999999, 'Enrique Segoviano', '', 0),
-(13, 'zfsf', 'sd', '2023-05-19', 'jajagsdsd', 323, 'sds', '', 0),
-(8, 'gfhg', 'ghj', '2023-05-25', 'dafvar', 0, 'sff', '', 0),
-(9, 'zfdgzfg', 'sfsfg', '2023-05-11', 'sdgfdgasbnasnbfdg', 234, 'sfdgsfg', '', 0),
-(11, 'nuevo', 'rafref', '2023-05-10', 'fsdf', 3243214, 'rgg', '', 0),
-(12, 'Fernando nuevo', 'CURPPrueba', '2001-01-02', 'fernando@recepcionistas.com', 123456780, 'Enrique Segoviano', '', 0),
-(15, 'efzxd', 'zfdzd', '2023-05-17', 'zfd', 3234, 'zfdzd', '', 0),
-(36, 'recepcionista de ejemplo', 'jdskjds', '2023-05-10', 'recep', 237838, 'yucatán', '$2b$10$nYczmbSyu1XG6', 0),
-(16, 'Selene Dzib', 'ashaj', '2023-05-18', 'fer_chan23@hotmail.com', 37823, 'ajsja', '$2b$10$JM05ZEU0k6Oy/', 0),
-(17, 'rodrigo', 'nhsjs', '2023-05-20', 'jsj', 738, 'nss', '$2b$10$RaS56CdPWkG1Q', 0),
-(18, 'ahsjas', 'asjjsa', '2023-05-11', 'ajsjaasjjasjas', 2166, 'ashj', '$2b$10$u46lJjPfU9nmR', 0),
-(19, 'asnsam', 'abajs', '2023-05-19', 'sjkakassal', 1266, '123', '$2b$10$4AlQx4eei4Eao', 0),
-(20, 'hash', 'asnhasj', '2023-05-19', 'gheabdsjiosdjoje', 12, 'dshjsd', '$2b$10$fjRkhPQ3B0kc6', 0),
-(21, 'asnns', 'nasn', '2023-05-20', 'jasjasi', 521, 'sabnj', '$2b$10$AMDFMnYE1LghW', 0),
-(22, 'ajsnsam', 'asnmsa', '2023-05-26', 'dhasdaj', 12, 'ajsnsa', '$2b$10$tNhIgqvN7NL7j', 0),
-(23, 'wjjwq', 'wqjwq', '2023-05-26', 'jhsajjkaskas', 27389, 'ashjask', '$2b$10$iPmXuRGXKBgG7', 0),
-(24, 'ashjhas', 'jasjas', '2023-05-25', 'jasjasjkas', 21, 'kjaskjsa', '$2b$10$dGPKeIz/EriZ0', 0),
-(25, 'ghsghs', 'shbd', '2023-05-17', 'djbsdkds', 223, '12', '$2b$10$meYzhnrpuUgZ0', 0),
-(26, 'asghhsa', 'asna', '2023-05-19', 'ghdbh', 0, 'ashshasono', '$2b$10$3Fqb3ZOht4yjm', 0),
-(27, 'sabsab', 'asjnbas', '2023-05-26', 'ashasiasn', 12728, 'asnbanbs', '$2b$10$YSySf2IvUSKFg', 0),
-(28, 'abans', 'asnsa', '2023-05-12', 'ashaso', 2788, 'sahsna', '$2b$10$4TzlO0yKHnuAI', 0),
-(29, 'hasaban', 'ghrashjas', '2023-05-19', 'asgasj', 872189, 'ashjsa', '$2b$10$BJEkvThhp7nMY', 0),
-(30, 'ahgjna', 'sabbsn', '2023-05-26', 'asbbnas', 127887, 'ashbas', '$2b$10$wLa59ShEEPcGK', 0),
-(31, 'abbs', 'sdbhbnds', '2023-05-18', 'dsudidn', 12788, 'sahahkasn', '$2b$10$LJgDKDI/ZpDlF', 1),
-(32, 'bbsa', 'asbbnas', '2023-05-19', 'sabhjasbn', 127, 'ashjsabj', '$2b$10$vnmQEGrJ1dtyb', 0),
-(33, 'abbnsa', 'abnsbnas', '2023-05-09', 'bjasn', 123, 'absbsa', '$2b$10$YBwNhofGjBtiv', 0),
-(34, 'asbnasbn', 'asnb', '2023-05-17', 'sababn', 0, '12', '$2b$10$57BshqpQwH9Du', 0),
-(35, 'asbbn', 'asnbsanb', '2023-05-19', 'asbsabn', 0, 'abhsbnas', '$2b$10$UTRDNAHxA0/hX', 0),
-(37, 'admin de ejemplo', 'sjndsns', '2023-05-18', 'admin', 32882, 'admin', '$2b$10$TlzcW9WbdIaZM', 0),
-(38, 'dsnsdnm', 'mnsdmnds', '2023-05-12', 'nsdnmds', 0, 'mnsdnmds', 'nmsdnmdsnm', 0),
-(41, 'recepcionista', 'recepcionista', '2023-05-18', 'recepcionista', 0, 'recepcionista', '$2a$10$SpMT3s2n/tR9u', 0),
-(42, 'sdjhdskj', 'sdbnnmds', '2023-05-12', 'nsdnmdsnmsd', 0, 'sdnmnmdss', '$2a$10$Y4DwSco4M0NEX', 0),
-(43, 'dshgsdjjksd', 'sndnjds', '2023-05-12', 'sdjhds', 0, 'jndsnsdnm', '$2a$10$UzDVrvXVi..yBJDe6dIiYuGLnvYIBL2r5RvIF.5NdXL862xY9r1ha', 0),
 (45, 'recepcionistaEjemplo', 'recepcionistaEjemp', '2023-05-13', 'recepcionistaEjemplo', 2324, 'recepcionistaEjemplo', '$2a$10$ACHYSMDxrJnmWXQPnw42q.1sVB20Hsxx4Fn9LTAMeKuoICkFjmjIy', 0);
 
 --
@@ -433,7 +411,9 @@ ALTER TABLE `administradores`
 -- Indices de la tabla `citas`
 --
 ALTER TABLE `citas`
-  ADD PRIMARY KEY (`idCita`);
+  ADD PRIMARY KEY (`idCita`),
+  ADD KEY `idPaciente` (`idPaciente`),
+  ADD KEY `idMedico` (`idMedico`);
 
 --
 -- Indices de la tabla `especialidades`
@@ -473,7 +453,7 @@ ALTER TABLE `administradores`
 -- AUTO_INCREMENT de la tabla `citas`
 --
 ALTER TABLE `citas`
-  MODIFY `idCita` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2023;
+  MODIFY `idCita` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2047;
 
 --
 -- AUTO_INCREMENT de la tabla `especialidades`
@@ -485,7 +465,7 @@ ALTER TABLE `especialidades`
 -- AUTO_INCREMENT de la tabla `medicos`
 --
 ALTER TABLE `medicos`
-  MODIFY `idMedico` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `idMedico` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT de la tabla `pacientes`
@@ -497,7 +477,7 @@ ALTER TABLE `pacientes`
 -- AUTO_INCREMENT de la tabla `recepcionistas`
 --
 ALTER TABLE `recepcionistas`
-  MODIFY `idRecepcionista` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `idRecepcionista` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
