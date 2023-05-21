@@ -2,7 +2,11 @@ const jwt = require('jsonwebtoken');
 const loginController = {}
 const mysql = require('mysql')
 const bcrypt = require('bcrypt');
-
+/**
+ * Valida las credenciales para iniciar sesión
+ * @param {*} req Contiene la petición del usuario
+ * @param {*} res Contiene la respuesta que se enviara a la peticion
+ */
 loginController.login = (req, res) => {
 
 const correo=req.body.email_usuario;

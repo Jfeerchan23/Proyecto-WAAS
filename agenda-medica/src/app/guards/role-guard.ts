@@ -12,7 +12,7 @@ interface RouteData {
 export class RoleGuard implements CanActivate {
 
   constructor(private router: Router) {}
-
+//Funcionalidad de guardas, para que cada tipo de usuario solo pueda acceder a lo que le corresponde
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): boolean | UrlTree {
@@ -31,9 +31,6 @@ export class RoleGuard implements CanActivate {
         case '4': 
         userRole='admin';
         break;
-
-        default:
-        userRole='medico';
 
     }
     const requiredRoles = (next.data as RouteData).requiredRoles;    

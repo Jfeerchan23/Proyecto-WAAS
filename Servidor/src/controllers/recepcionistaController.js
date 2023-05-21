@@ -10,7 +10,7 @@ recepcionistaController.obtenerTodos = (req, res) => {
   req.getConnection((err, conn) => {
     if (err) return res.send(err);
 
-    conn.query('SELECT idRecepcionista, nombreRecepcionista, CURPRecepcionista, fechaNacimientoRecepcionista, correoRecepcionista, telefonoRecepcionista, direccionRecepcionista, bloqueadoRecepcionista FROM recepcionistas WHERE bloqueadoRecepcionista = 0', (err, rows) => {
+    conn.query('SELECT idRecepcionista, nombreRecepcionista, CURPRecepcionista, fechaNacimientoRecepcionista, correoRecepcionista, telefonoRecepcionista, direccionRecepcionista, bloqueadoRecepcionista FROM recepcionistas WHERE bloqueadoRecepcionista = 0 ORDER BY nombreRecepcionista', (err, rows) => {
       if (err) return res.send(err);
       res.json(rows);
     });
@@ -93,7 +93,7 @@ recepcionistaController.eliminar = (req, res) => {
 
     conn.query('DELETE FROM recepcionistas WHERE idRecepcionista = ?', [id], (err, rows) => {
       if (err) return res.send(err);
-      res.send('¡Recepcionista eliminado!');
+      res.json('¡Recepcionista eliminado!');
     });
   });
 };
@@ -122,20 +122,12 @@ recepcionistaController.insertar = (req, res) => {
           return res.json('Correo inválido. El correo ya está registrado en otro usuario.');
         } else {
           try {
-            const contrasenaTextoPlano = req.body.contrasenaRecepcionista;
+            req.body.contrasenaRecepcionista = await generarHashContraseña(req.body.contrasenaRecepcionista);
 
-            // Llamar a la función de encriptarContrasena
-            encriptarContrasena(contrasenaTextoPlano, (err, contrasenaEncriptada) => {
+            conn.query('INSERT INTO recepcionistas SET ?', [req.body], (err, rows) => {
               if (err) return res.send(err);
 
-              // Asignar la contraseña encriptada al cuerpo de la solicitud
-              req.body.contrasenaRecepcionista = contrasenaEncriptada;
-
-              conn.query('INSERT INTO recepcionistas SET ?', [req.body], (err, rows) => {
-                if (err) return res.send(err);
-
-                res.json('¡Recepcionista agregado!');
-              });
+              res.json('¡Recepcionista agregado!');
             });
           } catch (error) {
             return res.send(error);
@@ -146,14 +138,14 @@ recepcionistaController.insertar = (req, res) => {
   });
 };
 
-// Función para encriptar una contraseña usando bcrypt
-const encriptarContrasena = (contrasena, callback) => {
-  bcrypt.hash(contrasena, 10, (err, contrasenaEncriptada) => {
-    if (err) {
-      callback(err);
-    } else {
-      callback(null, contrasenaEncriptada);
-    }
-  });
-};
+/**
+ * Encripta una contraseña utilizando el algoritmo SHA256.
+ * @param {string} password - La contraseña del usuario.
+ * @return {string} El hash de la contraseña en formato hexadecimal.
+ */
+function generarHashContraseña(password) {
+  const hash = crypto.createHash('sha256').update(password).digest('hex');
+  return hash;
+}
+
 module.exports = recepcionistaController

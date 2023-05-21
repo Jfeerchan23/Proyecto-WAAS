@@ -42,7 +42,7 @@ export class HistorialClinicoComponent {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   ngOnInit(){
-       //CUANDO SE ENCUENTRA EN EL PERFIL DE UN PACIENTE
+       //Se obtienen los datos del paciente
        this.route.params.subscribe((params) => {
         if (params['idPaciente']) {
           this.idPaciente = params['idPaciente'];
@@ -75,10 +75,11 @@ export class HistorialClinicoComponent {
      
      
   }
-
+/* Se selecciona una cita por cancelar */
   seleccionarCita(id:any){
     this.idCita=id;
   }
+/*   Se cancela la cita y se elimina de la tabla y base de datos */
   cancelarCita(){
     const cita = {
       idPaciente: null,
@@ -96,14 +97,19 @@ export class HistorialClinicoComponent {
     }
 
     this.usuariosService.actualizarCita(cita, this.idCita).subscribe(
-
+      (response)=>{
+        console.log(response);
+      }
+   
     )
     
   }
+  /* Regresa a la ventana anterior */
   regresar(): void {
     this.location.back();
   }
 
+/*   Se descarga el historial clínico del paciente en un archivo Excel */
   descargar():void{
     const enlace = `http://localhost:8080/api/pacientes/historialClinico/${this.idPaciente}/descargar`;
 

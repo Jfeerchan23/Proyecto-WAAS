@@ -12,7 +12,7 @@ pacienteController.obtenerTodos = (req, res) => {
   req.getConnection((err, conn) => {
     if (err) return res.send(err)
 
-    conn.query('SELECT idPaciente,nombrePaciente,CURPPaciente,fechaNacimientoPaciente,correoPaciente,telefonoPaciente,direccionPaciente,generoPaciente,bloqueadoPaciente FROM pacientes WHERE bloqueadoPaciente=0', (err, rows) => {
+    conn.query('SELECT idPaciente,nombrePaciente,CURPPaciente,fechaNacimientoPaciente,correoPaciente,telefonoPaciente,direccionPaciente,generoPaciente,bloqueadoPaciente FROM pacientes WHERE bloqueadoPaciente=0 ORDER BY nombrePaciente', (err, rows) => {
       if (err) return res.send(err)
       res.json(rows)
     })
@@ -109,7 +109,7 @@ pacienteController.eliminar = (req, res) => {
 
     conn.query('DELETE FROM pacientes WHERE idPaciente = ?', [id], (err, rows) => {
       if (err) return res.send(err);
-      res.send('paciente eliminado!')
+      res.json('paciente eliminado!')
     });
   });
 }
@@ -233,7 +233,11 @@ pacienteController.descargarHistorialClinico = (req, res) => {
     });
   });
 }
-
+/**
+ * Obtiene las citas atendidas y por atender de un paciente
+ * @param {*} req Contiene la petición del usuario
+ * @param {*} res Contiene la respuesta que se enviara a la peticion
+ */
 
 pacienteController.agenda = (req, res) => {
   const id = req.params.id;
@@ -258,7 +262,11 @@ pacienteController.agenda = (req, res) => {
 }
 
 
-
+/**
+ * Encripta una contraseña utilizando el algoritmo SHA256.
+ * @param {string} password - La contraseña del usuario.
+ * @return {string} El hash de la contraseña en formato hexadecimal.
+ */
 function generarHashContraseña(password) {
   const hash = crypto.createHash('sha256').update(password).digest('hex');
   return hash;

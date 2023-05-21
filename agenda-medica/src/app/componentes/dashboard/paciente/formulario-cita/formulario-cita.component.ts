@@ -69,7 +69,7 @@ export class FormularioCitaComponent {
  filteredPacientes!: Observable<any>;
   ngOnInit() {
     this.isReadOnly=true;
-    //CUANDO SE ENCUENTRA EN EL PERFIL DE UN PACIENTE
+    //Cuando el usuario se encuentra en el perfil paciente se obtiene sus datos
     this.route.params.subscribe((params) => {
       if (params['idPaciente']) {
         this.idPaciente = params['idPaciente'];
@@ -77,7 +77,7 @@ export class FormularioCitaComponent {
         this.perfil=1;
         this.isReadOnlyNombre=true;
       }else{
-        //CUANDO SE ENCUENTRA EN EL PERFIL DEL RECEPCIONISTA
+        //Cuando el usuario se encuentra en el perfil recepcionista, se obtienen los datos de todos los pacientes.
         this.perfil=2;
         this.usuariosService.obtenerPacientes().subscribe(
           (response)=>{
@@ -91,12 +91,14 @@ export class FormularioCitaComponent {
         )
       }
     });
+    //Se obtienen todas las especialidades
     this.usuariosService.obtenerEspecialidades().subscribe(
       (response)=>{
         this.especialidades=response;
 
       }
     )
+      //Se obtienen todas los médicos
     this.usuariosService.obtenerMedicos().subscribe(
 
       (response)=>{
@@ -107,7 +109,7 @@ export class FormularioCitaComponent {
   
 
   }
-
+   //Función para obtener los datos del paciente 
   obtenerPaciente(id:any, event:any){
     this.usuariosService.obtenerPaciente(id).subscribe(
       (response)=>{
@@ -132,7 +134,7 @@ export class FormularioCitaComponent {
         idMedico: this.cita.idMedico,
         modalidad: this.cita.modalidad
       }
-  
+       //Se hace la reservación de la cita.
       this.usuariosService.reservarCita(cita,this.cita.hora).subscribe(
         
       );
@@ -141,7 +143,7 @@ export class FormularioCitaComponent {
         horizontalPosition: 'center',
         verticalPosition: 'bottom',
       });
-    
+      /*   Se redirecciona según el perfil del usuario */
      if(this.perfil==1){
       this.router.navigate(['/dashboard/paciente/agenda',this.idPaciente]);
      }else{
@@ -159,7 +161,7 @@ export class FormularioCitaComponent {
     
   }
  
-
+/* Funciones para el filtrado */
   private _setupFilterObservable(
     control: AbstractControl,
     options: any,
@@ -179,6 +181,7 @@ export class FormularioCitaComponent {
   }
 
 
+/*   Funciones para cuando se cambia el valor del paciente,especialidad, fecha y médico */
    onSelectionChangePaciente(event: any){
     
     this.idPaciente = event.option.value.idPaciente;

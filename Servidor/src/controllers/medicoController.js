@@ -11,7 +11,7 @@ medicoController.obtenerTodos = (req, res) => {
   req.getConnection((err, conn) => {
     if (err) return res.send(err)
 
-    conn.query('SELECT idMedico,nombreMedico,CURPMedico,fechaNacimientoMedico,correoMedico,telefonoMedico,direccionMedico,especialidadMedico,consultorioMedico,cedulaProfesionalMedico,bloqueadoMedico FROM medicos WHERE bloqueadoMedico=0 ', (err, rows) => {
+    conn.query('SELECT idMedico,nombreMedico,CURPMedico,fechaNacimientoMedico,correoMedico,telefonoMedico,direccionMedico,especialidadMedico,consultorioMedico,cedulaProfesionalMedico,bloqueadoMedico FROM medicos WHERE bloqueadoMedico=0 ORDER BY nombreMedico', (err, rows) => {
       if (err) return res.send(err)
       res.json(rows)
     })
@@ -107,7 +107,7 @@ medicoController.eliminar = (req, res) => {
 
     conn.query('DELETE FROM medicos WHERE idMedico = ?', [id], (err, rows) => {
       if (err) return res.send(err);
-      res.send('medico eliminado!')
+      res.json('medico eliminado!')
     });
   });
 }
@@ -152,7 +152,11 @@ medicoController.insertar = (req, res) => {
   });
 };
 
-
+/**
+ *Se obtienen las especialidades de la base de datos
+ * @param {*} req Contiene la petición del usuario
+ * @param {*} res Contiene la respuesta que se enviara a la peticion
+ */
 
  medicoController.obtenerEspecialidades = (req, res) =>{
     req.getConnection((err, conn) =>{
@@ -164,7 +168,11 @@ medicoController.insertar = (req, res) => {
         })
    })
 }
-
+/**
+ *Se obtienen las citas atendidas y programadas del médico
+ * @param {*} req Contiene la petición del usuario
+ * @param {*} res Contiene la respuesta que se enviara a la peticion
+ */
 medicoController.agenda = (req, res)=>{
   const id = req.params.id;
 
@@ -186,7 +194,11 @@ medicoController.agenda = (req, res)=>{
     });
   });
 }
-
+/**
+ *Se obtienen las citas disponibles del médico
+ * @param {*} req Contiene la petición del usuario
+ * @param {*} res Contiene la respuesta que se enviara a la peticion
+ */
 medicoController.agendaDisponible= (req, res)=>{
   const id = req.params.id;
 
@@ -208,6 +220,11 @@ medicoController.agendaDisponible= (req, res)=>{
     });
   });
 }
+/**
+ *Se obtienen las citas programadas del médico 
+ * @param {*} req Contiene la petición del usuario
+ * @param {*} res Contiene la respuesta que se enviara a la peticion
+ */
 medicoController.citasProgramadas = (req, res)=>{
   const id = req.params.id;
   req.getConnection((err, conn) => {
@@ -225,7 +242,11 @@ medicoController.citasProgramadas = (req, res)=>{
     });
   });
 }
-
+/**
+ * Encripta una contraseña utilizando el algoritmo SHA256.
+ * @param {string} password - La contraseña del usuario.
+ * @return {string} El hash de la contraseña en formato hexadecimal.
+ */
 function generarHashContraseña(password) {
   const hash = crypto.createHash('sha256').update(password).digest('hex');
   return hash;

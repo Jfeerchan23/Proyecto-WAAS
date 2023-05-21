@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken')
 
-// middleware to validate token (rutas protegidas)
+// middleware para validar token (rutas protegidas)
 const verifyToken = (req, res, next) => {
 
     const authorizationHeader = req.headers.authorization;

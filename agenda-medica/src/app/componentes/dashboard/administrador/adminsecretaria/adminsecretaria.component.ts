@@ -40,6 +40,7 @@ export class AdminsecretariaComponent {
   }
 
   ngOnInit(): void {
+    /*  Función para declarar formularios si se desea editar un recepcionista o crear uno nuevo */
     this.route.params.subscribe((params) => {
       if (params['idRecepcionista']) {
         this.idRecepcionista = params['idRecepcionista'];
@@ -71,6 +72,7 @@ export class AdminsecretariaComponent {
 
     });
   }
+    /* Función para el guardar o actualizar un recepcionista */
   formSubmit() {
     
     this.recepcionista.bloqueadoRecepcionista===false? 0:1;
@@ -105,7 +107,7 @@ export class AdminsecretariaComponent {
    
  
   }
-
+/* Función para obtener la información de un recepcionista */
   obtenerRecepcionista(id: any) {
     this.usuariosService.obtenerRecepcionista(id).subscribe(
       (response) => {

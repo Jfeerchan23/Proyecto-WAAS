@@ -33,6 +33,7 @@ export class LoginComponent {
   }
 
  ngOnInit(){
+ /*  Eliminar todos los items de la sessionStorage */
   sessionStorage.removeItem('rol');
   sessionStorage.removeItem('id');
   sessionStorage.removeItem('token');
@@ -41,12 +42,12 @@ export class LoginComponent {
  onSubmitLogin() {
   this.dataUsuarios.email_usuario = this.form.value.usuario;
   this.dataUsuarios.password_usuario = this.form.value.password;
-  
+  /* Función para iniciar sesión */
   this.usuariosService.login(this.dataUsuarios).toPromise()
     .then((response) => {
       console.log(response);
       this.datosUsuarios = response;
-      
+      /* Crear items en el local storage */
       return Promise.all([
         this.storage.setItem('id', this.datosUsuarios.id),
         this.storage.setItem('rol', this.datosUsuarios.rol),

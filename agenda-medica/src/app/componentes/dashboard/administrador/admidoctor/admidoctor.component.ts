@@ -48,6 +48,7 @@ export class AdmidoctorComponent {
    filteredOptions!: Observable<any>;
 
   ngOnInit():void{
+    /* Se obtienen las especialidades */
     this.usuariosService.obtenerEspecialidades().subscribe(
       (response)=>{
         this.options = response.map((especialidad:any)=> especialidad);
@@ -59,7 +60,7 @@ export class AdmidoctorComponent {
       }
     );  
 
-    
+       /*  Función para declarar formularios si se desea editar un médico o crear uno nuevo */
     this.route.params.subscribe((params) => {
       if (params['idMedico']) {
         this.idMedico = params['idMedico'];
@@ -96,10 +97,8 @@ export class AdmidoctorComponent {
       }
   
     });
-  
-
-  
   }
+  /* Función para el guardar o actualizar un médico */
   formSubmit() {
 
     console.log(this.idMedico);
@@ -141,7 +140,7 @@ export class AdmidoctorComponent {
    
 
   }
-
+/* Función para obtener la información de un médico */
   obtenerMedico(id:any){
     this.usuariosService.obtenerMedico(id).subscribe(
       response => {
@@ -156,6 +155,7 @@ export class AdmidoctorComponent {
     )
 
   }
+ /*  Funciones de filtrado para el autocompletado de especialidades */
   private _setupFilterObservable(
     control: AbstractControl,
     options: any
@@ -175,7 +175,7 @@ export class AdmidoctorComponent {
       option.nombreEspecialidad.toLowerCase().includes(filterValue)
     );
   }
-
+/* Función para guardar el id de la especialidad del médico */
   onSelectionChange(event: any){
    console.log(event.option.value);
    this.medico.especialidadMedico=event.option.value.nombreEspecialidad;

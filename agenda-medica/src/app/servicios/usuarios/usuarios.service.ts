@@ -10,7 +10,7 @@ import { Observable, catchError, throwError } from 'rxjs';
 export class UsuariosService {
   private URL = "http://localhost:8080";
   private headers: HttpHeaders;
-
+/* Servicio para realizar el CRUD de la aplicación */
   constructor(
     private http: HttpClient,
     private router: Router,
@@ -232,7 +232,7 @@ export class UsuariosService {
   eliminarMedico(id: any): Observable<any> {
 
 	try {
-		return this.http.delete(`${this.URL}/api/eliminar/${id}`, { headers: this.getHeaders() }).pipe(
+		return this.http.delete(`${this.URL}/api/medicos/eliminar/${id}`, { headers: this.getHeaders() }).pipe(
 		  catchError((error) => {
 			this._snackBar.open('token inválido', '', {
 				duration: 1000,

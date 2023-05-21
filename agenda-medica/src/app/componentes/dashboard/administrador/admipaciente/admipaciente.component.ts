@@ -40,6 +40,7 @@ export class AdmipacienteComponent {
   }
 
   ngOnInit():void{
+   /*  Función para declarar formularios si se desea editar un paciente o crear uno nuevo */
     this.route.params.subscribe(
       params => {
         this.show=true;
@@ -79,6 +80,7 @@ export class AdmipacienteComponent {
 
     );
   }
+  /* Función para el guardar o actualizar un paciente */
   formSubmit() {
     console.log(this.idPaciente);
     this.paciente.bloqueadoPaciente===false? 0:1;
@@ -112,7 +114,7 @@ export class AdmipacienteComponent {
     }
     
   }
-
+/* Función para obtener la información de un paciente */
   obtenerPaciente(id:any){
     this.usuariosService.obtenerPaciente(id).subscribe(
       response => {
