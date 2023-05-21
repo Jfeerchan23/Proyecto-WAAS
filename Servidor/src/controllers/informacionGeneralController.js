@@ -33,4 +33,5 @@ informacionGeneralController.obtenerUsuarios = (req, res) => {
     });
 };
 
+
 module.exports = informacionGeneralController;
