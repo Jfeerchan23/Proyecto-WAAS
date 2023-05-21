@@ -47,20 +47,47 @@ recepcionistaController.obtener = (req, res) => {
  * @param {*} req Contiene la petición del usuario
  * @param {*} res Contiene la respuesta que se enviara a la peticion
  */
+
 recepcionistaController.actualizar = (req, res) => {
   const id = req.params.id;
   const updatedRecepcionista = req.body;
 
-  req.getConnection((err, conn) => {
+  req.getConnection(async (err, conn) => {
     if (err) return res.send(err);
 
-    conn.query('UPDATE recepcionistas SET ? WHERE idRecepcionista = ?', [updatedRecepcionista, id], (err, result) => {
-      if (err) return res.send(err);
+    const correoRecepcionista = updatedRecepcionista.correoRecepcionista; // Nuevo correo del recepcionista a actualizar
 
-      res.send(`Recepcionista con id ${id} actualizado.`);
-    });
+    // Verificar si el correo ya existe en otros usuarios
+    conn.query(
+      'SELECT COUNT(*) AS count FROM (SELECT correoRecepcionista FROM recepcionistas UNION SELECT correoPaciente FROM pacientes UNION SELECT correoMedico FROM medicos) AS usuarios WHERE correoRecepcionista = ?',
+      [correoRecepcionista],
+      async (err, result) => {
+        if (err) return res.send(err);
+
+        const count = result[0].count;
+
+        if (count > 0) {
+          // El correo ya existe en otro usuario, enviar una respuesta indicando el problema
+          res.json('Correo inválido. El correo ya está registrado en otro usuario.');
+        }else{
+          conn.query('UPDATE recepcionistas SET ? WHERE idRecepcionista = ?', [updatedRecepcionista, id], (err, result) => {
+            if (err) return res.send(err);
+      
+            res.json(`Recepcionista actualizado.`);
+          });
+        }
+      }
+    );
   });
-}
+};
+
+
+
+
+
+
+
+
 
 /**
  * Elimina la información de un recepcionista de la base de datos

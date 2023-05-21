@@ -87,7 +87,6 @@ export class AdminsecretariaComponent {
             });
           }
         );
-        this.form.reset();
       this.router.navigate(['/dashboard/administracion']);
     } else {
       this.usuariosService.guardarRecepcionista(this.recepcionista).subscribe(

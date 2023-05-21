@@ -75,11 +75,6 @@ pacienteController.actualizar = (req, res) => {
           // El correo ya existe en otro usuario, enviar una respuesta indicando el problema
           return res.json('Correo inválido. El correo ya está registrado en otro usuario.');
         }else{
-              // Si el correo no existe en otros usuarios, continuar con la actualización del paciente
-        if (updatedPaciente.contrasenaPaciente) {
-          updatedPaciente.contrasenaPaciente = await generarHashContraseña(updatedPaciente.contrasenaPaciente, 10);
-        }
-
         conn.query('UPDATE pacientes SET ? WHERE idPaciente = ?', [updatedPaciente, id], (err, result) => {
           if (err) return res.send(err);
 
