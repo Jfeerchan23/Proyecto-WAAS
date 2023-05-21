@@ -24,15 +24,14 @@ export class AgendaPacienteComponent implements OnInit {
   constructor(
     private dashboardService: DashboardService,
     private usuariosService: UsuariosService,
-    private route: ActivatedRoute,
-    private router: Router,
+    private route: ActivatedRoute
   ) {
     dashboardService.dashboardObservableData = {
       menuActivo: 'agenda',
     };
   }
   ngOnInit(): void {
-    //CUANDO SE ENCUENTRA EN EL PERFIL DE UN PACIENTE
+    //Se obtiene todas las citas del paciente
     this.route.params.subscribe((params) => {
       if (params['idPaciente']) {
         this.idPaciente = params['idPaciente'];
@@ -69,12 +68,8 @@ export class AgendaPacienteComponent implements OnInit {
       right: 'dayGridMonth,timeGridWeek,timeGridDay',
     },
     initialView: 'dayGridMonth',
-    eventClick: this.handleEventClick.bind(this), // MUST ensure `this` context is maintained
     events: [],
   };
 
-  handleEventClick(eventInfo: any) {
-    console.log('Evento clickeado:', eventInfo.event);
-    // Agrega aquí la lógica que deseas ejecutar cuando se hace clic en un evento
-  }
+
 }

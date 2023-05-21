@@ -4,4 +4,5 @@ const informacionGeneralController = require('../controllers/informacionGeneralC
 
 informacionGeneral.get('/usuarios', informacionGeneralController.obtenerUsuarios);
 
+
 module.exports = informacionGeneral;

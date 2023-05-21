@@ -40,6 +40,7 @@ export class AdminsecretariaComponent {
   }
 
   ngOnInit(): void {
+    /*  Función para declarar formularios si se desea editar un recepcionista o crear uno nuevo */
     this.route.params.subscribe((params) => {
       if (params['idRecepcionista']) {
         this.idRecepcionista = params['idRecepcionista'];
@@ -71,31 +72,42 @@ export class AdminsecretariaComponent {
 
     });
   }
+    /* Función para el guardar o actualizar un recepcionista */
   formSubmit() {
-    console.log(this.idRecepcionista);
+    
     this.recepcionista.bloqueadoRecepcionista===false? 0:1;
+    console.log(this.recepcionista);
     if (this.idRecepcionista) {
       this.usuariosService
         .editarRecepcionista(this.recepcionista, this.idRecepcionista)
-        .subscribe();
-      this._snackBar.open('Recepcionista actualizado', '', {
-        duration: 1000,
-        horizontalPosition: 'center',
-        verticalPosition: 'bottom',
-      });
+        .subscribe(
+          (response)=>{
+            this._snackBar.open(response, '', {
+              duration: 1000,
+              horizontalPosition: 'center',
+              verticalPosition: 'bottom',
+            });
+          }
+        );
       this.router.navigate(['/dashboard/administracion']);
     } else {
-      this.usuariosService.guardarRecepcionista(this.recepcionista).subscribe();
-      this._snackBar.open('Recepcionista creado', '', {
-        duration: 1000,
-        horizontalPosition: 'center',
-        verticalPosition: 'bottom',
-      });
+      this.usuariosService.guardarRecepcionista(this.recepcionista).subscribe(
+        (response)=>{
+          this._snackBar.open(response, '', {
+            duration: 1000,
+            horizontalPosition: 'center',
+            verticalPosition: 'bottom',
+          });
+           this.form.reset();
+           this.recepcionista.bloqueadoRecepcionista=false;
+        }
+      );
+     
     }
-
-    this.form.reset();
+   
+ 
   }
-
+/* Función para obtener la información de un recepcionista */
   obtenerRecepcionista(id: any) {
     this.usuariosService.obtenerRecepcionista(id).subscribe(
       (response) => {

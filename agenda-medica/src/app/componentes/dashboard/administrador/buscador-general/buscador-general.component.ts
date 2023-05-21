@@ -59,7 +59,7 @@ export class BuscadorGeneralComponent {
   ngOnInit(): void {
     this.inicializar();
   }
-
+//Se obtienen todos los usuarios
   inicializar() {
     this.formUsuario.tipo = '1';
     this.usuariosService.obtenerTodosUsuarios().subscribe(
@@ -73,7 +73,7 @@ export class BuscadorGeneralComponent {
       }
     );
   }
-
+/* Función para mostrar usuarios por su tipo */
   onSelectChange(tipo: string) {
     this.usuarios = [];
     switch (tipo) {
@@ -121,11 +121,11 @@ export class BuscadorGeneralComponent {
     this.dataSource.paginator = this.paginator;
     this.paginator.firstPage();
   }
-
+/* Funcion para seleccionar el id del usuario por eliminar */
   seleccionarUsuario(idUsuario: any) {
     this.usuarioPorEliminar = idUsuario;
   }
-
+/* Función para eliminar el usuario */
   eliminarUsuario() {
     switch (this.formUsuario.tipo) {
       case '1':
@@ -196,7 +196,7 @@ export class BuscadorGeneralComponent {
         break;
     }
   }
-
+/* Función para redireccionar cuando se desea editar un usuario */
   editarUsuario(id: any) {
     switch (this.formUsuario.tipo) {
       case '1':
@@ -213,7 +213,7 @@ export class BuscadorGeneralComponent {
         break;
     }
   }
-
+/* Función para buscar usuario por CURP */
   buscarPorCURP(){
 
 const user = this.usuarios.find((user) => user.curp === this.formUsuario.curp);

@@ -1,5 +1,6 @@
 const recepcionistaController = {}
-const bcrypt = require('bcrypt');
+const crypto = require('crypto');
+const bcrypt = require("bcryptjs");
 /**
  * Devuelve la información de todos los recepcionistas en la base de datos
  * @param {*} req Contiene la petición del usuario
@@ -7,27 +8,26 @@ const bcrypt = require('bcrypt');
  */
 recepcionistaController.obtenerTodos = (req, res) => {
   req.getConnection((err, conn) => {
-    if (err) return res.send(err)
+    if (err) return res.send(err);
 
-    conn.query('SELECT idRecepcionista,nombreRecepcionista,	CURPRecepcionista,fechaNacimientoRecepcionista,correoRecepcionista,	telefonoRecepcionista,direccionRecepcionista,bloqueadoRecepcionista FROM recepcionistas WHERE bloqueadoRecepcionista=0 ', (err, rows) => {
-      if (err) return res.send(err)
-      res.json(rows)
-    })
-  })
-}
+    conn.query('SELECT idRecepcionista, nombreRecepcionista, CURPRecepcionista, fechaNacimientoRecepcionista, correoRecepcionista, telefonoRecepcionista, direccionRecepcionista, bloqueadoRecepcionista FROM recepcionistas WHERE bloqueadoRecepcionista = 0 ORDER BY nombreRecepcionista', (err, rows) => {
+      if (err) return res.send(err);
+      res.json(rows);
+    });
+  });
+};
 
 /**
- * Devuelve la información de un recepcionista de la base de datos
- * apartir de su id
+ * Devuelve la información de un recepcionista de la base de datos a partir de su id
  * @param {*} req Contiene la petición del usuario
- * @param {*} res Contiene la respuesta que se enviara a la peticion
+ * @param {*} res Contiene la respuesta que se enviará a la petición
  */
 recepcionistaController.obtener = (req, res) => {
   const id = req.params.id;
   req.getConnection((err, conn) => {
     if (err) return res.send(err);
 
-    conn.query('SELECT idRecepcionista,nombreRecepcionista,	CURPRecepcionista,fechaNacimientoRecepcionista,correoRecepcionista,	telefonoRecepcionista,direccionRecepcionista,bloqueadoRecepcionista FROM recepcionistas WHERE idRecepcionista = ?', [id], (err, rows) => {
+    conn.query('SELECT idRecepcionista, nombreRecepcionista, CURPRecepcionista, fechaNacimientoRecepcionista, correoRecepcionista, telefonoRecepcionista, direccionRecepcionista, bloqueadoRecepcionista FROM recepcionistas WHERE idRecepcionista = ?', [id], (err, rows) => {
       if (err) return res.send(err);
 
       if (rows.length > 0) {
@@ -40,12 +40,12 @@ recepcionistaController.obtener = (req, res) => {
       }
     });
   });
-}
+};
 
 /**
- * Actualiza la información de un recepcionista de la base de datos
+ * Actualiza la información de un recepcionista en la base de datos
  * @param {*} req Contiene la petición del usuario
- * @param {*} res Contiene la respuesta que se enviara a la peticion
+ * @param {*} res Contiene la respuesta que se enviará a la petición
  */
 recepcionistaController.actualizar = (req, res) => {
   const id = req.params.id;
@@ -54,19 +54,36 @@ recepcionistaController.actualizar = (req, res) => {
   req.getConnection((err, conn) => {
     if (err) return res.send(err);
 
-    conn.query('UPDATE recepcionistas SET ? WHERE idRecepcionista = ?', [updatedRecepcionista, id], (err, result) => {
-      if (err) return res.send(err);
+    const correoRecepcionista = updatedRecepcionista.correoRecepcionista; // Nuevo correo del recepcionista a actualizar
 
-      res.send(`Recepcionista con id ${id} actualizado.`);
-    });
+    // Verificar si el correo ya existe en otros usuarios, excluyendo el recepcionista actualizado
+    conn.query(
+      'SELECT COUNT(*) AS count FROM (SELECT correoRecepcionista FROM recepcionistas UNION SELECT correoPaciente FROM pacientes UNION SELECT correoMedico FROM medicos) AS usuarios WHERE correoRecepcionista = ? AND correoRecepcionista != (SELECT correoRecepcionista FROM recepcionistas WHERE idRecepcionista = ?)',
+      [correoRecepcionista, id],
+      (err, result) => {
+        if (err) return res.send(err);
+
+        const count = result[0].count;
+
+        if (count > 0) {
+          // El correo ya existe en otro usuario, enviar una respuesta indicando el problema
+          res.json('Correo inválido. El correo ya está registrado en otro usuario.');
+        } else {
+          conn.query('UPDATE recepcionistas SET ? WHERE idRecepcionista = ?', [updatedRecepcionista, id], (err, result) => {
+            if (err) return res.send(err);
+
+            res.json('Recepcionista actualizado.');
+          });
+        }
+      }
+    );
   });
-}
+};
 
 /**
- * Elimina la información de un recepcionista de la base de datos
- * apartir de su id
+ * Elimina la información de un recepcionista de la base de datos a partir de su id
  * @param {*} req Contiene la petición del usuario
- * @param {*} res Contiene la respuesta que se enviara a la peticion
+ * @param {*} res Contiene la respuesta que se enviará a la petición
  */
 recepcionistaController.eliminar = (req, res) => {
   const id = req.params.id;
@@ -76,41 +93,59 @@ recepcionistaController.eliminar = (req, res) => {
 
     conn.query('DELETE FROM recepcionistas WHERE idRecepcionista = ?', [id], (err, rows) => {
       if (err) return res.send(err);
-      res.send('recepcionista eliminado!')
+      res.json('¡Recepcionista eliminado!');
     });
   });
-}
+};
 
 /**
  * Agrega un recepcionista a la base de datos
  * @param {*} req Contiene la petición del usuario
- * @param {*} res Contiene la respuesta que se enviara a la peticion
+ * @param {*} res Contiene la respuesta que se enviará a la petición
  */
 recepcionistaController.insertar = (req, res) => {
   req.getConnection(async (err, conn) => {
-    if (err) return res.send(err)
-    req.body.contrasenaRecepcionista=  await generarHashContraseña(req.body.contrasenaRecepcionista, 10); 
+    if (err) return res.send(err);
 
-    conn.query('INSERT INTO recepcionistas set ?', [req.body], (err, rows) => {
-      if (err) return res.send(err)
+    const correoRecepcionista = req.body.correoRecepcionista;
 
-      res.send('recepcionista agregado!')
-    })
-  })
-}
+    // Verificar si el correo ya existe en otros usuarios
+    conn.query(
+      'SELECT COUNT(*) AS count FROM (SELECT correoRecepcionista FROM recepcionistas UNION SELECT correoPaciente FROM pacientes UNION SELECT correoMedico FROM medicos) AS usuarios WHERE correoRecepcionista = ?',
+      [correoRecepcionista],
+      async (err, result) => {
+        if (err) return res.send(err);
 
-function generarHashContraseña(password, saltRounds) {
-  return new Promise((resolve, reject) => {
-    bcrypt.hash(password, saltRounds, (err, hash) => {
-      if (err) {
-        // Manejo del error
-        reject(err);
-      } else {
-        // El hash de la contraseña encriptada
-        resolve(hash);
+        const count = result[0].count;
+
+        if (count > 0) {
+          return res.json('Correo inválido. El correo ya está registrado en otro usuario.');
+        } else {
+          try {
+            req.body.contrasenaRecepcionista = await generarHashContraseña(req.body.contrasenaRecepcionista);
+
+            conn.query('INSERT INTO recepcionistas SET ?', [req.body], (err, rows) => {
+              if (err) return res.send(err);
+
+              res.json('¡Recepcionista agregado!');
+            });
+          } catch (error) {
+            return res.send(error);
+          }
+        }
       }
-    });
+    );
   });
+};
+
+/**
+ * Encripta una contraseña utilizando el algoritmo SHA256.
+ * @param {string} password - La contraseña del usuario.
+ * @return {string} El hash de la contraseña en formato hexadecimal.
+ */
+function generarHashContraseña(password) {
+  const hash = crypto.createHash('sha256').update(password).digest('hex');
+  return hash;
 }
 
 module.exports = recepcionistaController

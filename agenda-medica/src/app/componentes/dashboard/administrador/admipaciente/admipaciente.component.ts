@@ -40,6 +40,7 @@ export class AdmipacienteComponent {
   }
 
   ngOnInit():void{
+   /*  Función para declarar formularios si se desea editar un paciente o crear uno nuevo */
     this.route.params.subscribe(
       params => {
         this.show=true;
@@ -79,30 +80,41 @@ export class AdmipacienteComponent {
 
     );
   }
+  /* Función para el guardar o actualizar un paciente */
   formSubmit() {
     console.log(this.idPaciente);
     this.paciente.bloqueadoPaciente===false? 0:1;
     if (this.idPaciente) {
       this.usuariosService
         .editarPaciente(this.paciente, this.idPaciente)
-        .subscribe();
-      this._snackBar.open('Paciente actualizado', '', {
-        duration: 1000,
-        horizontalPosition: 'center',
-        verticalPosition: 'bottom',
-      });
+        .subscribe(
+          (response)=>{
+            this._snackBar.open(response, '', {
+              duration: 1000,
+              horizontalPosition: 'center',
+              verticalPosition: 'bottom',
+            });
+          }
+         
+        );
       this.router.navigate(['/dashboard/administracion']);
     } else {
-      this.usuariosService.guardarPaciente(this.paciente).subscribe();
-      this._snackBar.open('Paciente creado', '', {
-        duration: 1000,
-        horizontalPosition: 'center',
-        verticalPosition: 'bottom',
-      });
+      this.usuariosService.guardarPaciente(this.paciente).subscribe(
+        (response)=>{
+          this._snackBar.open(response, '', {
+            duration: 1000,
+            horizontalPosition: 'center',
+            verticalPosition: 'bottom',
+          });
+          this.form.reset();
+          this.paciente.bloqueadoPaciente=false;
+        }
+      );
+     
     }
-    this.form.reset();
+    
   }
-
+/* Función para obtener la información de un paciente */
   obtenerPaciente(id:any){
     this.usuariosService.obtenerPaciente(id).subscribe(
       response => {

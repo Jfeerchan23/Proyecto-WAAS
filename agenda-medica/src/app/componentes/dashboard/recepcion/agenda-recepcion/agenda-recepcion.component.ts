@@ -56,7 +56,6 @@ export class AgendaRecepcionComponent{
       right: 'dayGridMonth,timeGridWeek,timeGridDay',
     },
     initialView: 'dayGridMonth',
-    eventClick: this.handleEventClick.bind(this),
     events: []
   };
   ngOnInit() {
@@ -74,7 +73,7 @@ export class AgendaRecepcionComponent{
 
   
   }
-
+/* Funciones para el autocompletado del campo médico */
   private _setupFilterObservable(
     control: AbstractControl,
     options: any,
@@ -93,12 +92,7 @@ export class AgendaRecepcionComponent{
     );
   }
 
-  handleEventClick(eventInfo: any) {
-    console.log('Evento clickeado:', eventInfo.event);
-    // Agrega aquí la lógica que deseas ejecutar cuando se hace clic en un evento
-  }
-
-
+/* Cuando se cambia un médico se busca su agenda para mostrarlo en el calendario */
   onSelectionChange(event: any){
     console.log('funcion onSelectionChange')
     this.eventos=[];

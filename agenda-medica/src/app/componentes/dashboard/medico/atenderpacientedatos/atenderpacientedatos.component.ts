@@ -29,7 +29,7 @@ export class AtenderpacientedatosComponent {
   }
 
   ngOnInit():void{
-        //CUANDO SE ENCUENTRA EN EL PERFIL DE UN MEDICO
+        //Se obtiene la información del paciente que se va a atender mediante su id
         this.route.params.subscribe((params) => {
           if (params['idPaciente']) {
             this.idPaciente= params['idPaciente'];
@@ -47,15 +47,16 @@ export class AtenderpacientedatosComponent {
           }
         });
   }
-
+/* Función para regresar a la pantalla anterior */
   regresar(): void {
     this.location.back();
   }
-
+/* Función para ver el historial clínico del paciente */
   historialClinicoPaciente(){
     this.router.navigate(['dashboard/medico/historial-clinico',this.idPaciente]);
     
   }
+  /* Función para ir a la pantalla de atender paciente mediante su id e id de la cita */
   atenderPaciente(){
     this.router.navigate(['dashboard/medico/paciente-diagnostico',this.idPaciente, this.idCita]);
     

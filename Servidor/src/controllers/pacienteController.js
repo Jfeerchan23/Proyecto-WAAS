@@ -1,6 +1,7 @@
 const pacienteController = {}
 const ExcelJS = require('exceljs');
-const bcrypt = require('bcrypt');
+const crypto = require('crypto');
+
 
 /**
  * Devuelve la información de todos los pacientes en la base de datos
@@ -11,7 +12,7 @@ pacienteController.obtenerTodos = (req, res) => {
   req.getConnection((err, conn) => {
     if (err) return res.send(err)
 
-    conn.query('SELECT idPaciente,nombrePaciente,CURPPaciente,fechaNacimientoPaciente,correoPaciente,telefonoPaciente,direccionPaciente,generoPaciente,bloqueadoPaciente FROM pacientes WHERE bloqueadoPaciente=0', (err, rows) => {
+    conn.query('SELECT idPaciente,nombrePaciente,CURPPaciente,fechaNacimientoPaciente,correoPaciente,telefonoPaciente,direccionPaciente,generoPaciente,bloqueadoPaciente FROM pacientes WHERE bloqueadoPaciente=0 ORDER BY nombrePaciente', (err, rows) => {
       if (err) return res.send(err)
       res.json(rows)
     })
@@ -52,6 +53,7 @@ pacienteController.obtener = (req, res) => {
  * @param {*} req Contiene la petición del usuario
  * @param {*} res Contiene la respuesta que se enviara a la peticion
  */
+
 pacienteController.actualizar = (req, res) => {
   const id = req.params.id;
   const updatedPaciente = req.body;
@@ -59,19 +61,39 @@ pacienteController.actualizar = (req, res) => {
   req.getConnection((err, conn) => {
     if (err) return res.send(err);
 
-    conn.query('UPDATE pacientes SET ? WHERE idPaciente = ?', [updatedPaciente, id], (err, result) => {
-      if (err) return res.send(err);
-      if(updatedPaciente.bloqueadoPaciente){  
-        conn.query("UPDATE citas JOIN pacientes ON citas.idPaciente = pacientes.idPaciente SET citas.idPaciente = null,citas.modalidad = null WHERE pacientes.bloqueadoPaciente=1 AND pacientes.idPaciente=? AND CONCAT(citas.fecha, ' ', citas.horaInicio) >= NOW();", [id], (err, result) => {
-          if (err) return res.send(err);
-        
-        });
-      }
+    const correoPaciente = updatedPaciente.correoPaciente; // Nuevo correo del paciente a actualizar
 
-      res.send(`paciente con id ${id} actualizado.`);
-    });
+    // Verificar si el correo ya existe en otros usuarios, excluyendo el paciente actualizado
+    conn.query(
+      'SELECT COUNT(*) AS count FROM (SELECT correoPaciente FROM pacientes UNION SELECT correoMedico FROM medicos UNION SELECT correoRecepcionista FROM recepcionistas) AS usuarios WHERE correoPaciente = ? AND correoPaciente != (SELECT correoPaciente FROM pacientes WHERE idPaciente = ?)',
+      [correoPaciente, id],
+      (err, result) => {
+        if (err) return res.send(err);
+
+        const count = result[0].count;
+
+        if (count > 0) {
+          // El correo ya existe en otro usuario, enviar una respuesta indicando el problema
+          return res.json('Correo inválido. El correo ya está registrado en otro usuario.');
+        } else {
+          conn.query('UPDATE pacientes SET ? WHERE idPaciente = ?', [updatedPaciente, id], (err, result) => {
+            if (err) return res.send(err);
+
+            if (updatedPaciente.bloqueadoPaciente) {
+              conn.query("UPDATE citas JOIN pacientes ON citas.idPaciente = pacientes.idPaciente SET citas.idPaciente = null, citas.modalidad = null WHERE pacientes.bloqueadoPaciente = 1 AND pacientes.idPaciente = ? AND CONCAT(citas.fecha, ' ', citas.horaInicio) >= NOW();", [id], (err, result) => {
+                if (err) return res.send(err);
+              });
+            }
+
+            res.json('Paciente actualizado.');
+          });
+        }
+      }
+    );
   });
-}
+};
+
+
 
 /**
  * Elimina la información de un paciente de la base de datos
@@ -87,7 +109,7 @@ pacienteController.eliminar = (req, res) => {
 
     conn.query('DELETE FROM pacientes WHERE idPaciente = ?', [id], (err, rows) => {
       if (err) return res.send(err);
-      res.send('paciente eliminado!')
+      res.json('paciente eliminado!')
     });
   });
 }
@@ -99,16 +121,42 @@ pacienteController.eliminar = (req, res) => {
  */
 pacienteController.insertar = (req, res) => {
   req.getConnection(async (err, conn) => {
-    if (err) return res.send(err)
+    if (err) return res.send(err);
 
-    req.body.contrasenaPaciente=  await generarHashContraseña(req.body.contrasenaPaciente, 10); 
-    conn.query('INSERT INTO pacientes set ?', [req.body], (err, rows) => {
-      if (err) return res.send(err)
+    const correoPaciente = req.body.correoPaciente; // Correo del paciente a crear
 
-      res.send('paciente agregado!')
-    })
-  })
-}
+    // Verificar si el correo ya existe en otros usuarios
+    conn.query(
+      'SELECT COUNT(*) AS count FROM ( SELECT correoPaciente FROM pacientes UNION SELECT correoMedico FROM medicos UNION SELECT correoRecepcionista FROM recepcionistas) AS usuarios WHERE correoPaciente = ?',
+      [correoPaciente],
+      async (err, result) => {
+        if (err) return res.send(err);
+
+        const count = result[0].count;
+
+        if (count > 0) {
+          // El correo ya existe en otro usuario, enviar una respuesta indicando el problema
+          return res.json('Correo inválido. El correo ya está registrado en otro usuario.');
+        }else{
+          try {
+            req.body.contrasenaPaciente = await generarHashContraseña(req.body.contrasenaPaciente);
+  
+            conn.query('INSERT INTO pacientes SET ?', [req.body], (err, rows) => {
+              if (err) return res.send(err);
+  
+              res.json('¡Paciente agregado!');
+            });
+          } catch (error) {
+            return res.send(error);
+          }
+        }
+
+       
+      }
+    );
+  });
+};
+
 
 /**
  * Obtiene el historial clínico del paciente
@@ -185,7 +233,11 @@ pacienteController.descargarHistorialClinico = (req, res) => {
     });
   });
 }
-
+/**
+ * Obtiene las citas atendidas y por atender de un paciente
+ * @param {*} req Contiene la petición del usuario
+ * @param {*} res Contiene la respuesta que se enviara a la peticion
+ */
 
 pacienteController.agenda = (req, res) => {
   const id = req.params.id;
@@ -210,19 +262,14 @@ pacienteController.agenda = (req, res) => {
 }
 
 
-
-function generarHashContraseña(password, saltRounds) {
-  return new Promise((resolve, reject) => {
-    bcrypt.hash(password, saltRounds, (err, hash) => {
-      if (err) {
-        // Manejo del error
-        reject(err);
-      } else {
-        // El hash de la contraseña encriptada
-        resolve(hash);
-      }
-    });
-  });
+/**
+ * Encripta una contraseña utilizando el algoritmo SHA256.
+ * @param {string} password - La contraseña del usuario.
+ * @return {string} El hash de la contraseña en formato hexadecimal.
+ */
+function generarHashContraseña(password) {
+  const hash = crypto.createHash('sha256').update(password).digest('hex');
+  return hash;
 }
 
 module.exports = pacienteController

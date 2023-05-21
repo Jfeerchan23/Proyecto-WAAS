@@ -41,7 +41,7 @@ export class CitasProgramadasComponent {
 
   
   ngOnInit() {
-
+    /* Se obtienen las citas programadas entre los pacientes y médicos */
     this.usuariosService.citasProgramadas().subscribe(
     (response)=>{
       console.log(response);
@@ -52,7 +52,7 @@ export class CitasProgramadasComponent {
       this.paginator.firstPage();
     }
     );
-
+    /* Se obtiene todos los medicos */
     this.usuariosService.obtenerMedicos().subscribe(
 
       (response)=>{
@@ -71,7 +71,7 @@ export class CitasProgramadasComponent {
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
   }
-
+   //Filtrado por idMedico y la CURP del paciente
   submit(){
 
   let filtrado = this.citasGeneral.filter((cita:any) => {
@@ -90,7 +90,7 @@ export class CitasProgramadasComponent {
     });
   }
   }
-
+  /* Selección, cancelación de cita, y eliminación de la tabla */
   seleccionarCita(idCita:any){
     this.idCita=idCita;
   }
@@ -117,7 +117,7 @@ export class CitasProgramadasComponent {
 
     }
 
-
+/* Se actualiza la cita cancelada */
     this.usuariosService.actualizarCita(cita, this.idCita).subscribe(
 
     )

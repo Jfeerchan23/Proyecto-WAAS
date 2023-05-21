@@ -169,7 +169,7 @@ citaController.reservar = (req, res) => {
             if (err) return res.send(err);
 
             await notificarPorCorreo(conn, updated.idPaciente, updated.idMedico, idCita)
-            res.send(`Cita con id ${idCita} reservada.`);
+            res.json(`Cita con id ${idCita} reservada.`);
         });
     });
 }
@@ -324,6 +324,11 @@ citaController.citasProgramadas = (req, res) => {
         });
     });
 }
+/**
+ * Actualiza la información de una cita en la base de datos
+ * @param {*} req Contiene la petición del usuario
+ * @param {*} res Contiene la respuesta que se enviara a la peticion
+ */
 citaController.actualizar = (req, res) => {
     const id = req.params.id;
     const updated = req.body;
@@ -333,7 +338,7 @@ citaController.actualizar = (req, res) => {
 
         conn.query('UPDATE citas SET ? WHERE idCita = ?', [updated, id], (err, result) => {
             if (err) return res.send(err);
-            res.send(`Cita con id ${id} actualizada.`);
+            res.json(`Cita con id ${id} actualizada.`);
         });
     });
 }

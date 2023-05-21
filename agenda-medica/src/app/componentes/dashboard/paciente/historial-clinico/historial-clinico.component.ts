@@ -5,6 +5,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { UsuariosService } from 'src/app/servicios/usuarios/usuarios.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+
 @Component({
   selector: 'app-historial-clinico',
   templateUrl: './historial-clinico.component.html',
@@ -25,6 +27,7 @@ export class HistorialClinicoComponent {
     private route: ActivatedRoute,
     private location: Location,
     private router: Router,
+    private http: HttpClient
     ) {
     dashboardService.dashboardObservableData = {
       menuActivo: 'historial-clinico'
@@ -39,7 +42,7 @@ export class HistorialClinicoComponent {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   ngOnInit(){
-       //CUANDO SE ENCUENTRA EN EL PERFIL DE UN PACIENTE
+       //Se obtienen los datos del paciente
        this.route.params.subscribe((params) => {
         if (params['idPaciente']) {
           this.idPaciente = params['idPaciente'];
@@ -72,10 +75,11 @@ export class HistorialClinicoComponent {
      
      
   }
-
+/* Se selecciona una cita por cancelar */
   seleccionarCita(id:any){
     this.idCita=id;
   }
+/*   Se cancela la cita y se elimina de la tabla y base de datos */
   cancelarCita(){
     const cita = {
       idPaciente: null,
@@ -93,17 +97,35 @@ export class HistorialClinicoComponent {
     }
 
     this.usuariosService.actualizarCita(cita, this.idCita).subscribe(
-
+      (response)=>{
+        console.log(response);
+      }
+   
     )
     
   }
+  /* Regresa a la ventana anterior */
   regresar(): void {
     this.location.back();
   }
 
+/*   Se descarga el historial clínico del paciente en un archivo Excel */
   descargar():void{
-    const enlace = 'http://localhost:8080/api/pacientes/historialClinico/'+this.idPaciente+'/descargar';
-    window.open(enlace, '_blank');
+    const enlace = `http://localhost:8080/api/pacientes/historialClinico/${this.idPaciente}/descargar`;
+
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + sessionStorage.getItem('token')
+    });
+    
+    this.http.get(enlace, { headers: headers, responseType: 'blob' })
+      .subscribe(blob => {
+        const url = URL.createObjectURL(blob);
+        window.open(url, '_blank');
+      }, error => {
+        console.error('Error al descargar el archivo:', error);
+      });
+
+  
   }
 
 }

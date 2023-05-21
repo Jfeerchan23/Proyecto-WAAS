@@ -36,7 +36,7 @@ export class ListadepacientesComponent {
     dataSource :any;
 
   ngOnInit():void{
-     //CUANDO SE ENCUENTRA EN EL PERFIL DE UN MEDICO
+     //Se buscan las citas programadas con el id del médico
      this.route.params.subscribe((params) => {
       if (params['idMedico']) {
         this.idMedico= params['idMedico'];
@@ -58,7 +58,7 @@ export class ListadepacientesComponent {
  /*  Paginación de la tabla */
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-
+/*   Función para ver la información del paciente con id del paciente y el id de la cita */
     verInformacionPaciente(idPaciente:any, idCita:any){
       this.router.navigate(['dashboard/medico/paciente-datos',idPaciente, idCita]);
       
